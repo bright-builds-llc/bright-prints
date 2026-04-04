@@ -89,39 +89,39 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| DISC-01 | TBD | Pending |
-| DISC-02 | TBD | Pending |
-| DISC-03 | TBD | Pending |
-| PRNT-01 | TBD | Pending |
-| PRNT-02 | TBD | Pending |
-| PRNT-03 | TBD | Pending |
-| FILE-01 | TBD | Pending |
-| FILE-02 | TBD | Pending |
-| FILE-03 | TBD | Pending |
-| GEN-01 | TBD | Pending |
-| GEN-02 | TBD | Pending |
-| GEN-03 | TBD | Pending |
-| GEN-04 | TBD | Pending |
-| GEN-05 | TBD | Pending |
-| ACCT-01 | TBD | Pending |
-| ACCT-02 | TBD | Pending |
-| ACCT-03 | TBD | Pending |
-| ACCT-04 | TBD | Pending |
-| COMM-01 | TBD | Pending |
-| COMM-02 | TBD | Pending |
-| COMM-03 | TBD | Pending |
-| COMM-04 | TBD | Pending |
-| ADMN-01 | TBD | Pending |
-| ADMN-02 | TBD | Pending |
-| ADMN-03 | TBD | Pending |
-| PLAT-01 | TBD | Pending |
-| PLAT-02 | TBD | Pending |
-| PLAT-03 | TBD | Pending |
+| DISC-01 | Phase 2 | Pending |
+| DISC-02 | Phase 2 | Pending |
+| DISC-03 | Phase 2 | Pending |
+| PRNT-01 | Phase 2 | Pending |
+| PRNT-02 | Phase 3 | Pending |
+| PRNT-03 | Phase 3 | Pending |
+| FILE-01 | Phase 3 | Pending |
+| FILE-02 | Phase 3 | Pending |
+| FILE-03 | Phase 3 | Pending |
+| GEN-01 | Phase 5 | Pending |
+| GEN-02 | Phase 5 | Pending |
+| GEN-03 | Phase 5 | Pending |
+| GEN-04 | Phase 5 | Pending |
+| GEN-05 | Phase 5 | Pending |
+| ACCT-01 | Phase 4 | Pending |
+| ACCT-02 | Phase 4 | Pending |
+| ACCT-03 | Phase 4 | Pending |
+| ACCT-04 | Phase 4 | Pending |
+| COMM-01 | Phase 3 | Pending |
+| COMM-02 | Phase 6 | Pending |
+| COMM-03 | Phase 6 | Pending |
+| COMM-04 | Phase 6 | Pending |
+| ADMN-01 | Phase 1 | Pending |
+| ADMN-02 | Phase 5 | Pending |
+| ADMN-03 | Phase 1 | Pending |
+| PLAT-01 | Phase 1 | Pending |
+| PLAT-02 | Phase 6 | Pending |
+| PLAT-03 | Phase 1 | Pending |
 
 **Coverage:**
 - v1 requirements: 28 total
-- Mapped to phases: 0
-- Unmapped: 28 ⚠️
+- Mapped to phases: 28
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-04-04*
