@@ -1,3 +1,5 @@
+import { Link } from "react-router";
+
 import type { DiscoveryItem } from "~/lib/discovery/model";
 
 import { DiscoveryCard } from "./DiscoveryCard";
@@ -22,6 +24,12 @@ export function HomeFeaturedSection({
         {items.map((item) => (
           <DiscoveryCard key={item.id} item={item} variant="feature" />
         ))}
+      </div>
+
+      <div className="mt-6 flex flex-wrap gap-3">
+        <Link className="home-primary-action" prefetch="intent" to="/catalog">
+          View Full Catalog
+        </Link>
       </div>
     </section>
   );

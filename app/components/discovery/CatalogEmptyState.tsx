@@ -14,11 +14,16 @@ export function CatalogEmptyState({
       <p>
         Try a broader search or clear the current filters to return to the curated catalog.
       </p>
-      {hasActiveFilters ? (
-        <Link className="home-primary-action" prefetch="intent" to="/catalog">
-          Reset Catalog
+      <div className="flex flex-wrap justify-center gap-3">
+        {hasActiveFilters ? (
+          <Link className="home-primary-action" prefetch="intent" to="/catalog">
+            Reset Catalog
+          </Link>
+        ) : null}
+        <Link className="home-secondary-action" prefetch="intent" to="/generators/sign">
+          Try the Sign Generator
         </Link>
-      ) : null}
+      </div>
     </section>
   );
 }
