@@ -35,6 +35,13 @@
   gap: 1rem;
 }
 
+.home-hero-grid > a,
+.home-hero-support > a,
+.home-feature-grid > a,
+.generator-spotlight > a {
+  min-height: 100%;
+}
+
 .home-section {
   margin-top: 4rem;
 }
@@ -104,6 +111,7 @@
 
   .home-hero-support {
     grid-template-rows: repeat(2, minmax(0, 1fr));
+    padding-top: 1.6rem;
   }
 
   .home-feature-grid {
