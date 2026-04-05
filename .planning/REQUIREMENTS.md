@@ -111,12 +111,12 @@
 | COMM-02 | Phase 6 | Pending |
 | COMM-03 | Phase 6 | Pending |
 | COMM-04 | Phase 6 | Pending |
-| ADMN-01 | Phase 1 | Pending |
+| ADMN-01 | Phase 1 | Complete |
 | ADMN-02 | Phase 5 | Pending |
-| ADMN-03 | Phase 1 | Pending |
-| PLAT-01 | Phase 1 | Pending |
+| ADMN-03 | Phase 1 | Complete |
+| PLAT-01 | Phase 1 | Complete |
 | PLAT-02 | Phase 6 | Pending |
-| PLAT-03 | Phase 1 | Pending |
+| PLAT-03 | Phase 1 | Complete |
 
 **Coverage:**
 - v1 requirements: 28 total

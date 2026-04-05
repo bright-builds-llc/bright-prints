@@ -25,6 +25,8 @@
 
 **Requirements:** ADMN-01, ADMN-03, PLAT-01, PLAT-03
 
+**Status:** Complete (verified 2026-04-05)
+
 **Success criteria:**
 
 1. A baseline Bright Prints app deploys successfully to Railway on every push to `main`.
