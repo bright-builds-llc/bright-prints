@@ -5,6 +5,7 @@ import type { DiscoveryItem } from "~/lib/discovery/model";
 import { DiscoveryBadge } from "./DiscoveryBadge";
 
 type DiscoveryCardProps = {
+  interactive?: boolean;
   item: DiscoveryItem;
   variant?: "catalog" | "feature" | "hero";
 };
@@ -43,6 +44,7 @@ function buildBadges(item: DiscoveryItem): string[] {
 }
 
 export function DiscoveryCard({
+  interactive = true,
   item,
   variant = "catalog"
 }: DiscoveryCardProps) {
@@ -52,13 +54,9 @@ export function DiscoveryCard({
       : variant === "feature"
         ? "gap-4 p-5"
         : "gap-4 p-4";
-
-  return (
-    <Link
-      className={`group relative grid overflow-hidden rounded-[1.6rem] border border-slate-900/8 bg-white/82 backdrop-blur-sm transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_28px_80px_rgba(19,32,43,0.12)] ${sizeClassName}`}
-      prefetch="intent"
-      to={item.href}
-    >
+  const wrapperClassName = `group relative grid overflow-hidden rounded-[1.6rem] border border-slate-900/8 bg-white/82 backdrop-blur-sm transition duration-300 ${interactive ? "hover:-translate-y-0.5 hover:shadow-[0_28px_80px_rgba(19,32,43,0.12)]" : ""} ${sizeClassName}`;
+  const body = (
+    <>
       <div
         className={`relative overflow-hidden rounded-[1.2rem] bg-gradient-to-br ${toneClassNames[item.accentTone]} p-5`}
       >
@@ -95,9 +93,25 @@ export function DiscoveryCard({
 
         <div className="flex items-center justify-between text-xs uppercase tracking-[0.18em] text-slate-500">
           <span>{item.creatorName}</span>
-          <span className="transition group-hover:translate-x-1">Open</span>
+          <span className={interactive ? "transition group-hover:translate-x-1" : ""}>
+            {interactive ? "Open" : "Viewing"}
+          </span>
         </div>
       </div>
+    </>
+  );
+
+  if (!interactive) {
+    return <article className={wrapperClassName}>{body}</article>;
+  }
+
+  return (
+    <Link
+      className={wrapperClassName}
+      prefetch="intent"
+      to={item.href}
+    >
+      {body}
     </Link>
   );
 }

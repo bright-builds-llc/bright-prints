@@ -52,7 +52,7 @@ export default function PrintDetail({ loaderData }: Route.ComponentProps) {
       <section className="item-detail-shell">
         <article className="item-detail-frame">
           <div className="item-detail-poster">
-            <DiscoveryCard item={loaderData.item} variant="hero" />
+            <DiscoveryCard interactive={false} item={loaderData.item} variant="hero" />
           </div>
 
           <div className="item-detail-copy">
@@ -100,14 +100,16 @@ export default function PrintDetail({ loaderData }: Route.ComponentProps) {
           </div>
         </article>
 
-        <section className="item-detail-related">
-          <p className="eyebrow">More to Explore</p>
-          <div className="item-detail-related-grid">
-            {loaderData.related.map((item) => (
-              <DiscoveryCard key={item.id} item={item} variant="feature" />
-            ))}
-          </div>
-        </section>
+        {loaderData.related.length > 0 ? (
+          <section className="item-detail-related">
+            <p className="eyebrow">More to Explore</p>
+            <div className="item-detail-related-grid">
+              {loaderData.related.map((item) => (
+                <DiscoveryCard key={item.id} item={item} variant="feature" />
+              ))}
+            </div>
+          </section>
+        ) : null}
       </section>
     </main>
   );
