@@ -1,0 +1,75 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum SavedPrintListKind {
+  BOOKMARKS
+  CUSTOM
+}
+
+model User {
+  id              String           @id @default(cuid())
+  email           String           @unique
+  displayName     String?
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  sessions        Session[]
+  commerceIntents CommerceIntent[]
+  savedLists      SavedPrintList[]
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model SavedPrintList {
+  id        String               @id @default(cuid())
+  userId    String
+  name      String
+  kind      SavedPrintListKind   @default(CUSTOM)
+  createdAt DateTime             @default(now())
+  updatedAt DateTime             @updatedAt
+  items     SavedPrintListItem[]
+  user      User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model SavedPrintListItem {
+  id        String         @id @default(cuid())
+  listId    String
+  printSlug String
+  createdAt DateTime       @default(now())
+  list      SavedPrintList @relation(fields: [listId], references: [id], onDelete: Cascade)
+
+  @@index([printSlug])
+  @@unique([listId, printSlug])
+}
+
+model CommerceIntent {
+  id         String   @id @default(cuid())
+  userId     String?
+  printSlug  String
+  status     String   @default("interest")
+  provider   String?
+  contact    String?
+  metadata   Json?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  user       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([printSlug])
+  @@index([userId])
+}
