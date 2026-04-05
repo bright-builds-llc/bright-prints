@@ -62,7 +62,7 @@ It is tempting to hardcode a single sign generator into page logic and defer str
 ### Prevention
 
 - Define generator schemas before implementing the first real generator.
-- Isolate geometry/runtime logic in a worker service.
+- Isolate geometry/export logic in dedicated client-side modules instead of route components.
 - Store generator definitions in diff-friendly files with explicit versioning.
 
 ### Phase to address
@@ -112,6 +112,28 @@ Phase 1 and Phase 6
 ### Phase to address
 
 Phase 2 and Phase 4
+
+## Pitfall 8: Freezing the main thread with heavy client-side generation
+
+### Why it happens
+
+Moving generation into the browser removes backend complexity, but larger or more complex generators can still create noticeable UI stalls.
+
+### Warning signs
+
+- Parameter changes cause visible input lag.
+- Export starts blocking the whole page.
+- Mobile devices struggle while desktop devices appear fine.
+
+### Prevention
+
+- Keep v1 generators bounded and mechanically simple.
+- Separate preview-time geometry from export-time work where practical.
+- Keep the client-side generator pipeline modular so expensive work can move into a browser Web Worker later without redesigning the product.
+
+### Phase to address
+
+Phase 4
 
 ## Pitfall 6: Performance collapse from media-heavy catalog pages
 
@@ -165,4 +187,3 @@ Phase 1 and Phase 6
 - [Amazon Pay buyer experience docs](https://developer.amazon.com/docs/amazon-pay-checkout/buyer-experience.html)
 - [Apple Pay on the web configuration docs](https://developer.apple.com/help/account/capabilities/configure-apple-pay-on-the-web/)
 - [Railway GitHub autodeploy docs](https://docs.railway.com/guides/github-autodeploys)
-

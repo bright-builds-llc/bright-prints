@@ -74,10 +74,10 @@
   Dependencies: Shared validation contracts
 - Job lifecycle with pending, success, and failure states.
   Complexity: Medium
-  Dependencies: Queue/job model, artifact storage
+  Dependencies: Client-side generation state model, export lifecycle UI
 - Download of generated `3mf` output plus generated metadata.
   Complexity: High
-  Dependencies: Generator worker, artifact storage
+  Dependencies: Client-side geometry/export engine
 
 ### Differentiators
 
@@ -89,7 +89,7 @@
   Dependencies: Versioned generator DSL/schema
 - Reuse/caching of common parameter combinations.
   Complexity: Medium
-  Dependencies: Normalized parameter hashing
+  Dependencies: Client-side preset model or local/DB-backed saved presets
 
 ### Anti-features
 
@@ -202,4 +202,3 @@
 - full multi-provider checkout implementation
 - public multi-creator publishing
 - CMS migration
-

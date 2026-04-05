@@ -45,8 +45,6 @@ Responsibilities:
 - sessions
 - bookmarks
 - custom lists
-- generator jobs
-- generator artifacts
 - order-intent / checkout-intent records
 - future creator ownership and permissions
 
@@ -55,35 +53,21 @@ Notes:
 - Keep mutable and private runtime data in Postgres from day one.
 - Do not leak customer/payment metadata into repo-backed content.
 
-### 4. Generator orchestration layer
+### 4. Client-side generator engine
 
 Responsibilities:
 
 - validate input parameters
-- normalize parameter hashes
-- create jobs
-- dispatch work to generator runtime
-- track job state
-- expose generated artifact metadata
+- derive client-side preview geometry
+- package local `3mf` downloads
+- expose generation/export state to the UI
+- optionally persist lightweight presets later
 
 Notes:
 
-- This is an application boundary, not the geometry engine itself.
+- This is an application boundary inside the browser, not a backend service.
 
-### 5. Generator runtime / worker
-
-Responsibilities:
-
-- parameter-to-geometry conversion
-- `3mf` packaging
-- artifact emission
-- retry / error reporting
-
-Notes:
-
-- Keep this separately deployable from the main app so heavy geometry work does not distort frontend runtime behavior.
-
-### 6. Commerce adapter layer
+### 5. Commerce adapter layer
 
 Responsibilities:
 
@@ -97,12 +81,11 @@ Notes:
 
 - The app should speak to a local commerce abstraction, not directly to provider SDKs from every feature surface.
 
-### 7. Deployment and ops layer
+### 6. Deployment and ops layer
 
 Responsibilities:
 
 - Railway web deployment
-- Railway worker deployment
 - Railway Postgres
 - environment references
 - GitHub-to-Railway deployment automation
@@ -120,11 +103,10 @@ Responsibilities:
 
 1. User opens generator page.
 2. UI fetches generator definition and constraints.
-3. User submits validated parameters.
-4. App creates generator job and normalized parameter hash.
-5. Worker generates geometry and packages `3mf`.
-6. Artifact metadata is stored.
-7. User polls or receives completion state and downloads the artifact.
+3. Browser validates the submitted parameters.
+4. Client-side generator modules derive preview and export geometry.
+5. Browser packages the local `3mf` payload.
+6. User downloads the artifact directly, and the app may optionally save lightweight preset metadata.
 
 ### Library flow
 
@@ -145,7 +127,7 @@ Responsibilities:
 
 ### Phase 1: Foundations
 
-- Next.js app shell
+- React Router 7 app shell
 - Railway deployment path
 - Postgres and ORM
 - repo-backed content schema
@@ -180,7 +162,7 @@ Why third:
 
 - generator schemas
 - sign-generator MVP
-- worker runtime
+- client-side generation/export modules
 - generated artifact delivery
 
 Why fourth:
@@ -213,6 +195,5 @@ Why sixth:
   The product’s strongest value is generator/download UX, not commerce plumbing.
 - Do not start with CMS migration.
   The correct abstraction boundary matters more than the first authoring surface.
-- Do not mix generator execution into the web runtime.
-  It will complicate scaling, timeouts, and debugging.
-
+- Do not tangle route/UI code with low-level geometry and export code.
+  Keep the browser-side generator pipeline modular so it can move into a browser Web Worker later if performance demands it.

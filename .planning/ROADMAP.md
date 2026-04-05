@@ -77,7 +77,7 @@
 
 1. Visitors can open a generator page, understand the generator, and configure a sign with bounded parameters.
 2. Invalid input states are blocked with clear validation feedback before generation runs.
-3. Successful runs produce downloadable `3mf` artifacts with associated generated-model metadata.
+3. Successful in-browser runs produce downloadable `3mf` artifacts with associated generated-model metadata.
 4. Admin can define generator behavior through a repo-backed, schema-validated authoring path rather than hardcoded page logic.
 
 ### Phase 6: Commerce Groundwork and Product Ops

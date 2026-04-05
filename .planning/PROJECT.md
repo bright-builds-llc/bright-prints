@@ -48,6 +48,8 @@ Users can quickly discover beautiful 3D prints and generate or download the righ
 - Some print ecosystems expose "Print Now" style launcher URLs that can hand off into slicer software such as PrusaSlicer or BambuStudio; these should be supported where technically feasible.
 - Shopify is already available and should be evaluated as a leverage point for catalog, commerce, or checkout-adjacent capabilities instead of blindly rebuilding everything from scratch.
 - The site is expected to be full stack and likely include a database-backed user system from the start.
+- React Router 7 is the selected web framework direction instead of Next.js because it keeps the React stack while reducing platform-specific gravity and fitting Railway-hosted Docker deployment cleanly.
+- Generator architecture should follow the client-side approach demonstrated in `3D-Sign-Maker`: browser-side geometry generation, in-browser preview, and local `3mf` export without a backend generation worker.
 
 ## Constraints
 
@@ -67,6 +69,8 @@ Users can quickly discover beautiful 3D prints and generate or download the righ
 | Use repo-backed content and model files initially | Open-source-first workflow and diff-friendly content are acceptable now, with CMS migration deferred until it becomes necessary | — Pending |
 | Treat physical-print commerce as incremental in v1 | Native-feeling checkout groundwork matters, but the first shipped version can stop short of complete physical-print purchasing coverage | — Pending |
 | Evaluate Shopify as a leverage layer rather than assuming a fully custom commerce stack | An existing Shopify account may reduce implementation cost for catalog and commerce capabilities if the integration model fits the product | — Pending |
+| Use React Router 7 as the primary web framework | It keeps the React ecosystem, supports full-stack app patterns, and avoids centering the product on Vercel-specific workflow gravity | — Pending |
+| Keep `3mf` generation entirely client-side | The reference `3D-Sign-Maker` implementation already proves a browser-side generation path that matches the desired user experience and avoids backend CAD infrastructure | — Pending |
 
 ---
 *Last updated: 2026-04-04 after initialization*
