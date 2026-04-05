@@ -1,0 +1,32 @@
+schemaVersion: 1
+slug: stackable-desk-sign
+creatorSlug: peter
+title: Stackable Desk Sign
+summary: A compact desk sign base that feels like a finished object instead of a placeholder label.
+description: >
+  This sign is designed for desks and shelves where the typography matters as
+  much as the utility, giving Bright Prints a more editorial object in the
+  discovery catalog.
+featured: true
+availability: physical-print
+openSource: true
+publishedOn: 2026-02-26
+categories:
+  - signs
+  - decor
+  - desk
+discovery:
+  accentTone: berry
+  catalogRank: 30
+  eyebrow: Studio Object
+  featuredRank: 3
+  mark: Desk Sign
+files:
+  - label: Source Model
+    kind: source
+    repoPath: models/stackable-desk-sign/source.step
+printDetails:
+  material: PLA
+  layerHeightMm: 0.16
+  specialSteps:
+    - Best printed with a smooth top surface for signage readability.

@@ -1,6 +1,14 @@
 import { z } from "zod";
 
 const schemaVersion = z.literal(1);
+const discoveryToneSchema = z.enum([
+  "verdigris",
+  "copper",
+  "slate",
+  "sand",
+  "berry"
+]);
+const availabilitySchema = z.enum(["open-source", "physical-print", "both"]);
 
 const slugSchema = z
   .string()
@@ -8,6 +16,17 @@ const slugSchema = z
   .regex(/^[a-z0-9-]+$/, "Slugs must use lowercase letters, numbers, and hyphens");
 
 const publicLinkSchema = z.string().url();
+const publishedOnSchema = z
+  .string()
+  .regex(/^\d{4}-\d{2}-\d{2}$/, "Dates must use YYYY-MM-DD format");
+
+const discoveryMetaSchema = z.object({
+  accentTone: discoveryToneSchema,
+  catalogRank: z.number().int().positive(),
+  eyebrow: z.string().min(1),
+  featuredRank: z.number().int().positive().optional(),
+  mark: z.string().min(1)
+});
 
 export const creatorSchema = z.object({
   schemaVersion,
@@ -38,8 +57,11 @@ export const printSchema = z.object({
   summary: z.string().min(1),
   description: z.string().min(1),
   featured: z.boolean().default(false),
+  availability: availabilitySchema.default("open-source"),
   openSource: z.boolean().default(true),
+  publishedOn: publishedOnSchema,
   categories: z.array(z.string().min(1)).default([]),
+  discovery: discoveryMetaSchema,
   files: z.array(printFileSchema).default([]),
   printDetails: z
     .object({
@@ -69,10 +91,16 @@ export const generatorSchema = z.object({
   title: z.string().min(1),
   summary: z.string().min(1),
   description: z.string().min(1),
+  availability: availabilitySchema.default("open-source"),
+  categories: z.array(z.string().min(1)).default([]),
+  discovery: discoveryMetaSchema,
   outputFormat: z.literal("3mf"),
+  publishedOn: publishedOnSchema,
   parameters: z.array(generatorParameterSchema).min(1)
 });
 
 export type CreatorRecord = z.infer<typeof creatorSchema>;
 export type PrintRecord = z.infer<typeof printSchema>;
 export type GeneratorRecord = z.infer<typeof generatorSchema>;
+export type DiscoveryTone = z.infer<typeof discoveryToneSchema>;
+export type AvailabilityState = z.infer<typeof availabilitySchema>;

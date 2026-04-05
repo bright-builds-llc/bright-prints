@@ -6,7 +6,18 @@ summary: Generate a custom sign in-browser and download it as a 3mf file.
 description: >
   The first Bright Prints generator will let users configure a simple sign by
   entering text and a handful of bounded dimensions.
+availability: open-source
+categories:
+  - signs
+  - customizable
+discovery:
+  accentTone: copper
+  catalogRank: 40
+  eyebrow: Generator
+  featuredRank: 1
+  mark: Text to 3MF
 outputFormat: 3mf
+publishedOn: 2026-03-29
 parameters:
   - name: text
     label: Sign Text

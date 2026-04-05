@@ -1,0 +1,31 @@
+schemaVersion: 1
+slug: modular-cable-clip
+creatorSlug: peter
+title: Modular Cable Clip
+summary: A low-profile desk clip that keeps a charging cable exactly where you leave it.
+description: >
+  A small cable-management print tuned for desks, nightstands, and charging
+  stations where you want a clean line without committing to a bulky organizer.
+featured: true
+availability: open-source
+openSource: true
+publishedOn: 2026-03-18
+categories:
+  - desk
+  - utility
+  - organization
+discovery:
+  accentTone: slate
+  catalogRank: 20
+  eyebrow: Desk Utility
+  featuredRank: 2
+  mark: Cable Clip
+files:
+  - label: Print-Ready 3MF
+    kind: print-ready
+    repoPath: models/modular-cable-clip/modular-cable-clip.3mf
+printDetails:
+  material: PETG
+  layerHeightMm: 0.2
+  specialSteps:
+    - No supports required for the default orientation.

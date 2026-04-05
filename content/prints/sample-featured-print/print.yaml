@@ -7,10 +7,18 @@ description: >
   This record exists to prove the foundation route can load real print metadata
   from versioned repo content before the polished gallery work begins.
 featured: true
+availability: both
 openSource: true
+publishedOn: 2026-04-01
 categories:
   - sample
   - featured
+discovery:
+  accentTone: verdigris
+  catalogRank: 10
+  eyebrow: Open Source Print
+  featuredRank: 1
+  mark: Sample Print
 files:
   - label: Source Model
     kind: source

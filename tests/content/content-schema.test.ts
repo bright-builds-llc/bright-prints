@@ -43,8 +43,17 @@ describe("content schema", () => {
       ],
       generators: [
         generatorSchema.parse({
+          availability: "open-source",
+          categories: ["customizable"],
           creatorSlug: "peter",
           description: "Generator",
+          discovery: {
+            accentTone: "copper",
+            catalogRank: 10,
+            eyebrow: "Generator",
+            featuredRank: 1,
+            mark: "Text to 3MF"
+          },
           outputFormat: "3mf",
           parameters: [
             {
@@ -58,6 +67,7 @@ describe("content schema", () => {
               unit: "mm"
             }
           ],
+          publishedOn: "2026-03-29",
           schemaVersion: 1,
           slug: "sign",
           summary: "Sign",
@@ -66,12 +76,21 @@ describe("content schema", () => {
       ],
       prints: [
         printSchema.parse({
+          availability: "both",
           categories: [],
           creatorSlug: "nobody",
           description: "Broken reference",
+          discovery: {
+            accentTone: "slate",
+            catalogRank: 20,
+            eyebrow: "Print",
+            featuredRank: 1,
+            mark: "Broken"
+          },
           featured: true,
           files: [],
           openSource: true,
+          publishedOn: "2026-03-28",
           printDetails: { specialSteps: [] },
           schemaVersion: 1,
           slug: "broken-print",
@@ -98,8 +117,17 @@ describe("content schema", () => {
       ],
       generators: [
         generatorSchema.parse({
+          availability: "open-source",
+          categories: ["customizable"],
           creatorSlug: "peter",
           description: "Generator",
+          discovery: {
+            accentTone: "copper",
+            catalogRank: 10,
+            eyebrow: "Generator",
+            featuredRank: 1,
+            mark: "Text to 3MF"
+          },
           outputFormat: "3mf",
           parameters: [
             {
@@ -110,6 +138,7 @@ describe("content schema", () => {
               type: "text"
             }
           ],
+          publishedOn: "2026-03-29",
           schemaVersion: 1,
           slug: "sign",
           summary: "Sign",
@@ -118,12 +147,21 @@ describe("content schema", () => {
       ],
       prints: [
         printSchema.parse({
+          availability: "open-source",
           categories: ["featured"],
           creatorSlug: "peter",
           description: "Valid",
+          discovery: {
+            accentTone: "verdigris",
+            catalogRank: 10,
+            eyebrow: "Open Source Print",
+            featuredRank: 1,
+            mark: "Sample"
+          },
           featured: true,
           files: [],
           openSource: true,
+          publishedOn: "2026-04-01",
           printDetails: { specialSteps: [] },
           schemaVersion: 1,
           slug: "sample",
