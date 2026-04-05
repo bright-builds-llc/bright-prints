@@ -60,6 +60,10 @@ export default function Catalog({ loaderData }: Route.ComponentProps) {
         totalCount={loaderData.totalCount}
       />
 
+      <p className="catalog-intro-copy">
+        Prints and generators live in one calm catalog. Narrow the field without turning the page into a control panel.
+      </p>
+
       {loaderData.items.length === 0 ? (
         <CatalogEmptyState hasActiveFilters={hasActiveFilters} />
       ) : (

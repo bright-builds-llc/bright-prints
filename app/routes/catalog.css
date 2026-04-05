@@ -97,6 +97,13 @@
   margin-top: 1.5rem;
 }
 
+.catalog-intro-copy {
+  margin: 1rem 0 0;
+  max-width: 42rem;
+  color: #475569;
+  line-height: 1.7;
+}
+
 .catalog-empty {
   display: grid;
   gap: 1rem;
