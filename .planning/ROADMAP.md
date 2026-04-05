@@ -39,6 +39,8 @@
 
 **Requirements:** DISC-01, DISC-02, DISC-03, PRNT-01
 
+**Status:** Complete (verified 2026-04-05)
+
 **Success criteria:**
 
 1. Visitors land on a featured home page that explains both the gallery/storefront side and the generator side of the product.

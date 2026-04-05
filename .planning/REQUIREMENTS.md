@@ -89,10 +89,10 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| DISC-01 | Phase 2 | Pending |
-| DISC-02 | Phase 2 | Pending |
-| DISC-03 | Phase 2 | Pending |
-| PRNT-01 | Phase 2 | Pending |
+| DISC-01 | Phase 2 | Complete |
+| DISC-02 | Phase 2 | Complete |
+| DISC-03 | Phase 2 | Complete |
+| PRNT-01 | Phase 2 | Complete |
 | PRNT-02 | Phase 3 | Pending |
 | PRNT-03 | Phase 3 | Pending |
 | FILE-01 | Phase 3 | Pending |
