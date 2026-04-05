@@ -73,6 +73,33 @@ a {
   gap: 0.6rem;
 }
 
+.foundation-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.foundation-grid div {
+  border-radius: 1rem;
+  padding: 1rem;
+  background: rgba(23, 107, 95, 0.08);
+}
+
+.foundation-grid dt {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.foundation-grid dd {
+  margin: 0.35rem 0 0;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
 .error-stack {
   width: min(42rem, 100%);
   overflow-x: auto;
