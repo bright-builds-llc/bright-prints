@@ -63,6 +63,11 @@ export default function GeneratorDetail({ loaderData }: Route.ComponentProps) {
 
             <h1>{loaderData.item.title}</h1>
             <p>{loaderData.item.description}</p>
+            <p className="item-detail-kicker">
+              The generator opens inside the same discovery language as the
+              prints, so it feels like a designed object instead of a detached
+              tool screen.
+            </p>
 
             <ul className="generator-parameter-list">
               {loaderData.generator.parameters.map((parameter) => (

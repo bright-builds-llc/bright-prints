@@ -68,6 +68,11 @@ export default function PrintDetail({ loaderData }: Route.ComponentProps) {
 
             <h1>{loaderData.item.title}</h1>
             <p>{loaderData.item.description}</p>
+            <p className="item-detail-kicker">
+              This is the first calm stop inside the object itself: enough to
+              justify the click, without spending the richer technical detail
+              that Phase 3 owns.
+            </p>
 
             <dl className="item-detail-meta">
               <div>

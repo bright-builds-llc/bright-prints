@@ -37,6 +37,11 @@
   line-height: 1.7;
 }
 
+.item-detail-kicker {
+  max-width: 38rem;
+  font-size: 0.98rem;
+}
+
 .item-detail-meta {
   display: grid;
   gap: 0.9rem;
