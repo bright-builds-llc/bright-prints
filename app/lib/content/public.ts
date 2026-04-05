@@ -44,13 +44,32 @@ export function assertCreatorReferences(content: PublicContentIndex): void {
   }
 }
 
+export function buildCreatorMap(content: PublicContentIndex): Map<string, CreatorRecord> {
+  return new Map(content.creators.map((creator) => [creator.slug, creator]));
+}
+
+export function findPrintBySlug(
+  content: PublicContentIndex,
+  slug: string
+): PrintRecord | undefined {
+  return content.prints.find((print) => print.slug === slug);
+}
+
+export function findGeneratorBySlug(
+  content: PublicContentIndex,
+  slug: string
+): GeneratorRecord | undefined {
+  return content.generators.find((generator) => generator.slug === slug);
+}
+
 export function buildFoundationContent(content: PublicContentIndex): FoundationContent {
-  const featuredPrints = content.prints.filter((print) => print.featured);
-  const selectedPrints = (featuredPrints.length > 0 ? featuredPrints : content.prints).slice(0, 3);
+  const featuredPrints = content.prints
+    .filter((print) => print.featured)
+    .slice(0, 3);
 
   return {
     creatorCount: content.creators.length,
-    featuredPrints: selectedPrints.map((print) => ({
+    featuredPrints: featuredPrints.map((print) => ({
       creatorSlug: print.creatorSlug,
       slug: print.slug,
       summary: print.summary,
