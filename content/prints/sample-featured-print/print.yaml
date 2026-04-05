@@ -1,0 +1,22 @@
+schemaVersion: 1
+slug: sample-featured-print
+creatorSlug: peter
+title: Sample Featured Print
+summary: A seeded featured print used to validate the repo-backed content pipeline.
+description: >
+  This record exists to prove the foundation route can load real print metadata
+  from versioned repo content before the polished gallery work begins.
+featured: true
+openSource: true
+categories:
+  - sample
+  - featured
+files:
+  - label: Source Model
+    kind: source
+    repoPath: models/sample-featured-print/source.step
+printDetails:
+  material: PLA
+  layerHeightMm: 0.2
+  specialSteps:
+    - Confirm the content loader exposes print detail metadata correctly.

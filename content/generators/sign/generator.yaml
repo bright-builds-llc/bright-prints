@@ -1,0 +1,47 @@
+schemaVersion: 1
+slug: sign
+creatorSlug: peter
+title: Sign Generator
+summary: Generate a custom sign in-browser and download it as a 3mf file.
+description: >
+  The first Bright Prints generator will let users configure a simple sign by
+  entering text and a handful of bounded dimensions.
+outputFormat: 3mf
+parameters:
+  - name: text
+    label: Sign Text
+    type: text
+    defaultValue: Bright Prints
+    maxLength: 40
+  - name: width-mm
+    label: Width
+    type: number
+    unit: mm
+    defaultValue: 100
+    min: 40
+    max: 240
+    step: 1
+  - name: height-mm
+    label: Height
+    type: number
+    unit: mm
+    defaultValue: 32
+    min: 16
+    max: 80
+    step: 1
+  - name: thickness-mm
+    label: Thickness
+    type: number
+    unit: mm
+    defaultValue: 3
+    min: 2
+    max: 8
+    step: 0.5
+  - name: corner-radius-mm
+    label: Corner Radius
+    type: number
+    unit: mm
+    defaultValue: 4
+    min: 0
+    max: 12
+    step: 0.5
