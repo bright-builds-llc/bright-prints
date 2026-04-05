@@ -33,6 +33,10 @@ export function HomeHero({
             Try a Generator
           </Link>
         </div>
+
+        <p className="mt-4 text-sm leading-6 text-slate-500">
+          Start with the curated catalog, or jump straight into the generator spotlight if you already know you want something customizable.
+        </p>
       </div>
 
       <div className="home-hero-grid">
