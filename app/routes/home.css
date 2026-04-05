@@ -1,0 +1,123 @@
+.home-page {
+  padding: 2rem;
+}
+
+.home-hero {
+  display: grid;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.home-hero-copy {
+  max-width: 32rem;
+}
+
+.home-hero-copy h1 {
+  margin: 0;
+  font-size: clamp(3rem, 8vw, 6rem);
+  line-height: 0.92;
+  letter-spacing: -0.04em;
+  color: #13202b;
+}
+
+.home-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  margin-top: 1.5rem;
+}
+
+.home-hero-grid,
+.home-hero-support,
+.home-feature-grid,
+.generator-spotlight {
+  display: grid;
+  gap: 1rem;
+}
+
+.home-section {
+  margin-top: 4rem;
+}
+
+.positioning-band {
+  display: grid;
+  gap: 1rem;
+  margin-top: 3.5rem;
+  padding: 1.25rem;
+  border: 1px solid rgba(19, 32, 43, 0.08);
+  border-radius: 1.4rem;
+  background: rgba(255, 255, 255, 0.68);
+  backdrop-filter: blur(16px);
+}
+
+.positioning-band p:last-child {
+  margin: 0;
+  color: #334155;
+  line-height: 1.7;
+}
+
+.generator-spotlight {
+  margin-top: 1.5rem;
+  padding: 1.25rem;
+  border: 1px solid rgba(19, 32, 43, 0.08);
+  border-radius: 1.6rem;
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(16px);
+}
+
+.generator-spotlight-copy h3 {
+  margin: 1rem 0 0;
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  line-height: 0.96;
+  letter-spacing: -0.03em;
+}
+
+.generator-spotlight-copy p {
+  margin-top: 1rem;
+  max-width: 34rem;
+  color: #475569;
+  line-height: 1.7;
+}
+
+.generator-points {
+  margin: 1.2rem 0 1.6rem;
+  padding-left: 1.25rem;
+  display: grid;
+  gap: 0.5rem;
+  color: #334155;
+}
+
+@media (min-width: 900px) {
+  .home-page {
+    padding: 2.5rem;
+  }
+
+  .home-hero {
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.25fr);
+    gap: 2rem;
+  }
+
+  .home-hero-grid {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.85fr);
+    align-items: stretch;
+  }
+
+  .home-hero-support {
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+  }
+
+  .home-feature-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .positioning-band {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    padding: 1.5rem;
+  }
+
+  .generator-spotlight {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    align-items: center;
+    padding: 1.5rem;
+  }
+}
