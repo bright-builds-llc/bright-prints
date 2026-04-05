@@ -151,3 +151,25 @@ export function buildHomeDiscoveryModel(items: DiscoveryItem[]): HomeDiscoveryMo
     heroSupport
   };
 }
+
+export function findDiscoveryItem(
+  items: DiscoveryItem[],
+  kind: DiscoveryKind,
+  slug: string
+): DiscoveryItem | undefined {
+  return items.find((item) => item.kind === kind && item.slug === slug);
+}
+
+export function buildRelatedDiscoveryItems(
+  items: DiscoveryItem[],
+  currentItem: DiscoveryItem,
+  count = 3
+): DiscoveryItem[] {
+  return items
+    .filter((item) => item.id !== currentItem.id)
+    .filter((item) =>
+      item.kind === currentItem.kind ||
+      item.categories.some((category) => currentItem.categories.includes(category))
+    )
+    .slice(0, count);
+}

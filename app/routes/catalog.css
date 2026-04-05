@@ -1,0 +1,132 @@
+.catalog-page {
+  padding: 2rem;
+}
+
+.catalog-toolbar-shell {
+  display: grid;
+  gap: 1rem;
+  padding: 1.25rem;
+  border: 1px solid rgba(19, 32, 43, 0.08);
+  border-radius: 1.6rem;
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(16px);
+}
+
+.catalog-toolbar-head {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.catalog-toolbar-head h1 {
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  line-height: 0.96;
+  letter-spacing: -0.03em;
+}
+
+.catalog-result-count {
+  margin: 0;
+  color: #475569;
+}
+
+.catalog-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.catalog-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.4rem;
+  border-radius: 999px;
+  padding: 0 0.9rem;
+  border: 1px solid rgba(19, 32, 43, 0.12);
+  color: #334155;
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.72);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.catalog-chip-active {
+  background: #13202b;
+  color: #f8fafc;
+}
+
+.catalog-toolbar-form {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.catalog-field {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.catalog-field span {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #176b5f;
+}
+
+.catalog-field input,
+.catalog-field select {
+  min-height: 3rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(19, 32, 43, 0.12);
+  padding: 0 0.95rem;
+  font: inherit;
+  background: rgba(255, 255, 255, 0.84);
+  color: #13202b;
+}
+
+.catalog-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.catalog-grid {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.catalog-empty {
+  display: grid;
+  gap: 1rem;
+  max-width: 36rem;
+  margin: 2rem auto 0;
+  padding: 2rem;
+  border-radius: 1.5rem;
+  border: 1px solid rgba(19, 32, 43, 0.08);
+  background: rgba(255, 255, 255, 0.72);
+  text-align: center;
+}
+
+.catalog-empty h2,
+.catalog-empty p {
+  margin: 0;
+}
+
+@media (min-width: 900px) {
+  .catalog-toolbar-head {
+    flex-direction: row;
+    align-items: end;
+    justify-content: space-between;
+  }
+
+  .catalog-toolbar-form {
+    grid-template-columns: minmax(0, 2fr) repeat(2, minmax(12rem, 1fr)) auto;
+    align-items: end;
+  }
+
+  .catalog-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
