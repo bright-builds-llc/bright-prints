@@ -161,10 +161,20 @@ describe("buildPrintDetailModel", () => {
     expect(detail.actionIntents.primary.kind).toBe("request-contact");
     expect(detail.availabilityPanel.label).toBe("Physical Print");
     expect(detail.fileSections.every((section) => section.status === "unavailable")).toBe(true);
+    expect(detail.fileSections.map((section) => section.description)).toEqual([
+      "No print-ready files are currently shared for this print.",
+      "No source files are currently shared for this print."
+    ]);
     expect(detail.trustFields).toContainEqual({
       href: null,
       isUnavailable: true,
       label: "License",
+      value: "Unavailable"
+    });
+    expect(detail.trustFields).toContainEqual({
+      href: null,
+      isUnavailable: true,
+      label: "File Provenance",
       value: "Unavailable"
     });
     expect(detail.guidance.material).toBe("PETG");
@@ -204,5 +214,27 @@ describe("buildPrintDetailModel", () => {
       label: "Source Files",
       value: "Unavailable"
     });
+  });
+
+  it("falls back to browsing when an open-source record has no files yet", () => {
+    // Arrange
+    const print = buildPrint({
+      files: [],
+      slug: "draft-open-source-print",
+      summary: "No files yet",
+      title: "Draft Open Source Print"
+    });
+    const content = buildContent([print]);
+
+    // Act
+    const detail = buildPrintDetailModel(content, print);
+
+    // Assert
+    expect(detail.actionIntents.primary).toEqual({
+      description: "Browse the catalog while this print's file access remains unavailable.",
+      kind: "browse-catalog",
+      label: "Browse More Prints"
+    });
+    expect(detail.actionIntents.secondary).toEqual([]);
   });
 });

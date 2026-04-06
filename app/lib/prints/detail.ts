@@ -82,15 +82,19 @@ type PrintDetailFileSectionKind = PrintDetailFileSection["kind"];
 
 const fileSectionDefinitions: Record<
   PrintDetailFileSectionKind,
-  Pick<PrintDetailFileSection, "description" | "title">
+  Pick<PrintDetailFileSection, "description" | "title"> & {
+    unavailableDescription: string;
+  }
 > = {
   "print-ready": {
     description: "Ready-to-make files intended for direct slicer or printer workflows.",
-    title: "Print-Ready Files"
+    title: "Print-Ready Files",
+    unavailableDescription: "No print-ready files are currently shared for this print."
   },
   source: {
     description: "Editable source assets for remixing, export, or reference work.",
-    title: "Source Files"
+    title: "Source Files",
+    unavailableDescription: "No source files are currently shared for this print."
   }
 };
 
@@ -155,7 +159,7 @@ function buildFileSection(
 
   if (items.length === 0) {
     return {
-      description: `${definition.description} Unavailable for this print.`,
+      description: definition.unavailableDescription,
       items,
       kind,
       status: "unavailable",
