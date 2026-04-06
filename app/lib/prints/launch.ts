@@ -203,7 +203,7 @@ function buildResolvedAction(
       return buildResolvedDownloadAction(action, maybePreferredFile);
     case "request-contact":
       return {
-        description: action.description,
+        description: `${action.description} Opens a prefilled GitHub issue for follow-up.`,
         external: true,
         href: buildPrintRequestContactHref(print),
         kind: "request-contact",

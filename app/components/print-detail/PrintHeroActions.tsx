@@ -28,7 +28,7 @@ function renderAction(
     <a
       className={className}
       href={action.href}
-      rel={action.external ? "noreferrer" : undefined}
+      rel={action.external ? "noopener noreferrer" : undefined}
       target={action.external ? "_blank" : undefined}
     >
       {action.label}

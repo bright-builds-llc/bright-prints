@@ -44,11 +44,12 @@ export function PrintFileSections({ sections }: PrintFileSectionsProps) {
                 {section.items.map((item) => (
                   <li key={`${section.kind}-${item.label}`} className="print-file-row">
                     <div>
-                      <strong>
+                      <div className="print-file-link-heading">
                         {item.href ? (
                           <a
+                            aria-label={`${item.label} (${item.isExternal ? "opens external destination" : "downloads from Bright Prints"})`}
                             href={item.href}
-                            rel={item.isExternal ? "noreferrer" : undefined}
+                            rel={item.isExternal ? "noopener noreferrer" : undefined}
                             target={item.isExternal ? "_blank" : undefined}
                           >
                             {item.label}
@@ -56,7 +57,10 @@ export function PrintFileSections({ sections }: PrintFileSectionsProps) {
                         ) : (
                           item.label
                         )}
-                      </strong>
+                        <span className="print-file-link-note">
+                          {item.isExternal ? "External destination" : "Direct download"}
+                        </span>
+                      </div>
                       <p>{item.purpose}</p>
                     </div>
                     <dl className="print-file-meta">
