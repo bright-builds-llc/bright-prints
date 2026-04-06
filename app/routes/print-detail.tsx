@@ -5,9 +5,13 @@ import itemDetailStyles from "./item-detail.css?url";
 
 import { DiscoveryBadge } from "~/components/discovery/DiscoveryBadge";
 import { DiscoveryCard } from "~/components/discovery/DiscoveryCard";
+import { PrintFileSections } from "~/components/print-detail/PrintFileSections";
+import { PrintHeroActions } from "~/components/print-detail/PrintHeroActions";
+import { PrintSpecsSection } from "~/components/print-detail/PrintSpecsSection";
+import { PrintTrustSection } from "~/components/print-detail/PrintTrustSection";
 import { findPrintBySlug } from "~/lib/content/public";
 import { loadPublicContent } from "~/lib/content/load.server";
-import { buildRelatedDiscoveryItems, buildDiscoveryItems, findDiscoveryItem } from "~/lib/discovery/model";
+import { buildPrintDetailModel } from "~/lib/prints/detail";
 
 export const links: Route.LinksFunction = () => [
   { rel: "stylesheet", href: itemDetailStyles }
@@ -22,25 +26,19 @@ export async function loader({ params }: Route.LoaderArgs) {
   }
 
   const maybePrint = findPrintBySlug(content, maybeSlug);
-  const items = buildDiscoveryItems(content);
-  const maybeItem = findDiscoveryItem(items, "print", maybeSlug);
 
-  if (!maybePrint || !maybeItem) {
+  if (!maybePrint) {
     throw new Response("Not Found", { status: 404 });
   }
 
-  return {
-    item: maybeItem,
-    print: maybePrint,
-    related: buildRelatedDiscoveryItems(items, maybeItem)
-  };
+  return buildPrintDetailModel(content, maybePrint);
 }
 
 export function meta({ data }: Route.MetaArgs) {
   return [
-    { title: data ? `${data.item.title} | Bright Prints` : "Print | Bright Prints" },
+    { title: data ? `${data.hero.title} | Bright Prints` : "Print | Bright Prints" },
     {
-      content: data?.item.summary ?? "Print detail entry page for Bright Prints.",
+      content: data?.hero.summary ?? "Print detail page for Bright Prints.",
       name: "description"
     }
   ];
@@ -48,63 +46,63 @@ export function meta({ data }: Route.MetaArgs) {
 
 export default function PrintDetail({ loaderData }: Route.ComponentProps) {
   return (
-    <main className="item-detail-page">
-      <section className="item-detail-shell">
-        <article className="item-detail-frame">
-          <div className="item-detail-poster">
-            <DiscoveryCard interactive={false} item={loaderData.item} variant="hero" />
+    <main className="print-detail-page">
+      <section className="print-detail-shell">
+        <p className="print-detail-breadcrumb">
+          <Link prefetch="intent" to="/catalog?type=prints">
+            Catalog
+          </Link>
+          <span>/</span>
+          <span>Print</span>
+        </p>
+
+        <article className="print-detail-hero">
+          <div className="print-detail-poster">
+            <DiscoveryCard interactive={false} item={loaderData.posterItem} variant="hero" />
           </div>
 
-          <div className="item-detail-copy">
+          <div className="print-detail-main">
             <div className="flex flex-wrap gap-2">
               <DiscoveryBadge label="Print" tone="accent" />
-              {loaderData.item.openSource ? (
+              {loaderData.posterItem.openSource ? (
                 <DiscoveryBadge label="Open Source" tone="ink" />
               ) : null}
-              {loaderData.item.availability !== "open-source" ? (
+              {loaderData.posterItem.availability !== "open-source" ? (
                 <DiscoveryBadge label="Physical Print" tone="warm" />
               ) : null}
             </div>
 
-            <h1>{loaderData.item.title}</h1>
-            <p>{loaderData.item.description}</p>
-            <p className="item-detail-kicker">
-              This is the first calm stop inside the object itself: enough to
-              justify the click, without spending the richer technical detail
-              that Phase 3 owns.
+            <h1>{loaderData.hero.title}</h1>
+            <p className="print-detail-summary">{loaderData.hero.summary}</p>
+            <p className="print-detail-description">{loaderData.hero.description}</p>
+            <p className="print-detail-kicker">
+              The page now starts with the next real decision: understand the offer,
+              choose the right file path, and keep trust close to the action.
             </p>
 
-            <dl className="item-detail-meta">
-              <div>
-                <dt>Creator</dt>
-                <dd>{loaderData.item.creatorName}</dd>
-              </div>
-              <div>
-                <dt>Published</dt>
-                <dd>{loaderData.item.publishedOn}</dd>
-              </div>
-              <div>
-                <dt>Categories</dt>
-                <dd>{loaderData.item.categories.join(", ")}</dd>
-              </div>
-            </dl>
-
-            <div className="item-detail-actions">
-              <Link className="home-primary-action" prefetch="intent" to="/catalog">
-                Back to Catalog
-              </Link>
-              <Link className="home-secondary-action" prefetch="intent" to="/catalog?type=prints">
-                Browse More Prints
-              </Link>
-            </div>
+            <PrintHeroActions
+              actionIntents={loaderData.actionIntents}
+              availabilityPanel={loaderData.availabilityPanel}
+            />
           </div>
         </article>
 
-        {loaderData.related.length > 0 ? (
-          <section className="item-detail-related">
+        <div className="print-detail-content">
+          <div className="print-detail-content-main">
+            <PrintFileSections sections={loaderData.fileSections} />
+            <PrintTrustSection fields={loaderData.trustFields} />
+          </div>
+
+          <div className="print-detail-content-side">
+            <PrintSpecsSection guidance={loaderData.guidance} hero={loaderData.hero} />
+          </div>
+        </div>
+
+        {loaderData.relatedItems.length > 0 ? (
+          <section className="print-detail-related">
             <p className="eyebrow">More to Explore</p>
-            <div className="item-detail-related-grid">
-              {loaderData.related.map((item) => (
+            <div className="print-detail-related-grid">
+              {loaderData.relatedItems.map((item) => (
                 <DiscoveryCard key={item.id} item={item} variant="feature" />
               ))}
             </div>

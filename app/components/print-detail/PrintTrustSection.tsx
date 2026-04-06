@@ -1,0 +1,34 @@
+import type { PrintDetailTrustField } from "~/lib/prints/detail";
+
+type PrintTrustSectionProps = {
+  fields: PrintDetailTrustField[];
+};
+
+export function PrintTrustSection({ fields }: PrintTrustSectionProps) {
+  return (
+    <section className="print-trust-section" aria-labelledby="print-trust-heading" id="print-trust">
+      <div className="print-section-head">
+        <p className="eyebrow">Trust</p>
+        <h2 id="print-trust-heading">Know what is here and what is not</h2>
+      </div>
+
+      <dl className="print-trust-grid">
+        {fields.map((field) => (
+          <div key={field.label} className="print-trust-card">
+            <dt>{field.label}</dt>
+            <dd>
+              {field.href ? (
+                <a href={field.href} rel="noreferrer" target="_blank">
+                  {field.value}
+                </a>
+              ) : (
+                field.value
+              )}
+            </dd>
+            {field.isUnavailable ? <p>Unavailable</p> : null}
+          </div>
+        ))}
+      </dl>
+    </section>
+  );
+}
