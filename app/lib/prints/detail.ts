@@ -26,11 +26,16 @@ export type PrintDetailAvailabilityPanel = {
 };
 
 export type PrintDetailFileItem = {
+  externalUrl: string | null;
   fileTypeLabel: string;
+  fileIndex: number;
+  href: string | null;
+  isExternal: boolean;
   kind: PrintFileRecord["kind"];
   label: string;
   purpose: string;
   provenanceLabel: string;
+  repoPath: string | null;
 };
 
 export type PrintDetailFileSection = {
@@ -140,13 +145,18 @@ function deriveFileTypeLabel(file: PrintFileRecord): string {
   return maybeExtension;
 }
 
-function mapFileToItem(file: PrintFileRecord): PrintDetailFileItem {
+function mapFileToItem(file: PrintFileRecord, fileIndex: number): PrintDetailFileItem {
   return {
+    externalUrl: file.externalUrl ?? null,
     fileTypeLabel: deriveFileTypeLabel(file),
+    fileIndex,
+    href: null,
+    isExternal: file.externalUrl !== undefined,
     kind: file.kind,
     label: file.label,
     purpose: file.purpose,
-    provenanceLabel: file.repoPath ? "Repo file" : "External"
+    provenanceLabel: file.repoPath ? "Repo file" : "External",
+    repoPath: file.repoPath ?? null
   };
 }
 
@@ -154,7 +164,9 @@ function buildFileSection(
   kind: PrintDetailFileSectionKind,
   files: PrintFileRecord[]
 ): PrintDetailFileSection {
-  const items = files.filter((file) => file.kind === kind).map(mapFileToItem);
+  const items = files.flatMap((file, fileIndex) =>
+    file.kind === kind ? [mapFileToItem(file, fileIndex)] : []
+  );
   const definition = fileSectionDefinitions[kind];
 
   if (items.length === 0) {

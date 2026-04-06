@@ -12,12 +12,13 @@ import { PrintTrustSection } from "~/components/print-detail/PrintTrustSection";
 import { findPrintBySlug } from "~/lib/content/public";
 import { loadPublicContent } from "~/lib/content/load.server";
 import { buildPrintDetailModel } from "~/lib/prints/detail";
+import { resolvePrintFileSections, resolvePrintHeroActions } from "~/lib/prints/launch";
 
 export const links: Route.LinksFunction = () => [
   { rel: "stylesheet", href: printDetailStyles }
 ];
 
-export async function loader({ params }: Route.LoaderArgs) {
+export async function loader({ params, request }: Route.LoaderArgs) {
   const content = await loadPublicContent();
   const maybeSlug = params.slug;
 
@@ -31,7 +32,22 @@ export async function loader({ params }: Route.LoaderArgs) {
     throw new Response("Not Found", { status: 404 });
   }
 
-  return buildPrintDetailModel(content, maybePrint);
+  const detail = buildPrintDetailModel(content, maybePrint);
+  const fileSections = resolvePrintFileSections({
+    fileSections: detail.fileSections,
+    slug: maybePrint.slug
+  });
+
+  return {
+    ...detail,
+    actionLinks: resolvePrintHeroActions({
+      actionIntents: detail.actionIntents,
+      fileSections,
+      print: maybePrint,
+      siteOrigin: new URL(request.url).origin
+    }),
+    fileSections
+  };
 }
 
 export function meta({ data }: Route.MetaArgs) {
@@ -81,7 +97,7 @@ export default function PrintDetail({ loaderData }: Route.ComponentProps) {
             </p>
 
             <PrintHeroActions
-              actionIntents={loaderData.actionIntents}
+              actions={loaderData.actionLinks}
               availabilityPanel={loaderData.availabilityPanel}
             />
           </div>

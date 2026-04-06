@@ -1,56 +1,43 @@
 import { Link } from "react-router";
 
-import type {
-  PrintDetailActionIntent,
-  PrintDetailAvailabilityPanel
-} from "~/lib/prints/detail";
+import type { PrintDetailAvailabilityPanel } from "~/lib/prints/detail";
+import type { ResolvedPrintActionGroup } from "~/lib/prints/launch";
 
 type PrintHeroActionsProps = {
-  actionIntents: {
-    primary: PrintDetailActionIntent;
-    secondary: PrintDetailActionIntent[];
-  };
+  actions: ResolvedPrintActionGroup;
   availabilityPanel: PrintDetailAvailabilityPanel;
 };
 
-function buildActionHref(action: PrintDetailActionIntent): string {
-  switch (action.kind) {
-    case "browse-catalog":
-      return "/catalog?type=prints";
-    case "download":
-      return action.label.includes("Source") ? "#source-files" : "#print-ready-files";
-    case "request-contact":
-      return "#print-trust";
-  }
-}
-
-function isRouteAction(action: PrintDetailActionIntent): boolean {
+function isRouteAction(action: ResolvedPrintActionGroup["primary"]): boolean {
   return action.kind === "browse-catalog";
 }
 
 function renderAction(
-  action: PrintDetailActionIntent,
+  action: ResolvedPrintActionGroup["primary"],
   className: "home-primary-action" | "home-secondary-action"
 ) {
-  const href = buildActionHref(action);
-
   if (isRouteAction(action)) {
     return (
-      <Link className={className} prefetch="intent" to={href}>
+      <Link className={className} prefetch="intent" to={action.href}>
         {action.label}
       </Link>
     );
   }
 
   return (
-    <a className={className} href={href}>
+    <a
+      className={className}
+      href={action.href}
+      rel={action.external ? "noreferrer" : undefined}
+      target={action.external ? "_blank" : undefined}
+    >
       {action.label}
     </a>
   );
 }
 
 export function PrintHeroActions({
-  actionIntents,
+  actions,
   availabilityPanel
 }: PrintHeroActionsProps) {
   return (
@@ -63,17 +50,18 @@ export function PrintHeroActions({
 
       <div className="print-action-stack">
         <div className="print-action-row">
-          {renderAction(actionIntents.primary, "home-primary-action")}
-          {actionIntents.secondary.map((action) => (
+          {renderAction(actions.primary, "home-primary-action")}
+          {actions.secondary.map((action) => (
             <div key={action.label}>{renderAction(action, "home-secondary-action")}</div>
           ))}
         </div>
 
         <div className="print-action-copy">
-          <p>{actionIntents.primary.description}</p>
-          {actionIntents.secondary.map((action) => (
+          <p>{actions.primary.description}</p>
+          {actions.secondary.map((action) => (
             <p key={action.label}>{action.description}</p>
           ))}
+          {actions.fallbackNote ? <p>{actions.fallbackNote}</p> : null}
         </div>
       </div>
     </section>

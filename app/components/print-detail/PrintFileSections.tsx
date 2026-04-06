@@ -44,7 +44,19 @@ export function PrintFileSections({ sections }: PrintFileSectionsProps) {
                 {section.items.map((item) => (
                   <li key={`${section.kind}-${item.label}`} className="print-file-row">
                     <div>
-                      <strong>{item.label}</strong>
+                      <strong>
+                        {item.href ? (
+                          <a
+                            href={item.href}
+                            rel={item.isExternal ? "noreferrer" : undefined}
+                            target={item.isExternal ? "_blank" : undefined}
+                          >
+                            {item.label}
+                          </a>
+                        ) : (
+                          item.label
+                        )}
+                      </strong>
                       <p>{item.purpose}</p>
                     </div>
                     <dl className="print-file-meta">
@@ -54,7 +66,10 @@ export function PrintFileSections({ sections }: PrintFileSectionsProps) {
                       </div>
                       <div>
                         <dt>Provenance</dt>
-                        <dd>{item.provenanceLabel}</dd>
+                        <dd>
+                          {item.provenanceLabel}
+                          {item.isExternal ? " destination" : ""}
+                        </dd>
                       </div>
                     </dl>
                   </li>
