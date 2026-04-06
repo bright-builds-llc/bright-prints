@@ -33,7 +33,10 @@ function assertRepoPrintFile(print: PrintRecord, fileIndex: number): RepoPrintFi
     );
   }
 
-  return maybeFile;
+  return {
+    ...maybeFile,
+    repoPath: maybeFile.repoPath
+  };
 }
 
 function buildDownloadName(file: RepoPrintFile): string {
