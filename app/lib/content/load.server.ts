@@ -13,7 +13,11 @@ import {
   type PrintRecord
 } from "~/lib/content/schema";
 
-const contentRoot = path.join(process.cwd(), "content");
+export const contentRoot = path.join(process.cwd(), "content");
+
+export function buildPrintContentDirectory(slug: string): string {
+  return path.join(contentRoot, "prints", slug);
+}
 
 async function readYamlFile<T>(filePath: string, parse: (value: unknown) => T): Promise<T> {
   const source = await readFile(filePath, "utf8");
