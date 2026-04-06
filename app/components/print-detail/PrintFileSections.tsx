@@ -21,10 +21,20 @@ export function PrintFileSections({ sections }: PrintFileSectionsProps) {
           <section
             key={section.kind}
             className="print-file-section-card"
+            data-status={section.status}
             id={section.kind === "print-ready" ? "print-ready-files" : "source-files"}
           >
             <div className="print-file-section-copy">
-              <p className="eyebrow">{section.status === "available" ? "Available" : "Unavailable"}</p>
+              <div className="print-file-status-row">
+                <p className="eyebrow">
+                  {section.status === "available" ? "Available" : "Unavailable"}
+                </p>
+                <span className="print-file-status-pill">
+                  {section.status === "available"
+                    ? `${section.items.length} file${section.items.length === 1 ? "" : "s"}`
+                    : "Unavailable"}
+                </span>
+              </div>
               <h3>{section.title}</h3>
               <p>{section.description}</p>
             </div>
@@ -37,7 +47,7 @@ export function PrintFileSections({ sections }: PrintFileSectionsProps) {
                       <strong>{item.label}</strong>
                       <p>{item.purpose}</p>
                     </div>
-                    <dl>
+                    <dl className="print-file-meta">
                       <div>
                         <dt>Type</dt>
                         <dd>{item.fileTypeLabel}</dd>
@@ -51,7 +61,10 @@ export function PrintFileSections({ sections }: PrintFileSectionsProps) {
                 ))}
               </ul>
             ) : (
-              <p className="print-file-empty">{section.description}</p>
+              <div className="print-file-empty">
+                <strong>{section.title} unavailable</strong>
+                <p>{section.description}</p>
+              </div>
             )}
           </section>
         ))}
