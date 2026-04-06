@@ -16,6 +16,17 @@ const slugSchema = z
   .regex(/^[a-z0-9-]+$/, "Slugs must use lowercase letters, numbers, and hyphens");
 
 const publicLinkSchema = z.string().url();
+const relativeRepoPathSchema = z
+  .string()
+  .min(1)
+  .refine(
+    (value) =>
+      !value.startsWith("/") &&
+      !value.startsWith("./") &&
+      !value.includes("..") &&
+      !value.includes("\\"),
+    "Repo paths must stay relative to the print directory"
+  );
 const publishedOnSchema = z
   .string()
   .regex(/^\d{4}-\d{2}-\d{2}$/, "Dates must use YYYY-MM-DD format");
@@ -42,11 +53,27 @@ export const creatorSchema = z.object({
     .default({})
 });
 
+export const printLicenseSchema = z.object({
+  name: z.string().min(1),
+  url: publicLinkSchema.optional()
+});
+
 export const printFileSchema = z.object({
   label: z.string().min(1),
   kind: z.enum(["source", "print-ready", "image"]),
-  repoPath: z.string().min(1).optional(),
+  purpose: z.string().min(1),
+  repoPath: relativeRepoPathSchema.optional(),
   externalUrl: publicLinkSchema.optional()
+}).superRefine((file, context) => {
+  const hasRepoPath = file.repoPath !== undefined;
+  const hasExternalUrl = file.externalUrl !== undefined;
+
+  if (hasRepoPath === hasExternalUrl) {
+    context.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "Print files must define exactly one of repoPath or externalUrl"
+    });
+  }
 });
 
 export const printSchema = z.object({
@@ -63,6 +90,7 @@ export const printSchema = z.object({
   categories: z.array(z.string().min(1)).default([]),
   discovery: discoveryMetaSchema,
   files: z.array(printFileSchema).default([]),
+  license: printLicenseSchema.optional(),
   printDetails: z
     .object({
       material: z.string().min(1).optional(),

@@ -8,6 +8,48 @@ import {
 import { creatorSchema, generatorSchema, printSchema } from "~/lib/content/schema";
 
 describe("content schema", () => {
+  it("accepts phase 3 print trust facts and print-local repo files", () => {
+    // Arrange
+    const print = {
+      availability: "open-source",
+      categories: ["desk"],
+      creatorSlug: "peter",
+      description: "Fixture-backed print",
+      discovery: {
+        accentTone: "slate",
+        catalogRank: 20,
+        eyebrow: "Desk Utility",
+        mark: "Cable Clip"
+      },
+      featured: true,
+      files: [
+        {
+          kind: "print-ready",
+          label: "Print-Ready 3MF",
+          purpose: "Ready for direct slicer import.",
+          repoPath: "files/cable-clip-ready.3mf"
+        }
+      ],
+      license: {
+        name: "CC BY 4.0",
+        url: "https://creativecommons.org/licenses/by/4.0/"
+      },
+      openSource: true,
+      publishedOn: "2026-03-18",
+      printDetails: { layerHeightMm: 0.2, material: "PETG", specialSteps: [] },
+      schemaVersion: 1,
+      slug: "cable-clip",
+      summary: "Fixture-backed print",
+      title: "Cable Clip"
+    };
+
+    // Act
+    const result = printSchema.safeParse(print);
+
+    // Assert
+    expect(result.success).toBe(true);
+  });
+
   it("rejects prints without a creator slug", () => {
     // Arrange
     const invalidPrint = {
@@ -21,6 +63,45 @@ describe("content schema", () => {
       slug: "missing-creator",
       summary: "Broken print",
       title: "Broken Print"
+    };
+
+    // Act
+    const result = printSchema.safeParse(invalidPrint);
+
+    // Assert
+    expect(result.success).toBe(false);
+  });
+
+  it("rejects print files when repoPath and externalUrl are both present", () => {
+    // Arrange
+    const invalidPrint = {
+      availability: "both",
+      categories: ["featured"],
+      creatorSlug: "peter",
+      description: "Broken file source",
+      discovery: {
+        accentTone: "verdigris",
+        catalogRank: 10,
+        eyebrow: "Open Source Print",
+        mark: "Sample"
+      },
+      featured: true,
+      files: [
+        {
+          externalUrl: "https://example.com/source.step",
+          kind: "source",
+          label: "Source Model",
+          purpose: "Editable source geometry.",
+          repoPath: "files/source.step"
+        }
+      ],
+      openSource: true,
+      publishedOn: "2026-04-01",
+      printDetails: { specialSteps: [] },
+      schemaVersion: 1,
+      slug: "broken-file-source",
+      summary: "Broken",
+      title: "Broken File Source"
     };
 
     // Act

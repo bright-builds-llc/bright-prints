@@ -9,7 +9,7 @@ description: >
   discovery catalog.
 featured: true
 availability: physical-print
-openSource: true
+openSource: false
 publishedOn: 2026-02-26
 categories:
   - signs
@@ -21,10 +21,7 @@ discovery:
   eyebrow: Studio Object
   featuredRank: 3
   mark: Desk Sign
-files:
-  - label: Source Model
-    kind: source
-    repoPath: models/stackable-desk-sign/source.step
+files: []
 printDetails:
   material: PLA
   layerHeightMm: 0.16

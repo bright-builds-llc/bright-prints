@@ -23,7 +23,11 @@ discovery:
 files:
   - label: Print-Ready 3MF
     kind: print-ready
-    repoPath: models/modular-cable-clip/modular-cable-clip.3mf
+    purpose: Ready for direct slicer import in the default orientation.
+    repoPath: files/modular-cable-clip-ready.3mf
+license:
+  name: CC BY 4.0
+  url: https://creativecommons.org/licenses/by/4.0/
 printDetails:
   material: PETG
   layerHeightMm: 0.2

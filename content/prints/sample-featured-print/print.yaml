@@ -20,9 +20,14 @@ discovery:
   featuredRank: 1
   mark: Sample Print
 files:
-  - label: Source Model
+  - label: Print-Ready 3MF
+    kind: print-ready
+    purpose: Ready for direct slicer import and quick print checks.
+    repoPath: files/sample-featured-print-ready.3mf
+  - label: Source Model STEP
     kind: source
-    repoPath: models/sample-featured-print/source.step
+    purpose: Editable source geometry for remixing or export.
+    externalUrl: https://example.com/bright-prints/sample-featured-print-source.step
 printDetails:
   material: PLA
   layerHeightMm: 0.2
