@@ -1,0 +1,296 @@
+.print-detail-page {
+  padding: 2rem;
+}
+
+.print-detail-shell {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.print-detail-breadcrumb {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0;
+  color: #475569;
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.print-detail-breadcrumb a {
+  text-decoration: none;
+}
+
+.print-detail-hero,
+.print-file-section-card,
+.print-trust-section,
+.print-specs-section,
+.print-detail-related {
+  border: 1px solid rgba(19, 32, 43, 0.08);
+  border-radius: 1.6rem;
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(16px);
+}
+
+.print-detail-hero {
+  display: grid;
+  gap: 1.25rem;
+  padding: 1.25rem;
+}
+
+.print-detail-poster {
+  min-height: 20rem;
+}
+
+.print-detail-main {
+  display: grid;
+  gap: 1rem;
+}
+
+.print-detail-main h1 {
+  margin: 0;
+  font-size: clamp(2.5rem, 6vw, 4.6rem);
+  line-height: 0.94;
+  letter-spacing: -0.04em;
+}
+
+.print-detail-summary,
+.print-detail-description,
+.print-detail-kicker,
+.print-section-head p,
+.print-availability-panel p,
+.print-action-copy p,
+.print-file-section-copy p,
+.print-file-row p,
+.print-file-empty p,
+.print-trust-card p,
+.print-special-steps li {
+  margin: 0;
+  color: #475569;
+  line-height: 1.7;
+}
+
+.print-detail-summary {
+  max-width: 36rem;
+  font-size: 1.1rem;
+  color: #334155;
+}
+
+.print-detail-description,
+.print-detail-kicker {
+  max-width: 38rem;
+}
+
+.print-detail-kicker {
+  font-size: 0.98rem;
+}
+
+.print-hero-actions {
+  display: grid;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.print-availability-panel {
+  display: grid;
+  gap: 0.45rem;
+  padding: 1rem 1.1rem;
+  border-radius: 1.2rem;
+  background: rgba(19, 32, 43, 0.05);
+}
+
+.print-availability-panel h2,
+.print-section-head h2,
+.print-file-section-copy h3,
+.print-special-steps h3 {
+  margin: 0;
+  font-size: clamp(1.25rem, 3vw, 1.8rem);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+}
+
+.print-action-stack {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.print-action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.print-action-copy {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.print-detail-content,
+.print-file-section-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.print-detail-content-main,
+.print-detail-content-side,
+.print-file-sections {
+  display: grid;
+  gap: 1rem;
+}
+
+.print-file-section-card,
+.print-trust-section,
+.print-specs-section,
+.print-detail-related {
+  padding: 1.25rem;
+}
+
+.print-section-head {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.print-file-status-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+
+.print-file-status-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2rem;
+  padding: 0 0.8rem;
+  border-radius: 999px;
+  background: rgba(19, 32, 43, 0.08);
+  color: #334155;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.print-file-section-card[data-status="unavailable"] .print-file-status-pill {
+  background: rgba(148, 163, 184, 0.18);
+  color: #64748b;
+}
+
+.print-file-list {
+  display: grid;
+  gap: 0.9rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.print-file-row {
+  display: grid;
+  gap: 0.9rem;
+  padding: 1rem;
+  border-radius: 1.15rem;
+  background: rgba(19, 32, 43, 0.04);
+}
+
+.print-file-row strong {
+  display: block;
+  margin-bottom: 0.2rem;
+}
+
+.print-file-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+}
+
+.print-file-meta div,
+.print-spec-grid div {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.print-file-meta dt,
+.print-trust-card dt,
+.print-spec-grid dt {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #176b5f;
+}
+
+.print-file-meta dd,
+.print-trust-card dd,
+.print-spec-grid dd {
+  margin: 0;
+}
+
+.print-file-empty {
+  display: grid;
+  gap: 0.35rem;
+  padding: 1rem;
+  border-radius: 1.15rem;
+  background: rgba(19, 32, 43, 0.04);
+}
+
+.print-trust-grid,
+.print-spec-grid,
+.print-detail-related-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.print-trust-card {
+  display: grid;
+  gap: 0.35rem;
+  padding: 1rem;
+  border-radius: 1.15rem;
+  background: rgba(19, 32, 43, 0.04);
+}
+
+.print-trust-card a {
+  text-decoration: none;
+}
+
+.print-special-steps {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1.2rem;
+  padding: 1rem;
+  border-radius: 1.15rem;
+  background: rgba(23, 107, 95, 0.08);
+}
+
+.print-special-steps ul {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+@media (min-width: 960px) {
+  .print-detail-page {
+    padding: 2.5rem;
+  }
+
+  .print-detail-hero {
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    align-items: start;
+    padding: 1.5rem;
+  }
+
+  .print-detail-content {
+    grid-template-columns: minmax(0, 1.2fr) minmax(18rem, 0.8fr);
+    align-items: start;
+  }
+
+  .print-file-section-grid,
+  .print-trust-grid,
+  .print-spec-grid,
+  .print-detail-related-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 
 import type { Route } from "./+types/print-detail";
-import itemDetailStyles from "./item-detail.css?url";
+import printDetailStyles from "./print-detail.css?url";
 
 import { DiscoveryBadge } from "~/components/discovery/DiscoveryBadge";
 import { DiscoveryCard } from "~/components/discovery/DiscoveryCard";
@@ -14,7 +14,7 @@ import { loadPublicContent } from "~/lib/content/load.server";
 import { buildPrintDetailModel } from "~/lib/prints/detail";
 
 export const links: Route.LinksFunction = () => [
-  { rel: "stylesheet", href: itemDetailStyles }
+  { rel: "stylesheet", href: printDetailStyles }
 ];
 
 export async function loader({ params }: Route.LoaderArgs) {
