@@ -93,11 +93,11 @@
 | DISC-02 | Phase 2 | Complete |
 | DISC-03 | Phase 2 | Complete |
 | PRNT-01 | Phase 2 | Complete |
-| PRNT-02 | Phase 3 | Pending |
-| PRNT-03 | Phase 3 | Pending |
-| FILE-01 | Phase 3 | Pending |
-| FILE-02 | Phase 3 | Pending |
-| FILE-03 | Phase 3 | Pending |
+| PRNT-02 | Phase 3 | Complete |
+| PRNT-03 | Phase 3 | Complete |
+| FILE-01 | Phase 3 | Complete |
+| FILE-02 | Phase 3 | Complete |
+| FILE-03 | Phase 3 | Complete |
 | GEN-01 | Phase 5 | Pending |
 | GEN-02 | Phase 5 | Pending |
 | GEN-03 | Phase 5 | Pending |
@@ -107,7 +107,7 @@
 | ACCT-02 | Phase 4 | Pending |
 | ACCT-03 | Phase 4 | Pending |
 | ACCT-04 | Phase 4 | Pending |
-| COMM-01 | Phase 3 | Pending |
+| COMM-01 | Phase 3 | Complete |
 | COMM-02 | Phase 6 | Pending |
 | COMM-03 | Phase 6 | Pending |
 | COMM-04 | Phase 6 | Pending |
