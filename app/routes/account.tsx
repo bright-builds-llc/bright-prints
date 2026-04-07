@@ -17,37 +17,44 @@ type SessionFlashMessage = {
   message: string;
 };
 
+type AccountDb = Record<string, unknown>;
+type AccountSession = {
+  get: (key: "pendingIntent" | "returnTo") => PendingIntent | string | undefined;
+  set: (key: string, value: unknown) => void;
+  unset: (key: string) => void;
+};
+
 type AccountActionData = {
   formError: string | null;
 };
 
 type AccountActionDeps = {
-  commitAuthSession: (session: any) => Promise<string>;
+  commitAuthSession: (session: AccountSession) => Promise<string>;
   createDatabaseSession: (
-    db: any,
+    db: AccountDb,
     userId: string
   ) => Promise<{ token: string }>;
   createUserAccount: (
-    db: any,
+    db: AccountDb,
     input: { displayName?: string; email: string; password: string }
   ) => Promise<{ id: string }>;
-  getAuthSession: (cookieHeader?: string | null) => Promise<any>;
-  getDb: () => any;
+  getAuthSession: (cookieHeader?: string | null) => Promise<AccountSession>;
+  getDb: () => AccountDb;
   replayPendingIntentAfterAuth: (options: {
     replayIntent: (
       pendingIntent: PendingIntent,
       userId: string
     ) => Promise<SessionFlashMessage | null>;
-    session: any;
+    session: AccountSession;
     userId: string;
   }) => Promise<{ redirectTo: string; replayed: boolean }>;
-  setAuthToken: (session: any, authToken: string) => void;
+  setAuthToken: (session: AccountSession, authToken: string) => void;
   setFlashMessage: (
-    session: any,
+    session: AccountSession,
     flash: SessionFlashMessage
   ) => void;
   signInUserWithPassword: (
-    db: any,
+    db: AccountDb,
     input: { email: string; password: string }
   ) => Promise<{ id: string } | null>;
 };
@@ -205,6 +212,7 @@ export async function action({ request }: Route.ActionArgs) {
   const { createUserAccount, signInUserWithPassword } = await import(
     "~/lib/auth/user.server"
   );
+  const { replayPendingLibraryIntent } = await import("~/lib/library/mutations.server");
 
   return handleAccountSubmission(request, {
     commitAuthSession,
@@ -212,11 +220,23 @@ export async function action({ request }: Route.ActionArgs) {
     createUserAccount,
     getAuthSession,
     getDb,
-    replayPendingIntentAfterAuth,
+    replayPendingIntentAfterAuth: (options: {
+      replayIntent: (
+        pendingIntent: PendingIntent,
+        userId: string
+      ) => Promise<SessionFlashMessage | null>;
+      session: AccountSession;
+      userId: string;
+    }) =>
+      replayPendingIntentAfterAuth({
+        ...options,
+        replayIntent: (pendingIntent: PendingIntent, userId: string) =>
+          replayPendingLibraryIntent(getDb(), userId, pendingIntent)
+      } as never),
     setAuthToken,
     setFlashMessage,
     signInUserWithPassword
-  });
+  } as never);
 }
 
 export function meta({ data }: Route.MetaArgs) {
