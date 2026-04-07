@@ -1,0 +1,64 @@
+.account-page {
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+  padding: 2rem;
+}
+
+.account-card {
+  width: min(34rem, 100%);
+  display: grid;
+  gap: 1.25rem;
+  border: 1px solid rgba(19, 32, 43, 0.08);
+  border-radius: 1.6rem;
+  background: rgba(255, 255, 255, 0.74);
+  box-shadow: 0 24px 80px rgba(19, 32, 43, 0.1);
+  backdrop-filter: blur(14px);
+  padding: 1.5rem;
+}
+
+.account-card h1,
+.account-card p {
+  margin: 0;
+}
+
+.account-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.account-field {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.account-field label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #176b5f;
+}
+
+.account-field input {
+  min-height: 3rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(19, 32, 43, 0.12);
+  padding: 0 0.95rem;
+  font: inherit;
+  background: rgba(255, 255, 255, 0.84);
+  color: #13202b;
+}
+
+.account-error {
+  color: #991b1b;
+}
+
+.account-switch {
+  color: #475569;
+}
+
+.account-switch a {
+  font-weight: 700;
+  text-decoration: none;
+}

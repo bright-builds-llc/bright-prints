@@ -1,4 +1,5 @@
 import {
+  data,
   isRouteErrorResponse,
   Links,
   Meta,
@@ -11,6 +12,37 @@ import type { Route } from "./+types/root";
 import "./app.css";
 
 export const links: Route.LinksFunction = () => [];
+
+export async function loader({ request }: Route.LoaderArgs) {
+  const {
+    commitAuthSession,
+    getAuthSession,
+    getCurrentUserFromRequest,
+    getFlashMessage
+  } = await import("~/lib/auth/session.server");
+  const session = await getAuthSession(request.headers.get("Cookie"));
+  const maybeCurrentUser = await getCurrentUserFromRequest(request);
+  const maybeFlash = getFlashMessage(session);
+
+  if (maybeFlash) {
+    return data(
+      {
+        currentUser: maybeCurrentUser,
+        flash: maybeFlash
+      },
+      {
+        headers: {
+          "Set-Cookie": await commitAuthSession(session)
+        }
+      }
+    );
+  }
+
+  return {
+    currentUser: maybeCurrentUser,
+    flash: null
+  };
+}
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
