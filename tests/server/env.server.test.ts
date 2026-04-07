@@ -36,4 +36,18 @@ describe("parseServerEnv", () => {
     // Act / Assert
     expect(() => parseServerEnv(input)).toThrow();
   });
+
+  it("accepts a sufficiently long session secret", () => {
+    // Arrange
+    const input = {
+      NODE_ENV: "development",
+      SESSION_SECRET: "a-very-long-session-secret"
+    };
+
+    // Act
+    const result = parseServerEnv(input);
+
+    // Assert
+    expect(result.SESSION_SECRET).toBe("a-very-long-session-secret");
+  });
 });
