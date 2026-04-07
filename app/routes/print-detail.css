@@ -101,6 +101,58 @@
   margin-top: 0.5rem;
 }
 
+.print-save-actions {
+  display: grid;
+  gap: 0.9rem;
+  margin-top: 0.5rem;
+  padding: 1rem 1.1rem;
+  border-radius: 1.2rem;
+  background: rgba(19, 32, 43, 0.05);
+}
+
+.print-save-actions-head h2 {
+  margin: 0;
+  font-size: 1.4rem;
+  line-height: 1.05;
+}
+
+.print-save-actions-main,
+.print-save-actions-side {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.print-save-list-form {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.print-save-list-form label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #176b5f;
+}
+
+.print-save-list-form input {
+  min-height: 3rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(19, 32, 43, 0.12);
+  padding: 0 0.95rem;
+  font: inherit;
+  background: rgba(255, 255, 255, 0.84);
+  color: #13202b;
+}
+
+.print-save-list-grid {
+  display: grid;
+  gap: 0.7rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
 .print-availability-panel {
   display: grid;
   gap: 0.45rem;

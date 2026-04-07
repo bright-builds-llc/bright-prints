@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 
 import type { DiscoveryItem } from "~/lib/discovery/model";
+import { SavePrintButton } from "~/components/library/SavePrintButton";
 
 import { DiscoveryBadge } from "./DiscoveryBadge";
 
@@ -103,6 +104,19 @@ export function DiscoveryCard({
 
   if (!interactive) {
     return <article className={wrapperClassName}>{body}</article>;
+  }
+
+  if (variant === "catalog" && item.kind === "print") {
+    return (
+      <article className={wrapperClassName}>
+        <div className="flex justify-end">
+          <SavePrintButton printSlug={item.slug} returnTo={item.href} />
+        </div>
+        <Link className="grid gap-4 no-underline" prefetch="intent" to={item.href}>
+          {body}
+        </Link>
+      </article>
+    );
   }
 
   return (

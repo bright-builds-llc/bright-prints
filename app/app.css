@@ -43,6 +43,24 @@ a {
   font-family: inherit;
 }
 
+.library-save-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.4rem;
+  border-radius: 999px;
+  padding: 0 0.9rem;
+  border: 1px solid rgba(19, 32, 43, 0.12);
+  color: #13202b;
+  background: rgba(255, 255, 255, 0.78);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-family: inherit;
+}
+
 .home-primary-action {
   background: #145e56;
   color: #f8fafc;

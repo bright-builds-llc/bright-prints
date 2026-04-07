@@ -7,6 +7,7 @@ import { DiscoveryBadge } from "~/components/discovery/DiscoveryBadge";
 import { DiscoveryCard } from "~/components/discovery/DiscoveryCard";
 import { PrintFileSections } from "~/components/print-detail/PrintFileSections";
 import { PrintHeroActions } from "~/components/print-detail/PrintHeroActions";
+import { PrintSaveActions } from "~/components/print-detail/PrintSaveActions";
 import { PrintSpecsSection } from "~/components/print-detail/PrintSpecsSection";
 import { PrintTrustSection } from "~/components/print-detail/PrintTrustSection";
 import { findPrintBySlug } from "~/lib/content/public";
@@ -20,6 +21,8 @@ export const links: Route.LinksFunction = () => [
 
 export async function loader({ params, request }: Route.LoaderArgs) {
   const content = await loadPublicContent();
+  const { getCurrentUserFromRequest } = await import("~/lib/auth/session.server");
+  const maybeCurrentUser = await getCurrentUserFromRequest(request);
   const maybeSlug = params.slug;
 
   if (!maybeSlug) {
@@ -37,6 +40,15 @@ export async function loader({ params, request }: Route.LoaderArgs) {
     fileSections: detail.fileSections,
     slug: maybePrint.slug
   });
+  let customLists: Array<{ containsPrint: boolean; id: string; name: string }> = [];
+
+  if (maybeCurrentUser) {
+    const { getCustomListSummaries } = await import(
+      "~/lib/library/lists.server"
+    );
+    const { getDb } = await import("~/lib/db.server");
+    customLists = await getCustomListSummaries(getDb(), maybeCurrentUser.id, maybePrint.slug);
+  }
 
   return {
     ...detail,
@@ -46,6 +58,7 @@ export async function loader({ params, request }: Route.LoaderArgs) {
       print: maybePrint,
       siteOrigin: new URL(request.url).origin
     }),
+    customLists,
     fileSections
   };
 }
@@ -99,6 +112,11 @@ export default function PrintDetail({ loaderData }: Route.ComponentProps) {
             <PrintHeroActions
               actions={loaderData.actionLinks}
               availabilityPanel={loaderData.availabilityPanel}
+            />
+            <PrintSaveActions
+              lists={loaderData.customLists}
+              printSlug={loaderData.print.slug}
+              returnTo={`/prints/${loaderData.print.slug}`}
             />
           </div>
         </article>

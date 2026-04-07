@@ -23,10 +23,22 @@ export async function loader({ request }: Route.LoaderArgs) {
   const session = await getAuthSession(request.headers.get("Cookie"));
   const maybeCurrentUser = await getCurrentUserFromRequest(request);
   const maybeFlash = getFlashMessage(session);
+  let bookmarkedPrintSlugs: string[] = [];
+
+  if (maybeCurrentUser) {
+    try {
+      const { getBookmarkedPrintSlugs } = await import("~/lib/library/lists.server");
+      const { getDb } = await import("~/lib/db.server");
+      bookmarkedPrintSlugs = await getBookmarkedPrintSlugs(getDb(), maybeCurrentUser.id);
+    } catch {
+      bookmarkedPrintSlugs = [];
+    }
+  }
 
   if (maybeFlash) {
     return data(
       {
+        bookmarkedPrintSlugs,
         currentUser: maybeCurrentUser,
         flash: maybeFlash
       },
@@ -39,6 +51,7 @@ export async function loader({ request }: Route.LoaderArgs) {
   }
 
   return {
+    bookmarkedPrintSlugs,
     currentUser: maybeCurrentUser,
     flash: null
   };
