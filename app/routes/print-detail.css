@@ -33,6 +33,7 @@
 
 .print-detail-hero,
 .print-file-section-card,
+.print-commerce-interest,
 .print-trust-section,
 .print-specs-section,
 .print-detail-related {
@@ -201,6 +202,7 @@
 }
 
 .print-file-section-card,
+.print-commerce-interest,
 .print-trust-section,
 .print-specs-section,
 .print-detail-related {
@@ -214,6 +216,63 @@
 .print-section-head {
   display: grid;
   gap: 0.45rem;
+}
+
+.print-commerce-interest {
+  display: grid;
+  gap: 1rem;
+}
+
+.print-commerce-status {
+  font-weight: 600;
+  color: #334155;
+}
+
+.print-commerce-form {
+  display: grid;
+  gap: 0.9rem;
+  padding: 1rem;
+  border-radius: 1.2rem;
+  background: rgba(19, 32, 43, 0.04);
+}
+
+.print-commerce-field {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.print-commerce-field label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #176b5f;
+}
+
+.print-commerce-field input,
+.print-commerce-field textarea {
+  width: 100%;
+  border: 1px solid rgba(19, 32, 43, 0.12);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.84);
+  color: #13202b;
+  font: inherit;
+}
+
+.print-commerce-field input {
+  min-height: 3rem;
+  padding: 0 0.95rem;
+}
+
+.print-commerce-field textarea {
+  min-height: 7rem;
+  padding: 0.8rem 0.95rem;
+}
+
+.print-commerce-field input:focus-visible,
+.print-commerce-field textarea:focus-visible {
+  outline: 2px solid #176b5f;
+  outline-offset: 3px;
 }
 
 .print-file-status-row {

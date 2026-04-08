@@ -5,6 +5,7 @@ import printDetailStyles from "./print-detail.css?url";
 
 import { DiscoveryBadge } from "~/components/discovery/DiscoveryBadge";
 import { DiscoveryCard } from "~/components/discovery/DiscoveryCard";
+import { PrintCommerceInterest } from "~/components/print-detail/PrintCommerceInterest";
 import { PrintFileSections } from "~/components/print-detail/PrintFileSections";
 import { PrintHeroActions } from "~/components/print-detail/PrintHeroActions";
 import { PrintSaveActions } from "~/components/print-detail/PrintSaveActions";
@@ -123,6 +124,13 @@ export default function PrintDetail({ loaderData }: Route.ComponentProps) {
 
         <div className="print-detail-content">
           <div className="print-detail-content-main">
+            {loaderData.print.commerce ? (
+              <PrintCommerceInterest
+                leadTime={loaderData.print.commerce.leadTime ?? null}
+                notes={loaderData.print.commerce.notes ?? null}
+                printSlug={loaderData.print.slug}
+              />
+            ) : null}
             <PrintFileSections sections={loaderData.fileSections} />
             <PrintTrustSection fields={loaderData.trustFields} />
           </div>

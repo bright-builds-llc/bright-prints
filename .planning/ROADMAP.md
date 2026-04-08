@@ -8,15 +8,15 @@
 
 **7 phases** | **28 v1 requirements mapped** | **All v1 requirements covered ✓**
 
-| # | Phase | Goal | Requirements | Success Criteria |
-|---|---|---|---|---|
-| 1 | Foundation and Content Model | Establish the deployable, privacy-safe, repo-backed foundation for the product. | ADMN-01, ADMN-03, PLAT-01, PLAT-03 | 3 |
-| 2 | Discovery and Catalog Experience | Ship the first polished journey from home page to searchable catalog to print entry. | DISC-01, DISC-02, DISC-03, PRNT-01 | 3 |
-| 3 | Print Detail, Files, and Launch Actions | Deliver useful print detail pages with trustworthy file access and print-state clarity. | PRNT-02, PRNT-03, FILE-01, FILE-02, FILE-03, COMM-01 | 3 |
-| 4 | Accounts and Personal Library | Give users accounts, bookmarks, and custom lists. | ACCT-01, ACCT-02, ACCT-03, ACCT-04 | 3 |
-| 5 | Generator Platform MVP | Ship the sign-generator foundation and the first reusable generator authoring path. | GEN-01, GEN-02, GEN-03, GEN-04, GEN-05, ADMN-02 | 4 |
-| 6 | Commerce Groundwork and Product Ops | Add physical-print interest flows, commerce metadata, and visible product provenance without overcommitting to full checkout breadth. | COMM-02, COMM-03, COMM-04, PLAT-02 | 3 |
-| 7 | Refactor to Use Bun Instead of Pnpm | Replace pnpm-based scripts and workflow assumptions with bun across development and delivery surfaces. | TBD | TBD |
+| #   | Phase                                   | Goal                                                                                                                                  | Requirements                                         | Success Criteria |
+| --- | --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- | ---------------- |
+| 1   | Foundation and Content Model            | Establish the deployable, privacy-safe, repo-backed foundation for the product.                                                       | ADMN-01, ADMN-03, PLAT-01, PLAT-03                   | 3                |
+| 2   | Discovery and Catalog Experience        | Ship the first polished journey from home page to searchable catalog to print entry.                                                  | DISC-01, DISC-02, DISC-03, PRNT-01                   | 3                |
+| 3   | Print Detail, Files, and Launch Actions | Deliver useful print detail pages with trustworthy file access and print-state clarity.                                               | PRNT-02, PRNT-03, FILE-01, FILE-02, FILE-03, COMM-01 | 3                |
+| 4   | Accounts and Personal Library           | Give users accounts, bookmarks, and custom lists.                                                                                     | ACCT-01, ACCT-02, ACCT-03, ACCT-04                   | 3                |
+| 5   | Generator Platform MVP                  | Ship the sign-generator foundation and the first reusable generator authoring path.                                                   | GEN-01, GEN-02, GEN-03, GEN-04, GEN-05, ADMN-02      | 4                |
+| 6   | Commerce Groundwork and Product Ops     | Add physical-print interest flows, commerce metadata, and visible product provenance without overcommitting to full checkout breadth. | COMM-02, COMM-03, COMM-04, PLAT-02                   | 3                |
+| 7   | Refactor to Use Bun Instead of Pnpm     | Replace pnpm-based scripts and workflow assumptions with bun across development and delivery surfaces.                                | TBD                                                  | TBD              |
 
 ## Phase Details
 
@@ -97,6 +97,8 @@
 
 **Requirements:** COMM-02, COMM-03, COMM-04, PLAT-02
 
+**Status:** Complete (verified 2026-04-08)
+
 **Success criteria:**
 
 1. Eligible print detail pages let visitors submit request or interest for physical-print fulfillment.
@@ -129,4 +131,6 @@
 **Status:** Complete (verified 2026-04-08)
 
 ---
-*Roadmap created: 2026-04-04 after project initialization*
+
+_Roadmap created: 2026-04-04 after project initialization_
+_Last updated: 2026-04-08 after Phase 6 verification_

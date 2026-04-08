@@ -21,6 +21,12 @@ describe("content schema", () => {
         eyebrow: "Desk Utility",
         mark: "Cable Clip"
       },
+      commerce: {
+        interestMode: "interest",
+        leadTime: "5-7 business days",
+        provider: "shopify",
+        reference: "cable-clip"
+      },
       featured: true,
       files: [
         {

@@ -50,4 +50,22 @@ describe("parseServerEnv", () => {
     // Assert
     expect(result.SESSION_SECRET).toBe("a-very-long-session-secret");
   });
+
+  it("accepts optional build provenance fields", () => {
+    // Arrange
+    const input = {
+      BUILD_COMMIT: "abc1234",
+      BUILD_TIMESTAMP: "2026-04-08T15:58:58Z",
+      BUILD_VERSION: "v1.0.0+phase6",
+      NODE_ENV: "production"
+    };
+
+    // Act
+    const result = parseServerEnv(input);
+
+    // Assert
+    expect(result.BUILD_COMMIT).toBe("abc1234");
+    expect(result.BUILD_TIMESTAMP).toBe("2026-04-08T15:58:58Z");
+    expect(result.BUILD_VERSION).toBe("v1.0.0+phase6");
+  });
 });

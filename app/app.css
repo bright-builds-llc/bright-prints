@@ -64,6 +64,42 @@ a {
   letter-spacing: 0.04em;
 }
 
+.build-provenance {
+  display: grid;
+  gap: 1rem;
+  padding: 1.25rem;
+  border-top: 1px solid rgba(19, 32, 43, 0.08);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.build-provenance-grid {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.build-provenance-grid dt {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #176b5f;
+}
+
+.build-provenance-grid dd {
+  margin: 0.25rem 0 0;
+}
+
+@media (min-width: 960px) {
+  .build-provenance {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+  }
+
+  .build-provenance-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
 .library-save-button {
   display: inline-flex;
   align-items: center;

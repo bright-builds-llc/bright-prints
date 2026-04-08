@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "react-router dev",
     "build": "react-router build",
-    "start": "node ./node_modules/@react-router/serve/dist/cli.js ./build/server/index.js",
+    "start": "NODE_ENV=production node ./node_modules/@react-router/serve/dist/cli.js ./build/server/index.js",
     "typecheck": "react-router typegen && tsc",
     "lint": "eslint .",
     "test": "vitest run --passWithNoTests",

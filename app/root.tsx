@@ -11,6 +11,7 @@ import {
 
 import type { Route } from "./+types/root";
 import "./app.css";
+import { BuildProvenance } from "~/components/chrome/BuildProvenance";
 
 export const links: Route.LinksFunction = () => [];
 
@@ -19,12 +20,14 @@ export async function loader({ request }: Route.LoaderArgs) {
     commitAuthSession,
     getAuthSession,
     getCurrentUserFromRequest,
-    getFlashMessage
+    getFlashMessage,
   } = await import("~/lib/auth/session.server");
   let bookmarkedPrintSlugs: string[] = [];
   let maybeCurrentUser = null;
   let maybeFlash = null;
   let maybeSession = null;
+  const { BUILD_COMMIT, BUILD_TIMESTAMP, BUILD_VERSION } =
+    await import("~/lib/env.server").then((module) => module.getServerEnv());
 
   try {
     maybeSession = await getAuthSession(request.headers.get("Cookie"));
@@ -38,9 +41,13 @@ export async function loader({ request }: Route.LoaderArgs) {
 
   if (maybeCurrentUser) {
     try {
-      const { getBookmarkedPrintSlugs } = await import("~/lib/library/lists.server");
+      const { getBookmarkedPrintSlugs } =
+        await import("~/lib/library/lists.server");
       const { getDb } = await import("~/lib/db.server");
-      bookmarkedPrintSlugs = await getBookmarkedPrintSlugs(getDb(), maybeCurrentUser.id);
+      bookmarkedPrintSlugs = await getBookmarkedPrintSlugs(
+        getDb(),
+        maybeCurrentUser.id,
+      );
     } catch {
       bookmarkedPrintSlugs = [];
     }
@@ -50,21 +57,31 @@ export async function loader({ request }: Route.LoaderArgs) {
     return data(
       {
         bookmarkedPrintSlugs,
+        buildInfo: {
+          commit: BUILD_COMMIT ?? null,
+          timestamp: BUILD_TIMESTAMP ?? null,
+          version: BUILD_VERSION ?? null,
+        },
         currentUser: maybeCurrentUser,
-        flash: maybeFlash
+        flash: maybeFlash,
       },
       {
         headers: {
-          "Set-Cookie": await commitAuthSession(maybeSession)
-        }
-      }
+          "Set-Cookie": await commitAuthSession(maybeSession),
+        },
+      },
     );
   }
 
   return {
     bookmarkedPrintSlugs,
+    buildInfo: {
+      commit: BUILD_COMMIT ?? null,
+      timestamp: BUILD_TIMESTAMP ?? null,
+      version: BUILD_VERSION ?? null,
+    },
     currentUser: maybeCurrentUser,
-    flash: null
+    flash: null,
   };
 }
 
@@ -104,6 +121,7 @@ export default function App() {
         </div>
       ) : null}
       <Outlet />
+      <BuildProvenance buildInfo={loaderData.buildInfo} />
     </>
   );
 }

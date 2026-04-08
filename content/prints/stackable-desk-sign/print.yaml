@@ -22,6 +22,12 @@ discovery:
   featuredRank: 3
   mark: Desk Sign
 files: []
+commerce:
+  interestMode: interest
+  provider: direct
+  reference: stackable-desk-sign
+  leadTime: 7-10 business days
+  notes: Use the request flow to ask about a finished physical version.
 printDetails:
   material: PLA
   layerHeightMm: 0.16

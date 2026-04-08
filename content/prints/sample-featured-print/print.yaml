@@ -28,6 +28,12 @@ files:
     kind: source
     purpose: Editable source geometry for remixing or export.
     externalUrl: https://example.com/bright-prints/sample-featured-print-source.step
+commerce:
+  interestMode: interest
+  provider: shopify
+  reference: sample-featured-print
+  leadTime: 5-7 business days
+  notes: Interest requests stay lightweight until live checkout is introduced.
 printDetails:
   material: PLA
   layerHeightMm: 0.2

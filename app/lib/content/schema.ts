@@ -58,6 +58,14 @@ export const printLicenseSchema = z.object({
   url: publicLinkSchema.optional()
 });
 
+export const printCommerceSchema = z.object({
+  interestMode: z.literal("interest").default("interest"),
+  leadTime: z.string().min(1).optional(),
+  notes: z.string().min(1).optional(),
+  provider: z.enum(["direct", "shopify"]).optional(),
+  reference: z.string().min(1).optional()
+});
+
 export const printFileSchema = z.object({
   label: z.string().min(1),
   kind: z.enum(["source", "print-ready", "image"]),
@@ -91,6 +99,7 @@ export const printSchema = z.object({
   discovery: discoveryMetaSchema,
   files: z.array(printFileSchema).default([]),
   license: printLicenseSchema.optional(),
+  commerce: printCommerceSchema.optional(),
   printDetails: z
     .object({
       material: z.string().min(1).optional(),
@@ -142,3 +151,4 @@ export type GeneratorParameterRecord = z.infer<typeof generatorParameterSchema>;
 export type DiscoveryTone = z.infer<typeof discoveryToneSchema>;
 export type AvailabilityState = z.infer<typeof availabilitySchema>;
 export type SignGeneratorDefinition = z.infer<typeof signGeneratorDefinitionSchema>;
+export type PrintCommerce = z.infer<typeof printCommerceSchema>;

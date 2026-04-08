@@ -78,51 +78,53 @@
 
 ## Out of Scope
 
-| Feature | Reason |
-|---------|--------|
-| Full public multi-creator marketplace in v1 | Architecture should prepare for it, but first release stays focused on Peter-owned content |
-| Universal live checkout coverage for every requested provider in v1 | Provider capabilities vary too much; groundwork comes first |
-| Arbitrary user-authored CAD scripting in the browser | Too risky and too hard to validate for an early generator platform |
-| Native mobile apps | Web-first product with responsive UX is the current priority |
+| Feature                                                             | Reason                                                                                     |
+| ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| Full public multi-creator marketplace in v1                         | Architecture should prepare for it, but first release stays focused on Peter-owned content |
+| Universal live checkout coverage for every requested provider in v1 | Provider capabilities vary too much; groundwork comes first                                |
+| Arbitrary user-authored CAD scripting in the browser                | Too risky and too hard to validate for an early generator platform                         |
+| Native mobile apps                                                  | Web-first product with responsive UX is the current priority                               |
 
 ## Traceability
 
-| Requirement | Phase | Status |
-|-------------|-------|--------|
-| DISC-01 | Phase 2 | Complete |
-| DISC-02 | Phase 2 | Complete |
-| DISC-03 | Phase 2 | Complete |
-| PRNT-01 | Phase 2 | Complete |
-| PRNT-02 | Phase 3 | Complete |
-| PRNT-03 | Phase 3 | Complete |
-| FILE-01 | Phase 3 | Complete |
-| FILE-02 | Phase 3 | Complete |
-| FILE-03 | Phase 3 | Complete |
-| GEN-01 | Phase 5 | Complete |
-| GEN-02 | Phase 5 | Complete |
-| GEN-03 | Phase 5 | Complete |
-| GEN-04 | Phase 5 | Complete |
-| GEN-05 | Phase 5 | Complete |
-| ACCT-01 | Phase 4 | Complete |
-| ACCT-02 | Phase 4 | Complete |
-| ACCT-03 | Phase 4 | Complete |
-| ACCT-04 | Phase 4 | Complete |
-| COMM-01 | Phase 3 | Complete |
-| COMM-02 | Phase 6 | Pending |
-| COMM-03 | Phase 6 | Pending |
-| COMM-04 | Phase 6 | Pending |
-| ADMN-01 | Phase 1 | Complete |
-| ADMN-02 | Phase 5 | Complete |
-| ADMN-03 | Phase 1 | Complete |
-| PLAT-01 | Phase 1 | Complete |
-| PLAT-02 | Phase 6 | Pending |
-| PLAT-03 | Phase 1 | Complete |
+| Requirement | Phase   | Status   |
+| ----------- | ------- | -------- |
+| DISC-01     | Phase 2 | Complete |
+| DISC-02     | Phase 2 | Complete |
+| DISC-03     | Phase 2 | Complete |
+| PRNT-01     | Phase 2 | Complete |
+| PRNT-02     | Phase 3 | Complete |
+| PRNT-03     | Phase 3 | Complete |
+| FILE-01     | Phase 3 | Complete |
+| FILE-02     | Phase 3 | Complete |
+| FILE-03     | Phase 3 | Complete |
+| GEN-01      | Phase 5 | Complete |
+| GEN-02      | Phase 5 | Complete |
+| GEN-03      | Phase 5 | Complete |
+| GEN-04      | Phase 5 | Complete |
+| GEN-05      | Phase 5 | Complete |
+| ACCT-01     | Phase 4 | Complete |
+| ACCT-02     | Phase 4 | Complete |
+| ACCT-03     | Phase 4 | Complete |
+| ACCT-04     | Phase 4 | Complete |
+| COMM-01     | Phase 3 | Complete |
+| COMM-02     | Phase 6 | Complete |
+| COMM-03     | Phase 6 | Complete |
+| COMM-04     | Phase 6 | Complete |
+| ADMN-01     | Phase 1 | Complete |
+| ADMN-02     | Phase 5 | Complete |
+| ADMN-03     | Phase 1 | Complete |
+| PLAT-01     | Phase 1 | Complete |
+| PLAT-02     | Phase 6 | Complete |
+| PLAT-03     | Phase 1 | Complete |
 
 **Coverage:**
+
 - v1 requirements: 28 total
 - Mapped to phases: 28
 - Unmapped: 0
 
 ---
-*Requirements defined: 2026-04-04*
-*Last updated: 2026-04-04 after initialization*
+
+_Requirements defined: 2026-04-04_
+_Last updated: 2026-04-08 after Phase 6 verification_
