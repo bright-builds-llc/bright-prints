@@ -1,26 +1,26 @@
-FROM node:20-alpine AS base
-ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable
+FROM oven/bun:1.3.9-alpine AS base
 WORKDIR /app
 
 FROM base AS development-dependencies-env
-COPY package.json pnpm-lock.yaml ./
-RUN pnpm install --frozen-lockfile
+COPY package.json bun.lock ./
+RUN bun install --frozen-lockfile
 
 FROM base AS build-env
 COPY . .
 COPY --from=development-dependencies-env /app/node_modules /app/node_modules
-RUN pnpm build
+RUN bunx prisma generate && bun run build
 
 FROM base AS production-dependencies-env
-COPY package.json pnpm-lock.yaml ./
-RUN pnpm install --frozen-lockfile --prod
+COPY package.json bun.lock ./
+RUN bun install --frozen-lockfile --production
 
-FROM base
+FROM node:20-alpine
+WORKDIR /app
 ENV NODE_ENV=production
-COPY package.json pnpm-lock.yaml ./
+COPY package.json bun.lock ./
 COPY --from=production-dependencies-env /app/node_modules /app/node_modules
+COPY --from=build-env /app/node_modules/.prisma /app/node_modules/.prisma
 COPY --from=build-env /app/build /app/build
+COPY content /app/content
 COPY public /app/public
-CMD ["pnpm", "start"]
+CMD ["node", "./node_modules/@react-router/serve/dist/cli.js", "./build/server/index.js"]

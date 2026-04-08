@@ -1,13 +1,16 @@
 import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "@prisma/client";
+import prismaClientModule from "@prisma/client";
+import type { PrismaClient as PrismaClientType } from "@prisma/client";
 
 import { getServerEnv } from "~/lib/env.server";
 
+const { PrismaClient } = prismaClientModule;
+
 declare global {
-  var __brightPrintsPrisma: PrismaClient | undefined;
+  var __brightPrintsPrisma: PrismaClientType | undefined;
 }
 
-export function getDb(): PrismaClient {
+export function getDb(): PrismaClientType {
   const { DATABASE_URL: maybeDatabaseUrl } = getServerEnv();
 
   if (!maybeDatabaseUrl) {

@@ -14,17 +14,17 @@ Bright Prints is an open-source hybrid 3D print portfolio and shopping website b
 ## Local Development
 
 ```bash
-pnpm install
-pnpm dev
+bun install
+bun dev
 ```
 
 ## Quality Checks
 
 ```bash
-pnpm lint
-pnpm typecheck
-pnpm test
-pnpm build
+bun lint
+bun typecheck
+bun test
+bun build
 ```
 
 ## Railway Deployment
