@@ -48,6 +48,10 @@ export function buildCreatorMap(content: PublicContentIndex): Map<string, Creato
   return new Map(content.creators.map((creator) => [creator.slug, creator]));
 }
 
+export function buildPrintMap(content: PublicContentIndex): Map<string, PrintRecord> {
+  return new Map(content.prints.map((print) => [print.slug, print]));
+}
+
 export function findPrintBySlug(
   content: PublicContentIndex,
   slug: string
