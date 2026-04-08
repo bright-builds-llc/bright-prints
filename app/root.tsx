@@ -6,6 +6,7 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLoaderData,
 } from "react-router";
 
 import type { Route } from "./+types/root";
@@ -76,7 +77,25 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  const loaderData = useLoaderData<typeof loader>();
+
+  return (
+    <>
+      {loaderData.currentUser ? (
+        <nav className="app-utility-nav">
+          <a className="home-secondary-action" href="/library">
+            Your Library
+          </a>
+        </nav>
+      ) : null}
+      {loaderData.flash ? (
+        <div className="app-flash" aria-live="polite">
+          {loaderData.flash.message}
+        </div>
+      ) : null}
+      <Outlet />
+    </>
+  );
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
