@@ -6,7 +6,7 @@
 
 ## Summary
 
-**6 phases** | **28 v1 requirements mapped** | **All v1 requirements covered ✓**
+**7 phases** | **28 v1 requirements mapped** | **All v1 requirements covered ✓**
 
 | # | Phase | Goal | Requirements | Success Criteria |
 |---|---|---|---|---|
@@ -16,6 +16,7 @@
 | 4 | Accounts and Personal Library | Give users accounts, bookmarks, and custom lists. | ACCT-01, ACCT-02, ACCT-03, ACCT-04 | 3 |
 | 5 | Generator Platform MVP | Ship the sign-generator foundation and the first reusable generator authoring path. | GEN-01, GEN-02, GEN-03, GEN-04, GEN-05, ADMN-02 | 4 |
 | 6 | Commerce Groundwork and Product Ops | Add physical-print interest flows, commerce metadata, and visible product provenance without overcommitting to full checkout breadth. | COMM-02, COMM-03, COMM-04, PLAT-02 | 3 |
+| 7 | Refactor to Use Bun Instead of Pnpm | Replace pnpm-based scripts and workflow assumptions with bun across development and delivery surfaces. | TBD | TBD |
 
 ## Phase Details
 
@@ -117,6 +118,15 @@
 4. **Accounts before generators** because library state and user identity become reusable for saved generator outputs and future creator flows.
 5. **Generators before real commerce depth** because the generator/download experience is the declared differentiator.
 6. **Commerce groundwork last in v1** because provider complexity is real, and the app should not let checkout breadth dominate the product’s strongest value.
+7. **Tooling migration after the current product scope** because package-manager refactoring is operational work that should follow the core user-facing milestone instead of destabilizing it mid-build.
+
+### Phase 7: Refactor to Use Bun Instead of Pnpm
+
+**Goal:** Replace pnpm-based scripts and workflow assumptions with bun across development and delivery surfaces while preserving app behavior.
+
+**Requirements:** Operational phase — no REQUIREMENTS.md mapping
+
+**Status:** Complete (verified 2026-04-08)
 
 ---
 *Roadmap created: 2026-04-04 after project initialization*

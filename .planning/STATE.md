@@ -1,7 +1,7 @@
 # Project State
 
 **Last updated:** 2026-04-08
-**Status:** Phase 5 complete
+**Status:** Phase 7 complete
 
 ## Project Reference
 
@@ -28,6 +28,8 @@ See: `.planning/PROJECT.md` (updated 2026-04-04)
 - `phases/04-accounts-and-personal-library/04-VERIFICATION.md`: created
 - `phases/05-generator-platform-mvp/`: context, research, plans, summaries, and verification created
 - `phases/05-generator-platform-mvp/05-VERIFICATION.md`: created
+- `phases/07-refactor-to-use-bun-instead-of-pnpm/`: context, research, plan, and verification created
+- `phases/07-refactor-to-use-bun-instead-of-pnpm/07-VERIFICATION.md`: created
 
 ## Roadmap Status
 
@@ -37,6 +39,13 @@ See: `.planning/PROJECT.md` (updated 2026-04-04)
 - Phase 4 — Accounts and Personal Library: Complete
 - Phase 5 — Generator Platform MVP: Complete
 - Phase 6 — Commerce Groundwork and Product Ops: Not started
+- Phase 7 — Refactor to Use Bun Instead of Pnpm: Complete
+
+## Accumulated Context
+
+### Roadmap Evolution
+
+- Phase 7 added: refactor to use bun instead of pnpm
 
 ## Notes
 
@@ -53,7 +62,9 @@ See: `.planning/PROJECT.md` (updated 2026-04-04)
 - Phase 4 verification passed without gaps after live auth/library review against a disposable local Postgres.
 - Phase 5 introduced a schema-driven `sign-v1` generator definition, client-side sign mesh generation, real `.3mf` packaging, and a production generator route that stays reachable without auth env.
 - Phase 5 verification passed without gaps through tests, build output, and a live route probe.
+- Phase 7 replaced pnpm-specific workflow assumptions with Bun across the lockfile, package metadata, docs, and Docker build/install surfaces while preserving Node runtime for the final server process.
+- Phase 7 verification passed through Bun-native local checks plus a successful Bun-built Docker container probe.
 - Next recommended command: `$gsd-discuss-phase 6`
 
 ---
-*State updated: 2026-04-08 after Phase 5 verification*
+*State updated: 2026-04-08 after Phase 7 verification*
