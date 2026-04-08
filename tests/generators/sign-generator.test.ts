@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import JSZip from "jszip";
 
 import {
   buildGeneratedSignArtifact,
@@ -134,6 +135,8 @@ describe("sign generator helpers", () => {
       generator: signGenerator,
       values
     });
+    const archive = await JSZip.loadAsync(artifact.objectUrl ? await (await fetch(artifact.objectUrl)).arrayBuffer() : new ArrayBuffer(0));
+    const modelXml = await archive.file("3D/3dmodel.model")?.async("string");
 
     // Assert
     expect(preview.glyphRects.length).toBeGreaterThan(0);
@@ -141,5 +144,9 @@ describe("sign generator helpers", () => {
     expect(artifact.metadata.outputFormat).toBe("3mf");
     expect(artifact.metadata.vertexCount).toBeGreaterThan(0);
     expect(artifact.metadata.triangleCount).toBeGreaterThan(0);
+    expect(archive.file("[Content_Types].xml")).toBeTruthy();
+    expect(archive.file("_rels/.rels")).toBeTruthy();
+    expect(modelXml).toContain("BrightPrints:generator");
+    URL.revokeObjectURL(artifact.objectUrl);
   });
 });
