@@ -38,6 +38,18 @@ export function SavePrintButton({ printSlug, returnTo }: SavePrintButtonProps) {
       : isSaved
         ? "Saved to Bookmarks"
         : "Save to Bookmarks";
+  const statusMessage =
+    fetcher.state !== "idle"
+      ? currentUser
+        ? isSaved
+          ? "Updating bookmark state."
+          : "Saving to Bookmarks."
+        : "Opening sign-in to continue saving."
+      : fetcher.data?.printSlug === printSlug
+        ? fetcher.data.saved
+          ? "Saved to Bookmarks."
+          : "Removed from Bookmarks."
+        : null;
 
   return (
     <fetcher.Form action="/actions/save-print" method="post">
@@ -51,6 +63,9 @@ export function SavePrintButton({ printSlug, returnTo }: SavePrintButtonProps) {
       >
         {buttonLabel}
       </button>
+      <span aria-live="polite" className="library-status-text">
+        {statusMessage ?? ""}
+      </span>
     </fetcher.Form>
   );
 }
