@@ -21,10 +21,20 @@ export async function loader({ request }: Route.LoaderArgs) {
     getCurrentUserFromRequest,
     getFlashMessage
   } = await import("~/lib/auth/session.server");
-  const session = await getAuthSession(request.headers.get("Cookie"));
-  const maybeCurrentUser = await getCurrentUserFromRequest(request);
-  const maybeFlash = getFlashMessage(session);
   let bookmarkedPrintSlugs: string[] = [];
+  let maybeCurrentUser = null;
+  let maybeFlash = null;
+  let maybeSession = null;
+
+  try {
+    maybeSession = await getAuthSession(request.headers.get("Cookie"));
+    maybeCurrentUser = await getCurrentUserFromRequest(request);
+    maybeFlash = getFlashMessage(maybeSession);
+  } catch {
+    maybeSession = null;
+    maybeCurrentUser = null;
+    maybeFlash = null;
+  }
 
   if (maybeCurrentUser) {
     try {
@@ -36,7 +46,7 @@ export async function loader({ request }: Route.LoaderArgs) {
     }
   }
 
-  if (maybeFlash) {
+  if (maybeFlash && maybeSession) {
     return data(
       {
         bookmarkedPrintSlugs,
@@ -45,7 +55,7 @@ export async function loader({ request }: Route.LoaderArgs) {
       },
       {
         headers: {
-          "Set-Cookie": await commitAuthSession(session)
+          "Set-Cookie": await commitAuthSession(maybeSession)
         }
       }
     );
