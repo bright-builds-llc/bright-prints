@@ -68,6 +68,16 @@
   background: rgba(19, 32, 43, 0.05);
 }
 
+.library-sidebar-link:focus-visible,
+.library-list-form input:focus-visible,
+.library-list-form button:focus-visible,
+.library-empty-state a:focus-visible,
+.library-grid-actions button:focus-visible,
+.library-grid-actions a:focus-visible {
+  outline: 2px solid #176b5f;
+  outline-offset: 3px;
+}
+
 .library-sidebar-link-active {
   background: #13202b;
   color: #f8fafc;
@@ -99,6 +109,13 @@
 .library-grid-card {
   display: grid;
   gap: 1rem;
+}
+
+.library-status-text {
+  display: block;
+  min-height: 1.2rem;
+  color: #145e56;
+  font-size: 0.82rem;
 }
 
 @media (min-width: 960px) {

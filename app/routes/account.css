@@ -50,6 +50,12 @@
   color: #13202b;
 }
 
+.account-field input:focus-visible,
+.account-switch a:focus-visible {
+  outline: 2px solid #176b5f;
+  outline-offset: 3px;
+}
+
 .account-error {
   color: #991b1b;
 }
@@ -61,4 +67,10 @@
 .account-switch a {
   font-weight: 700;
   text-decoration: none;
+}
+
+@media (min-width: 960px) {
+  .account-card {
+    padding: 2rem;
+  }
 }
