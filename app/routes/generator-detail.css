@@ -1,0 +1,149 @@
+.generator-page {
+  display: grid;
+  gap: 1.5rem;
+  padding: 2rem;
+}
+
+.generator-shell,
+.generator-hero,
+.generator-form-shell,
+.generator-preview-shell,
+.generator-artifact-shell,
+.generator-related {
+  border: 1px solid rgba(19, 32, 43, 0.08);
+  border-radius: 1.6rem;
+  background: rgba(255, 255, 255, 0.74);
+  backdrop-filter: blur(14px);
+}
+
+.generator-shell,
+.generator-hero,
+.generator-form-shell,
+.generator-preview-shell,
+.generator-artifact-shell,
+.generator-related {
+  padding: 1.25rem;
+}
+
+.generator-shell {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.generator-shell h1,
+.generator-section-head h2,
+.generator-hero-copy h2 {
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  line-height: 0.96;
+  letter-spacing: -0.03em;
+}
+
+.generator-shell p,
+.generator-section-head p,
+.generator-hero-copy p,
+.generator-status-message,
+.generator-field-note,
+.generator-error-message {
+  margin: 0;
+  color: #475569;
+  line-height: 1.7;
+}
+
+.generator-hero,
+.generator-layout,
+.generator-form-grid,
+.generator-metadata-grid,
+.generator-related-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.generator-layout-main,
+.generator-layout-side {
+  display: grid;
+  gap: 1rem;
+}
+
+.generator-field {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.generator-field label,
+.generator-metadata-grid dt {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #176b5f;
+}
+
+.generator-field input {
+  min-height: 3rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(19, 32, 43, 0.12);
+  padding: 0 0.95rem;
+  font: inherit;
+  background: rgba(255, 255, 255, 0.84);
+  color: #13202b;
+}
+
+.generator-field input:focus-visible,
+.generator-form-actions button:focus-visible,
+.generator-preview-svg:focus-visible,
+.generator-artifact-card a:focus-visible {
+  outline: 2px solid #176b5f;
+  outline-offset: 3px;
+}
+
+.generator-error-message {
+  color: #991b1b;
+}
+
+.generator-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.generator-preview-svg {
+  width: 100%;
+  height: auto;
+  border-radius: 1.2rem;
+  background: linear-gradient(180deg, rgba(20, 94, 86, 0.08), rgba(255, 255, 255, 0.9));
+}
+
+.generator-artifact-card {
+  display: grid;
+  gap: 1rem;
+}
+
+.generator-metadata-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.generator-metadata-grid dd {
+  margin: 0;
+}
+
+@media (min-width: 960px) {
+  .generator-page {
+    padding: 2.5rem;
+  }
+
+  .generator-hero {
+    grid-template-columns: minmax(0, 1fr) minmax(20rem, 0.9fr);
+    align-items: start;
+  }
+
+  .generator-layout {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    align-items: start;
+  }
+
+  .generator-form-grid,
+  .generator-related-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
