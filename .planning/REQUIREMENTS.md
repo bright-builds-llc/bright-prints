@@ -103,10 +103,10 @@
 | GEN-03 | Phase 5 | Pending |
 | GEN-04 | Phase 5 | Pending |
 | GEN-05 | Phase 5 | Pending |
-| ACCT-01 | Phase 4 | Pending |
-| ACCT-02 | Phase 4 | Pending |
-| ACCT-03 | Phase 4 | Pending |
-| ACCT-04 | Phase 4 | Pending |
+| ACCT-01 | Phase 4 | Complete |
+| ACCT-02 | Phase 4 | Complete |
+| ACCT-03 | Phase 4 | Complete |
+| ACCT-04 | Phase 4 | Complete |
 | COMM-01 | Phase 3 | Complete |
 | COMM-02 | Phase 6 | Pending |
 | COMM-03 | Phase 6 | Pending |

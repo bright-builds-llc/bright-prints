@@ -67,6 +67,8 @@
 
 **Requirements:** ACCT-01, ACCT-02, ACCT-03, ACCT-04
 
+**Status:** Complete (verified 2026-04-08)
+
 **Success criteria:**
 
 1. Visitors can create an account and sign in.
