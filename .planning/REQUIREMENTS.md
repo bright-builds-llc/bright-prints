@@ -98,11 +98,11 @@
 | FILE-01 | Phase 3 | Complete |
 | FILE-02 | Phase 3 | Complete |
 | FILE-03 | Phase 3 | Complete |
-| GEN-01 | Phase 5 | Pending |
-| GEN-02 | Phase 5 | Pending |
-| GEN-03 | Phase 5 | Pending |
-| GEN-04 | Phase 5 | Pending |
-| GEN-05 | Phase 5 | Pending |
+| GEN-01 | Phase 5 | Complete |
+| GEN-02 | Phase 5 | Complete |
+| GEN-03 | Phase 5 | Complete |
+| GEN-04 | Phase 5 | Complete |
+| GEN-05 | Phase 5 | Complete |
 | ACCT-01 | Phase 4 | Complete |
 | ACCT-02 | Phase 4 | Complete |
 | ACCT-03 | Phase 4 | Complete |
@@ -112,7 +112,7 @@
 | COMM-03 | Phase 6 | Pending |
 | COMM-04 | Phase 6 | Pending |
 | ADMN-01 | Phase 1 | Complete |
-| ADMN-02 | Phase 5 | Pending |
+| ADMN-02 | Phase 5 | Complete |
 | ADMN-03 | Phase 1 | Complete |
 | PLAT-01 | Phase 1 | Complete |
 | PLAT-02 | Phase 6 | Pending |

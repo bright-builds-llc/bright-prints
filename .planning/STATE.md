@@ -1,14 +1,14 @@
 # Project State
 
 **Last updated:** 2026-04-08
-**Status:** Phase 4 complete
+**Status:** Phase 5 complete
 
 ## Project Reference
 
 See: `.planning/PROJECT.md` (updated 2026-04-04)
 
 **Core value:** Users can quickly discover beautiful 3D prints and generate or download the right printable files with a sleek, trustworthy, accessible experience.
-**Current focus:** Phase 5 — Generator Platform MVP
+**Current focus:** Phase 6 — Commerce Groundwork and Product Ops
 
 ## Artifact Status
 
@@ -26,6 +26,8 @@ See: `.planning/PROJECT.md` (updated 2026-04-04)
 - `phases/03-print-detail-files-and-launch-actions/03-VERIFICATION.md`: created
 - `phases/04-accounts-and-personal-library/`: context, research, plans, summaries, and verification created
 - `phases/04-accounts-and-personal-library/04-VERIFICATION.md`: created
+- `phases/05-generator-platform-mvp/`: context, research, plans, summaries, and verification created
+- `phases/05-generator-platform-mvp/05-VERIFICATION.md`: created
 
 ## Roadmap Status
 
@@ -33,7 +35,7 @@ See: `.planning/PROJECT.md` (updated 2026-04-04)
 - Phase 2 — Discovery and Catalog Experience: Complete
 - Phase 3 — Print Detail, Files, and Launch Actions: Complete
 - Phase 4 — Accounts and Personal Library: Complete
-- Phase 5 — Generator Platform MVP: Not started
+- Phase 5 — Generator Platform MVP: Complete
 - Phase 6 — Commerce Groundwork and Product Ops: Not started
 
 ## Notes
@@ -49,7 +51,9 @@ See: `.planning/PROJECT.md` (updated 2026-04-04)
 - Phase 3 verification passed without gaps after human review approval.
 - Phase 4 introduced app-owned email/password auth, DB-backed sessions, resumable save and list actions, and a bookmarks-first personal library derived from public content.
 - Phase 4 verification passed without gaps after live auth/library review against a disposable local Postgres.
-- Next recommended command: `$gsd-discuss-phase 5`
+- Phase 5 introduced a schema-driven `sign-v1` generator definition, client-side sign mesh generation, real `.3mf` packaging, and a production generator route that stays reachable without auth env.
+- Phase 5 verification passed without gaps through tests, build output, and a live route probe.
+- Next recommended command: `$gsd-discuss-phase 6`
 
 ---
-*State updated: 2026-04-08 after Phase 4 verification*
+*State updated: 2026-04-08 after Phase 5 verification*

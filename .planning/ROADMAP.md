@@ -81,6 +81,8 @@
 
 **Requirements:** GEN-01, GEN-02, GEN-03, GEN-04, GEN-05, ADMN-02
 
+**Status:** Complete (verified 2026-04-08)
+
 **Success criteria:**
 
 1. Visitors can open a generator page, understand the generator, and configure a sign with bounded parameters.
