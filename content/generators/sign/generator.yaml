@@ -16,6 +16,11 @@ discovery:
   eyebrow: Generator
   featuredRank: 1
   mark: Text to 3MF
+definition:
+  type: sign-v1
+  paddingMm: 4
+  previewCellInsetRatio: 0.12
+  textReliefMm: 0.8
 outputFormat: 3mf
 publishedOn: 2026-03-29
 parameters:

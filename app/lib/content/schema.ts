@@ -112,6 +112,13 @@ export const generatorParameterSchema = z.object({
   maxLength: z.number().int().positive().optional()
 });
 
+export const signGeneratorDefinitionSchema = z.object({
+  type: z.literal("sign-v1"),
+  paddingMm: z.number().nonnegative().default(4),
+  previewCellInsetRatio: z.number().positive().max(1).default(0.12),
+  textReliefMm: z.number().positive().default(0.8)
+});
+
 export const generatorSchema = z.object({
   schemaVersion,
   slug: slugSchema,
@@ -122,6 +129,7 @@ export const generatorSchema = z.object({
   availability: availabilitySchema.default("open-source"),
   categories: z.array(z.string().min(1)).default([]),
   discovery: discoveryMetaSchema,
+  definition: signGeneratorDefinitionSchema,
   outputFormat: z.literal("3mf"),
   publishedOn: publishedOnSchema,
   parameters: z.array(generatorParameterSchema).min(1)
@@ -130,5 +138,7 @@ export const generatorSchema = z.object({
 export type CreatorRecord = z.infer<typeof creatorSchema>;
 export type PrintRecord = z.infer<typeof printSchema>;
 export type GeneratorRecord = z.infer<typeof generatorSchema>;
+export type GeneratorParameterRecord = z.infer<typeof generatorParameterSchema>;
 export type DiscoveryTone = z.infer<typeof discoveryToneSchema>;
 export type AvailabilityState = z.infer<typeof availabilitySchema>;
+export type SignGeneratorDefinition = z.infer<typeof signGeneratorDefinitionSchema>;

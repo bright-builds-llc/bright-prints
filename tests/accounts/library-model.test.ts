@@ -18,6 +18,12 @@ function buildContent() {
         availability: "open-source",
         categories: ["customizable"],
         creatorSlug: "peter",
+        definition: {
+          paddingMm: 4,
+          previewCellInsetRatio: 0.12,
+          textReliefMm: 0.8,
+          type: "sign-v1"
+        },
         description: "Generator",
         discovery: {
           accentTone: "copper",
