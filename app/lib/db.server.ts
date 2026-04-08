@@ -1,3 +1,4 @@
+import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "@prisma/client";
 
 import { getServerEnv } from "~/lib/env.server";
@@ -14,7 +15,9 @@ export function getDb(): PrismaClient {
   }
 
   if (!globalThis.__brightPrintsPrisma) {
-    globalThis.__brightPrintsPrisma = new PrismaClient();
+    globalThis.__brightPrintsPrisma = new PrismaClient({
+      adapter: new PrismaPg({ connectionString: maybeDatabaseUrl })
+    });
   }
 
   return globalThis.__brightPrintsPrisma;
