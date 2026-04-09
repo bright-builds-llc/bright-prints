@@ -1,4 +1,4 @@
-import { ShimmerText } from "~/components/ui/ShimmerText";
+import { AnimatedShinyText } from "~/components/ui/animated-shiny-text";
 
 type SectionHeadingProps = {
   body: string;
@@ -10,7 +10,9 @@ export function SectionHeading({ body, eyebrow, title }: SectionHeadingProps) {
   return (
     <header className="section-heading-shell">
       <p className="eyebrow">
-        <ShimmerText tone="accent">{eyebrow}</ShimmerText>
+        <AnimatedShinyText className="text-[0.8rem] font-bold tracking-[0.14em] uppercase text-accent">
+          {eyebrow}
+        </AnimatedShinyText>
       </p>
       <h2 className="text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">
         {title}

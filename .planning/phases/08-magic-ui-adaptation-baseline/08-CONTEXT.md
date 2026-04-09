@@ -14,16 +14,16 @@ Establish shared React/Tailwind 4 UI primitives adapted from selected Magic UI p
 
 ## Locked Decisions
 
-- Magic UI is an adaptation source, not a governing framework or dependency migration target.
-- Shared primitives should be repo-owned components and styles under Bright Prints conventions.
+- Magic UI should be installed through its official shadcn-style source workflow, not treated as a package-only dependency.
+- Bright Prints may keep thin usage-site adaptations, but it should avoid bespoke reimplementation of the same Magic UI effects.
 - This phase should prove the primitive layer on low-risk shared surfaces and at least one generator-adjacent surface.
 - This phase should not fully consume the later cross-surface polish scope that belongs to Phase 11.
 
 ## Selected Pattern Direction
 
-- **Magic Card / spotlight surface** for elevated panels and callouts
-- **Animated shiny text** for small editorial emphasis
-- **Shimmer button treatment** for primary and secondary calls to action
+- **Animated Shiny Text** for small editorial emphasis
+- **Shimmer Button** for real button actions where the official component fits naturally
+- **Magic Card** installed and available for later surface expansion once it is needed on stable SSR-safe surfaces
 
 ## Safe Adoption Surfaces
 
@@ -41,6 +41,6 @@ Establish shared React/Tailwind 4 UI primitives adapted from selected Magic UI p
 
 ## Verification Expectations
 
-- shared primitives exist in repo-owned React components
+- installed Magic UI components exist in the repo through the official source-install path
 - adapted motion respects reduced-motion and does not block keyboard use
 - generator and discovery surfaces remain readable and task-focused after the baseline refresh

@@ -1,6 +1,6 @@
-import type { DiscoveryItem } from "~/lib/discovery/model";
+import { Link } from "react-router";
 
-import { ShimmerActionLink } from "~/components/ui/ShimmerAction";
+import type { DiscoveryItem } from "~/lib/discovery/model";
 
 import { DiscoveryCard } from "./DiscoveryCard";
 import { SectionHeading } from "./SectionHeading";
@@ -25,9 +25,9 @@ export function HomeFeaturedSection({ items }: HomeFeaturedSectionProps) {
       </div>
 
       <div className="mt-6 flex flex-wrap gap-3">
-        <ShimmerActionLink prefetch="intent" to="/catalog">
+        <Link className="home-primary-action" prefetch="intent" to="/catalog">
           View Full Catalog
-        </ShimmerActionLink>
+        </Link>
       </div>
     </section>
   );

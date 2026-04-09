@@ -5,55 +5,32 @@ import { describe, expect, it } from "vitest";
 import { BuildProvenance } from "~/components/chrome/BuildProvenance";
 import { SectionHeading } from "~/components/discovery/SectionHeading";
 import { GeneratedArtifactPanel } from "~/components/generator/GeneratedArtifactPanel";
-import {
-  ShimmerActionAnchor,
-  ShimmerActionButton,
-} from "~/components/ui/ShimmerAction";
-import { LuminousPanel } from "~/components/ui/LuminousPanel";
-import { ShimmerText } from "~/components/ui/ShimmerText";
+import { AnimatedShinyText } from "~/components/ui/animated-shiny-text";
+import { ShimmerButton } from "~/components/ui/shimmer-button";
 
 describe("Phase 8 Magic UI primitives", () => {
-  it("renders a repo-owned luminous panel primitive", () => {
+  it("renders installed Magic UI button primitives", () => {
     // Arrange / Act
-    const markup = renderToStaticMarkup(
-      createElement(LuminousPanel, {
-        as: "section",
-        children: createElement("p", { children: "Panel content" }),
-        className: "example-panel",
-        tone: "accent",
-      }),
+    const buttonMarkup = renderToStaticMarkup(
+      createElement(ShimmerButton, { type: "button" }, "Do thing"),
     );
 
     // Assert
-    expect(markup).toContain("luminous-panel");
-    expect(markup).toContain("luminous-panel--accent");
-    expect(markup).toContain("example-panel");
+    expect(buttonMarkup).toContain("animate-shimmer-slide");
   });
 
-  it("renders shared shimmer text and action primitives", () => {
+  it("renders installed Magic UI shiny text", () => {
     // Arrange / Act
     const textMarkup = renderToStaticMarkup(
-      createElement(ShimmerText, { children: "Accent text", tone: "accent" }),
-    );
-    const buttonMarkup = renderToStaticMarkup(
-      createElement(ShimmerActionButton, {
-        children: "Do thing",
-        tone: "primary",
-        type: "button",
-      }),
-    );
-    const anchorMarkup = renderToStaticMarkup(
-      createElement(ShimmerActionAnchor, {
-        children: "Open thing",
-        href: "/example",
-        tone: "secondary",
-      }),
+      createElement(
+        AnimatedShinyText,
+        { className: "text-accent" },
+        "Accent text",
+      ),
     );
 
     // Assert
-    expect(textMarkup).toContain("shimmer-text");
-    expect(buttonMarkup).toContain("ui-action--primary");
-    expect(anchorMarkup).toContain("ui-action--secondary");
+    expect(textMarkup).toContain("animate-shiny-text");
   });
 
   it("adopts the new primitives on shared discovery, generator, and shell surfaces", () => {
@@ -82,8 +59,8 @@ describe("Phase 8 Magic UI primitives", () => {
     );
 
     // Assert
-    expect(sectionMarkup).toContain("shimmer-text");
-    expect(artifactMarkup).toContain("luminous-panel");
-    expect(provenanceMarkup).toContain("luminous-panel");
+    expect(sectionMarkup).toContain("animate-shiny-text");
+    expect(artifactMarkup).toContain("Generated artifact");
+    expect(provenanceMarkup).toContain("animate-shimmer-slide");
   });
 });

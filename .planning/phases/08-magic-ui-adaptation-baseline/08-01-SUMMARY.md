@@ -10,8 +10,8 @@ generated_at: 2026-04-09T07:51:19Z
 
 # Phase 8: Plan 01 Summary
 
-Established the Phase 8 shared primitive layer.
+Established the official Magic UI installation baseline for Bright Prints.
 
-- Added repo-owned `LuminousPanel`, `ShimmerText`, and `ShimmerAction` components under `app/components/ui/`.
-- Added shared CSS support in `app/app.css` for the adapted Magic UI-inspired surface, text, and CTA treatments.
-- Kept the implementation React Router and Tailwind 4 native without introducing a framework or runtime migration.
+- Ran the official shadcn-style installation flow against the existing React Router and Tailwind 4 app.
+- Added the official installed component sources for `MagicCard`, `AnimatedShinyText`, and `ShimmerButton`.
+- Added the supporting component registry config, utilities, and dependencies needed for the upstream install path.

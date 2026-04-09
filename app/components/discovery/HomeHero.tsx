@@ -1,7 +1,8 @@
+import { Link } from "react-router";
+
 import type { DiscoveryItem } from "~/lib/discovery/model";
 
-import { ShimmerActionLink } from "~/components/ui/ShimmerAction";
-import { ShimmerText } from "~/components/ui/ShimmerText";
+import { AnimatedShinyText } from "~/components/ui/animated-shiny-text";
 
 import { DiscoveryCard } from "./DiscoveryCard";
 
@@ -20,7 +21,9 @@ export function HomeHero({
     <section className="home-hero">
       <div className="home-hero-copy">
         <p className="eyebrow">
-          <ShimmerText tone="accent">Open-Source 3D Prints</ShimmerText>
+          <AnimatedShinyText className="text-[0.8rem] font-bold tracking-[0.14em] uppercase text-accent">
+            Open-Source 3D Prints
+          </AnimatedShinyText>
         </p>
         <h1>
           Beautiful printable objects and generators that feel curated, not
@@ -32,16 +35,16 @@ export function HomeHero({
         </p>
 
         <div className="home-hero-actions">
-          <ShimmerActionLink prefetch="intent" to="/catalog">
+          <Link className="home-primary-action" prefetch="intent" to="/catalog">
             Browse Prints
-          </ShimmerActionLink>
-          <ShimmerActionLink
+          </Link>
+          <Link
+            className="home-secondary-action"
             prefetch="intent"
-            tone="secondary"
             to={generatorHref}
           >
             Try a Generator
-          </ShimmerActionLink>
+          </Link>
         </div>
 
         <p className="mt-4 text-sm leading-6 text-slate-500">

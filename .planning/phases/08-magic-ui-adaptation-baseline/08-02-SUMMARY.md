@@ -10,8 +10,8 @@ generated_at: 2026-04-09T07:51:19Z
 
 # Phase 8: Plan 02 Summary
 
-Proved the new primitive layer on discovery, generator, and shared-shell surfaces.
+Proved the installed Magic UI components on discovery, generator, and shared-shell surfaces.
 
-- Refactored shared section headings and selected home/discovery CTAs to use the new primitives.
-- Applied the luminous panel and shimmer CTA treatments to the generator artifact panel and build provenance footer.
-- Added focused UI tests to ensure the new primitives render on the intended baseline surfaces.
+- Refactored shared section headings to use `AnimatedShinyText`.
+- Applied `ShimmerButton` to generator and provenance button actions where the official component fit naturally.
+- Kept `MagicCard` installed and available for later expansion while avoiding premature adoption on surfaces that did not need it yet.

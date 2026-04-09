@@ -8,18 +8,23 @@ import { DiscoveryBadge } from "~/components/discovery/DiscoveryBadge";
 import { DiscoveryCard } from "~/components/discovery/DiscoveryCard";
 import { GeneratedArtifactPanel } from "~/components/generator/GeneratedArtifactPanel";
 import { GeneratorPreview } from "~/components/generator/GeneratorPreview";
+import { ShimmerButton } from "~/components/ui/shimmer-button";
 import {
   buildGeneratedSignArtifact,
   getDefaultSignValues,
   type SignGeneratorValues,
-  validateSignValues
+  validateSignValues,
 } from "~/lib/generators/sign";
 import { findGeneratorBySlug } from "~/lib/content/public";
 import { loadPublicContent } from "~/lib/content/load.server";
-import { buildRelatedDiscoveryItems, buildDiscoveryItems, findDiscoveryItem } from "~/lib/discovery/model";
+import {
+  buildRelatedDiscoveryItems,
+  buildDiscoveryItems,
+  findDiscoveryItem,
+} from "~/lib/discovery/model";
 
 export const links: Route.LinksFunction = () => [
-  { rel: "stylesheet", href: generatorDetailStyles }
+  { rel: "stylesheet", href: generatorDetailStyles },
 ];
 
 export async function loader({ params }: Route.LoaderArgs) {
@@ -41,23 +46,28 @@ export async function loader({ params }: Route.LoaderArgs) {
   return {
     generator: maybeGenerator,
     item: maybeItem,
-    related: buildRelatedDiscoveryItems(items, maybeItem)
+    related: buildRelatedDiscoveryItems(items, maybeItem),
   };
 }
 
 export function meta({ data }: Route.MetaArgs) {
   return [
-    { title: data ? `${data.item.title} | Bright Prints` : "Generator | Bright Prints" },
     {
-      content: data?.item.summary ?? "Generator detail entry page for Bright Prints.",
-      name: "description"
-    }
+      title: data
+        ? `${data.item.title} | Bright Prints`
+        : "Generator | Bright Prints",
+    },
+    {
+      content:
+        data?.item.summary ?? "Generator detail entry page for Bright Prints.",
+      name: "description",
+    },
   ];
 }
 
 export default function GeneratorDetail({ loaderData }: Route.ComponentProps) {
   const [values, setValues] = useState<SignGeneratorValues>(() =>
-    getDefaultSignValues(loaderData.generator)
+    getDefaultSignValues(loaderData.generator),
   );
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
   const [artifact, setArtifact] = useState<Awaited<
@@ -75,10 +85,13 @@ export default function GeneratorDetail({ loaderData }: Route.ComponentProps) {
     };
   }, [artifact]);
 
-  function updateValue<K extends keyof SignGeneratorValues>(key: K, value: SignGeneratorValues[K]) {
+  function updateValue<K extends keyof SignGeneratorValues>(
+    key: K,
+    value: SignGeneratorValues[K],
+  ) {
     setValues((currentValues) => ({
       ...currentValues,
-      [key]: value
+      [key]: value,
     }));
   }
 
@@ -94,7 +107,7 @@ export default function GeneratorDetail({ loaderData }: Route.ComponentProps) {
     const nextArtifact = await buildGeneratedSignArtifact({
       definition: loaderData.generator.definition,
       generator: loaderData.generator,
-      values
+      values,
     });
 
     startTransition(() => {
@@ -117,7 +130,11 @@ export default function GeneratorDetail({ loaderData }: Route.ComponentProps) {
 
       <article className="generator-hero">
         <div className="generator-hero-poster">
-          <DiscoveryCard interactive={false} item={loaderData.item} variant="hero" />
+          <DiscoveryCard
+            interactive={false}
+            item={loaderData.item}
+            variant="hero"
+          />
         </div>
 
         <div className="generator-hero-copy">
@@ -128,20 +145,26 @@ export default function GeneratorDetail({ loaderData }: Route.ComponentProps) {
 
           <h2>Configure a sign in one pass</h2>
           <p>
-            This generator stays schema-driven: the content file defines the parameters
-            and sign behavior, while the route turns those parameters into a live
-            preview and downloadable artifact.
+            This generator stays schema-driven: the content file defines the
+            parameters and sign behavior, while the route turns those parameters
+            into a live preview and downloadable artifact.
           </p>
         </div>
       </article>
 
       <section className="generator-layout">
         <div className="generator-layout-main">
-          <section className="generator-form-shell" aria-labelledby="generator-form-heading">
+          <section
+            className="generator-form-shell"
+            aria-labelledby="generator-form-heading"
+          >
             <div className="generator-section-head">
               <p className="eyebrow">Parameters</p>
               <h2 id="generator-form-heading">Shape the finished sign</h2>
-              <p>Invalid states are blocked before generation runs, and the preview stays close to the form.</p>
+              <p>
+                Invalid states are blocked before generation runs, and the
+                preview stays close to the form.
+              </p>
             </div>
 
             <form className="generator-form-grid" onSubmit={handleGenerate}>
@@ -188,7 +211,7 @@ export default function GeneratorDetail({ loaderData }: Route.ComponentProps) {
                                   : "cornerRadiusMm",
                           parameter.type === "number"
                             ? Number(event.target.value)
-                            : event.target.value
+                            : event.target.value,
                         )
                       }
                       step={parameter.step}
@@ -200,16 +223,22 @@ export default function GeneratorDetail({ loaderData }: Route.ComponentProps) {
                         ? `${parameter.min} to ${parameter.max} ${parameter.unit}`
                         : `${parameter.maxLength ?? 40} characters max`}
                     </p>
-                    {issue ? <p className="generator-error-message">{issue}</p> : null}
+                    {issue ? (
+                      <p className="generator-error-message">{issue}</p>
+                    ) : null}
                   </div>
                 );
               })}
 
               <div className="generator-form-actions">
-                <button className="home-primary-action" disabled={isPending} type="submit">
+                <ShimmerButton disabled={isPending} type="submit">
                   {isPending ? "Generating" : "Generate 3MF"}
-                </button>
-                <Link className="home-secondary-action" prefetch="intent" to="/catalog?type=generators">
+                </ShimmerButton>
+                <Link
+                  className="home-secondary-action"
+                  prefetch="intent"
+                  to="/catalog?type=generators"
+                >
                   Browse Generators
                 </Link>
               </div>
@@ -224,7 +253,10 @@ export default function GeneratorDetail({ loaderData }: Route.ComponentProps) {
         </div>
 
         <div className="generator-layout-side">
-          <GeneratedArtifactPanel artifact={artifact} statusMessage={statusMessage} />
+          <GeneratedArtifactPanel
+            artifact={artifact}
+            statusMessage={statusMessage}
+          />
         </div>
       </section>
 

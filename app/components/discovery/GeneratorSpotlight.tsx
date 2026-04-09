@@ -1,7 +1,6 @@
-import type { DiscoveryItem } from "~/lib/discovery/model";
+import { Link } from "react-router";
 
-import { LuminousPanel } from "~/components/ui/LuminousPanel";
-import { ShimmerActionLink } from "~/components/ui/ShimmerAction";
+import type { DiscoveryItem } from "~/lib/discovery/model";
 
 import { DiscoveryBadge } from "./DiscoveryBadge";
 import { DiscoveryCard } from "./DiscoveryCard";
@@ -20,7 +19,7 @@ export function GeneratorSpotlight({ item }: GeneratorSpotlightProps) {
         title="A generator should feel like an invitation, not a form."
       />
 
-      <LuminousPanel as="div" className="generator-spotlight" tone="accent">
+      <div className="generator-spotlight">
         <div className="generator-spotlight-copy">
           <div className="flex flex-wrap gap-2">
             <DiscoveryBadge label="Generator" tone="accent" />
@@ -36,13 +35,17 @@ export function GeneratorSpotlight({ item }: GeneratorSpotlightProps) {
             <li>Calm route into the eventual generator detail page</li>
           </ul>
 
-          <ShimmerActionLink prefetch="intent" to={item.href}>
+          <Link
+            className="home-primary-action"
+            prefetch="intent"
+            to={item.href}
+          >
             Open {item.title}
-          </ShimmerActionLink>
+          </Link>
         </div>
 
         <DiscoveryCard item={item} variant="hero" />
-      </LuminousPanel>
+      </div>
     </section>
   );
 }

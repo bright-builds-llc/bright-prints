@@ -1,8 +1,5 @@
 import type { GeneratedSignArtifact } from "~/lib/generators/sign";
 
-import { LuminousPanel } from "~/components/ui/LuminousPanel";
-import { ShimmerActionAnchor } from "~/components/ui/ShimmerAction";
-
 type GeneratedArtifactPanelProps = {
   artifact: GeneratedSignArtifact | null;
   statusMessage: string | null;
@@ -13,10 +10,8 @@ export function GeneratedArtifactPanel({
   statusMessage,
 }: GeneratedArtifactPanelProps) {
   return (
-    <LuminousPanel
-      as="section"
+    <section
       className="generator-artifact-shell"
-      tone="accent"
       aria-labelledby="generator-artifact-heading"
     >
       <div className="generator-section-head">
@@ -31,12 +26,13 @@ export function GeneratedArtifactPanel({
 
       {artifact ? (
         <div className="generator-artifact-card">
-          <ShimmerActionAnchor
+          <a
+            className="home-primary-action"
             download={artifact.downloadName}
             href={artifact.objectUrl}
           >
             Download 3MF
-          </ShimmerActionAnchor>
+          </a>
           <dl className="generator-metadata-grid">
             <div>
               <dt>Text</dt>
@@ -73,6 +69,6 @@ export function GeneratedArtifactPanel({
           </dl>
         </div>
       ) : null}
-    </LuminousPanel>
+    </section>
   );
 }
