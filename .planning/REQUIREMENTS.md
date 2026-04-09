@@ -56,25 +56,25 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| PSET-01 | — | Pending |
-| PSET-02 | — | Pending |
-| PSET-03 | — | Pending |
-| PSET-04 | — | Pending |
-| GENW-01 | — | Pending |
-| GENW-02 | — | Pending |
-| GENW-03 | — | Pending |
-| GLIB-01 | — | Pending |
-| GLIB-02 | — | Pending |
-| UIG-01 | — | Pending |
-| UIG-02 | — | Pending |
-| UIG-03 | — | Pending |
+| PSET-01 | Phase 9 | Pending |
+| PSET-02 | Phase 9 | Pending |
+| PSET-03 | Phase 9 | Pending |
+| PSET-04 | Phase 10 | Pending |
+| GENW-01 | Phase 9 | Pending |
+| GENW-02 | Phase 10 | Pending |
+| GENW-03 | Phase 10 | Pending |
+| GLIB-01 | Phase 10 | Pending |
+| GLIB-02 | Phase 10 | Pending |
+| UIG-01 | Phase 8 | Pending |
+| UIG-02 | Phase 8 | Pending |
+| UIG-03 | Phase 11 | Pending |
 
 **Coverage:**
 
 - v1.1 requirements: 12 total
-- Mapped to phases: 0
-- Unmapped: 12 ⚠️
+- Mapped to phases: 12
+- Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-04-09*
-*Last updated: 2026-04-09 after v1.1 requirement definition*
+*Last updated: 2026-04-09 after creating the v1.1 roadmap*

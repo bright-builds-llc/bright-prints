@@ -2,10 +2,10 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Saved Generators and Magic UI Upgrade
-status: planning
+status: roadmap_created
 last_updated: "2026-04-09T00:00:00-05:00"
 progress:
-  total_phases: 0
+  total_phases: 4
   completed_phases: 0
   total_plans: 0
   completed_plans: 0
@@ -15,30 +15,37 @@ progress:
 # Project State
 
 **Last updated:** 2026-04-09
-**Status:** Defining requirements for v1.1
+**Status:** v1.1 roadmap created
 
 ## Project Reference
 
 See: `.planning/PROJECT.md` (updated 2026-04-09)
 
 **Core value:** Users can quickly discover beautiful 3D prints and generate or download the right printable files with a sleek, trustworthy, accessible experience.
-**Current focus:** Define requirements and roadmap for v1.1
+**Current focus:** Phase 8 — Magic UI Adaptation Baseline
 
 ## Current Position
 
-- **Phase:** Not started (defining requirements)
-- **Plan:** —
-- **Status:** Defining requirements
-- **Last activity:** 2026-04-09 — Milestone v1.1 started
+- **Phase:** 8 — Magic UI Adaptation Baseline
+- **Plan:** Not started
+- **Status:** Roadmap ready, phase discussion or planning next
+- **Last activity:** 2026-04-09 — v1.1 roadmap created
 
 ## Artifact Status
 
 - `PROJECT.md`: updated for v1.1 goals
-- `REQUIREMENTS.md`: not yet created for v1.1
-- `ROADMAP.md`: awaiting v1.1 roadmap
-- `STATE.md`: reset for new milestone planning
-- `milestones/v1.0-*`: archived and committed
-- `phases/`: ready to clear and repopulate for the next roadmap cycle
+- `research/`: refreshed for v1.1 saved generators and Magic UI adoption
+- `REQUIREMENTS.md`: created and mapped to phases
+- `ROADMAP.md`: created for phases 8-11
+- `STATE.md`: reset for the new active milestone
+- `milestones/v1.0-phases/`: archived execution history from the prior milestone
+
+## Roadmap Status
+
+- Phase 8 — Magic UI Adaptation Baseline: Not started
+- Phase 9 — Saved Generator Presets: Not started
+- Phase 10 — Preset Reuse and Library Integration: Not started
+- Phase 11 — Cross-Surface UX Upgrade: Not started
 
 ## Accumulated Context
 
@@ -51,15 +58,15 @@ See: `.planning/PROJECT.md` (updated 2026-04-09)
 
 ### Current Milestone Notes
 
-- v1.1 should deepen the generator and library loop before reopening broader commerce or multi-creator scope.
+- v1.1 is a retention milestone centered on generator reuse rather than broader commerce or publishing scope.
 - Magic UI adoption is intentionally selective and should be translated into Bright Prints’ React/Tailwind 4 environment where useful.
-- Existing v1.0 phase directories should be archived before v1.1 phase planning begins so the next roadmap starts cleanly.
+- Generated artifacts remain client-side in this milestone; saved presets should persist intent, not binary files.
 
 ## Notes
 
 - The selected app framework direction remains React Router 7 rather than Next.js.
 - The selected generator architecture remains browser-side `3mf` generation, not a backend worker.
-- Next recommended command after milestone initialization: `$gsd-plan-phase 8` or `$gsd-discuss-phase 8`
+- Next recommended command: `$gsd-discuss-phase 8`
 
 ---
-_State updated: 2026-04-09 after starting milestone v1.1_
+_State updated: 2026-04-09 after creating the v1.1 roadmap_
