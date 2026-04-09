@@ -1,199 +1,98 @@
 # Research: Architecture
 
-**Date:** 2026-04-04  
-**Scope:** Suggested architecture for Bright Prints as a greenfield product.
+**Date:** 2026-04-09
+**Scope:** Milestone v1.1 Saved Generators and Magic UI Upgrade
 
-## Recommended component boundaries
+## Recommended integration model
 
-### 1. Public web app
+### 1. Add a runtime preset model
 
-Responsibilities:
+Introduce a runtime entity for saved generator presets.
 
-- marketing / home page
-- catalog/gallery pages
-- print detail pages
-- generator configuration UI
-- account pages
-- bookmarks and custom lists
-- commerce request / checkout entrypoints
+Recommended fields:
 
-Notes:
+- `id`
+- `userId`
+- `generatorSlug`
+- `name`
+- `parameters` as JSON
+- `createdAt`
+- `updatedAt`
+- optional lightweight display metadata such as preview summary or last-generated timestamp
 
-- Keep the public web app as the primary product shell.
-- Optimize for server-rendered first paint, image performance, and accessible navigation.
+This should remain provider-agnostic and generator-type-aware so future generators can reuse the same persistence model.
 
-### 2. Content and schema layer
+### 2. Keep generated artifacts client-side
 
-Responsibilities:
+Do not move `.3mf` generation off the client.
 
-- print metadata schemas
-- generator-definition schemas
-- content ingestion from repo-backed files
-- static asset references
-- validation of public content before publish
+Persist:
 
-Notes:
+- the preset inputs
+- lightweight summary metadata
 
-- This layer is the seam between repo-backed content today and CMS-backed content later.
-- Treat content as structured data, not ad hoc markdown blobs.
+Do not persist:
 
-### 3. Relational application data layer
+- full generated binary artifacts
+- server-owned generation jobs
 
-Responsibilities:
+## Route and flow shape
 
-- users
-- sessions
-- bookmarks
-- custom lists
-- order-intent / checkout-intent records
-- future creator ownership and permissions
+### Existing generator route remains the primary editor
 
-Notes:
+Keep `/generators/:slug` as the main generation surface.
 
-- Keep mutable and private runtime data in Postgres from day one.
-- Do not leak customer/payment metadata into repo-backed content.
+Add:
 
-### 4. Client-side generator engine
+- loader support for reading a preset into that route
+- action routes for create, update, rename, delete preset operations
+- library views or sections that link directly back into the generator route with preset context
 
-Responsibilities:
+### Library should absorb generator presets naturally
 
-- validate input parameters
-- derive client-side preview geometry
-- package local `3mf` downloads
-- expose generation/export state to the UI
-- optionally persist lightweight presets later
+Do not create a disconnected “preset admin” product.
 
-Notes:
+Better options:
 
-- This is an application boundary inside the browser, not a backend service.
+- a generator section inside `/library`
+- or a dedicated library subsection such as `/library/generators`
 
-### 5. Commerce adapter layer
+The user mental model should be:
 
-Responsibilities:
+“my saved work lives in my library”
 
-- Shopify catalog/order sync where used
-- PayPal/Venmo integration
-- Amazon Pay integration
-- future Stripe-backed wallet aggregation
-- provider capability flags
+not
 
-Notes:
+“the generator has a hidden separate database UI”
 
-- The app should speak to a local commerce abstraction, not directly to provider SDKs from every feature surface.
+## Magic UI adoption layer
 
-### 6. Deployment and ops layer
+### Build repo-owned shared primitives
 
-Responsibilities:
+Adapt selected Magic UI patterns into Bright Prints-owned components under a shared UI layer, for example:
 
-- Railway web deployment
-- Railway Postgres
-- environment references
-- GitHub-to-Railway deployment automation
+- `app/components/ui/*`
+- shared motion utilities
+- shared surface/spotlight/callout patterns
 
-## Data flow
+Do not wire route pages directly to copied registry files without normalizing them first.
 
-### Public catalog flow
+### Good adoption targets
 
-1. Repo-backed print content is validated against schemas.
-2. App ingests validated content into a queryable read model.
-3. Catalog and detail pages render from that model.
-4. Downloads resolve to public artifacts or generated assets.
+- generator hero and result panels
+- editorial discovery moments
+- library empty states and saved-state affordances
+- trust-adjacent motion or spotlight effects that improve comprehension
 
-### Generator flow
+### Bad adoption targets
 
-1. User opens generator page.
-2. UI fetches generator definition and constraints.
-3. Browser validates the submitted parameters.
-4. Client-side generator modules derive preview and export geometry.
-5. Browser packages the local `3mf` payload.
-6. User downloads the artifact directly, and the app may optionally save lightweight preset metadata.
-
-### Library flow
-
-1. User authenticates.
-2. User bookmarks prints or adds them to custom lists.
-3. App persists this state in Postgres.
-4. Future creator and preset features build on the same ownership model.
-
-### Commerce flow
-
-1. User expresses interest or initiates checkout from a print detail page.
-2. App creates a checkout-intent or order-intent record.
-3. Commerce adapter chooses the supported provider path.
-4. Provider-specific flow completes or redirects as required.
-5. App stores only the minimum private operational metadata needed.
+- core file tables where novelty would hurt clarity
+- interaction-critical controls if the adapted component harms accessibility or SSR resilience
 
 ## Suggested build order
 
-### Phase 1: Foundations
-
-- React Router 7 app shell
-- Railway deployment path
-- Postgres and ORM
-- repo-backed content schema
-- basic admin/content ingestion path
-
-Why first:
-
-- Every later capability depends on stable content, deployment, and runtime data boundaries.
-
-### Phase 2: Catalog and detail experience
-
-- home page
-- gallery/catalog
-- print detail pages
-- downloads
-
-Why second:
-
-- This delivers the first real product value and validates the presentation model.
-
-### Phase 3: Accounts and library
-
-- auth
-- bookmarks
-- custom lists
-
-Why third:
-
-- Establishes the user model before commerce and creator workflows deepen.
-
-### Phase 4: Generator platform
-
-- generator schemas
-- sign-generator MVP
-- client-side generation/export modules
-- generated artifact delivery
-
-Why fourth:
-
-- This is the core differentiator and deserves dedicated architecture after the catalog foundation is stable.
-
-### Phase 5: Commerce groundwork
-
-- request/interest flow
-- commerce abstraction
-- first provider integration spike
-
-Why fifth:
-
-- Provider tradeoffs should be made after the app’s own content and user model are working.
-
-### Phase 6: Creator/admin extensibility
-
-- richer admin tooling
-- multi-creator-ready ownership surfaces
-- CMS migration seams
-
-Why sixth:
-
-- Extensibility should be designed in from the start, but public multi-creator functionality does not need to block first product value.
-
-## Build-order implications
-
-- Do not start with checkout.
-  The product’s strongest value is generator/download UX, not commerce plumbing.
-- Do not start with CMS migration.
-  The correct abstraction boundary matters more than the first authoring surface.
-- Do not tangle route/UI code with low-level geometry and export code.
-  Keep the browser-side generator pipeline modular so it can move into a browser Web Worker later if performance demands it.
+1. shared Magic UI-adapted primitive layer
+2. preset persistence schema and server mutations
+3. generator route save/reopen/edit loop
+4. library integration for generator presets
+5. selective cross-surface polish using the new primitive layer

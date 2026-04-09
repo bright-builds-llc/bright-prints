@@ -1,189 +1,111 @@
 # Research: Pitfalls
 
-**Date:** 2026-04-04  
-**Scope:** Domain-specific failure modes for Bright Prints and how to avoid them early.
+**Date:** 2026-04-09
+**Scope:** Milestone v1.1 Saved Generators and Magic UI Upgrade
 
-## Pitfall 1: Designing v1 around a perfect embedded checkout matrix
-
-### Why it happens
-
-Apple Pay, PayPal, Venmo, Amazon Pay, and Shopify do not line up cleanly behind one stable web checkout integration path.
-
-### Warning signs
-
-- Requirements keep expanding around provider-specific edge cases.
-- Commerce work starts dominating the roadmap before gallery or generator value ships.
-- The team starts assuming Shopify alone can satisfy every embedded-web checkout requirement.
-
-### Prevention
-
-- Keep v1 commerce scope at request/interest plus adapter groundwork.
-- Put a provider abstraction in place before adding live payment integrations.
-- Treat provider capability discovery as a spike, not a foundational assumption.
-
-### Phase to address
-
-Phase 1 and Phase 5
-
-## Pitfall 2: Letting public repo content and private operational data blur together
+## Pitfall 1: Letting Magic UI define the milestone instead of the product
 
 ### Why it happens
 
-This project intentionally keeps source model files public, which makes it easy to accidentally widen what gets treated as “safe to commit.”
+UI libraries make it easy to confuse visual novelty with product progress.
 
 ### Warning signs
 
-- Private runtime metadata starts showing up in repo-backed content files.
-- Secrets, payment metadata, or customer details appear in example fixtures.
-- Admin workflows expect private state to be edited via Git commits.
+- the milestone backlog becomes a list of components rather than user flows
+- discovery, library, and generator work all get “polished” at once without a priority order
+- copied components land faster than the shared design rules around them
 
 ### Prevention
 
-- Separate repo-backed public content from database-backed runtime data immediately.
-- Use explicit schema boundaries for public versus private fields.
-- Add environment/secret handling conventions before building commerce.
+- prioritize user flows first, components second
+- require each adapted Magic UI pattern to justify a product outcome
+- start with shared primitives, not page-by-page copy/paste
 
-### Phase to address
+### Phase to absorb it
 
-Phase 1
+The earliest UI-foundation phase in the roadmap
 
-## Pitfall 3: Building the generator as ad hoc app code instead of a platform
+## Pitfall 2: Saving artifacts instead of saving reusable generator intent
 
 ### Why it happens
 
-It is tempting to hardcode a single sign generator into page logic and defer structure until later.
+It is tempting to treat the downloaded file as the saved object.
 
 ### Warning signs
 
-- Generator parameters are defined inline in React components.
-- There is no reusable generator-definition schema.
-- A second generator would require rewriting the first one.
+- schema discussions revolve around binary storage too early
+- saved state cannot be easily edited back in the generator
+- users can save something but not understand or reuse it
 
 ### Prevention
 
-- Define generator schemas before implementing the first real generator.
-- Isolate geometry/export logic in dedicated client-side modules instead of route components.
-- Store generator definitions in diff-friendly files with explicit versioning.
+- save normalized parameters and human-readable preset identity
+- keep generation client-side
+- only add server-side artifact storage if a later milestone has a strong reason
 
-### Phase to address
+### Phase to absorb it
 
-Phase 1 and Phase 4
+The preset data-model phase
 
-## Pitfall 4: Modeling the product as single-owner only
+## Pitfall 3: Making presets sign-specific
 
 ### Why it happens
 
-The first release focuses on Peter’s own prints, so it is easy to skip ownership, permissions, and creator boundaries.
+The first real generator is a sign generator, so the shortest path is to hardcode sign semantics into the persistence layer.
 
 ### Warning signs
 
-- Prints and generators do not have creator or owner IDs.
-- Admin assumptions are hardcoded around one global owner.
-- Bookmark/library and creator content use incompatible identity models.
+- preset schema names fields after one generator instead of a generic parameter model
+- routes and components assume a single generator forever
 
 ### Prevention
 
-- Include creator ownership fields in the relational model from day one.
-- Keep admin authorization separate from content identity.
-- Make generator and print schemas creator-aware even before public creator onboarding exists.
+- key saved work by `generatorSlug`
+- store parameter maps or normalized structured values
+- keep generator-specific interpretation in the generator domain, not in generic preset storage
 
-### Phase to address
+### Phase to absorb it
 
-Phase 1 and Phase 6
+The preset architecture phase
 
-## Pitfall 5: Treating slicer handoff links as generic URLs
+## Pitfall 4: Fragmenting the user’s saved world
 
 ### Why it happens
 
-“Print now” sounds simple, but slicer ecosystem launcher behavior is vendor-specific.
+Print bookmarks, custom lists, and generator presets can drift into separate silos if each is built independently.
 
 ### Warning signs
 
-- Product copy promises one-click slicer launch without verifying the provider workflow.
-- Link handling is designed before any provider-specific spike.
-- Team assumes every slicer supports arbitrary external domains equally.
+- library navigation becomes confusing
+- preset management feels like an admin panel instead of part of “my saved work”
 
 ### Prevention
 
-- Keep launcher support behind capability flags.
-- Validate each ecosystem separately before productizing it.
-- Start with plain downloads unless the provider path is documented and reliable.
+- keep the library as the conceptual home for saved user work
+- make preset cards/actions feel aligned with existing save/list mental models
 
-### Phase to address
+### Phase to absorb it
 
-Phase 2 and Phase 4
+The library-integration phase
 
-## Pitfall 8: Freezing the main thread with heavy client-side generation
+## Pitfall 5: Over-animating critical surfaces
 
 ### Why it happens
 
-Moving generation into the browser removes backend complexity, but larger or more complex generators can still create noticeable UI stalls.
+Magic UI patterns are attractive, but Bright Prints still needs trust, clarity, and performance.
 
 ### Warning signs
 
-- Parameter changes cause visible input lag.
-- Export starts blocking the whole page.
-- Mobile devices struggle while desktop devices appear fine.
+- motion delays critical information
+- file/trust surfaces become harder to parse
+- generator interactions feel heavier after the redesign
 
 ### Prevention
 
-- Keep v1 generators bounded and mechanically simple.
-- Separate preview-time geometry from export-time work where practical.
-- Keep the client-side generator pipeline modular so expensive work can move into a browser Web Worker later without redesigning the product.
+- reserve stronger motion for emphasis, transitions, and empty states
+- keep downloads, trust fields, and core form interactions visually direct
+- verify accessibility and perceived performance after each adapted component lands
 
-### Phase to address
+### Phase to absorb it
 
-Phase 4
-
-## Pitfall 6: Performance collapse from media-heavy catalog pages
-
-### Why it happens
-
-3D print galleries naturally encourage lots of images, rich detail, and potentially interactive previews.
-
-### Warning signs
-
-- Home page becomes a dense wall of heavy media.
-- Core navigation requires large client bundles.
-- Accessibility issues appear because motion and visual polish override basic interaction quality.
-
-### Prevention
-
-- Optimize for server-rendered content and progressive enhancement.
-- Set budgets for image counts, image sizes, and client JavaScript.
-- Treat accessibility review as part of UI definition, not final QA.
-
-### Phase to address
-
-Phase 2
-
-## Pitfall 7: Overfitting repo-backed content in a way that blocks CMS migration
-
-### Why it happens
-
-Repo-first authoring is correct for now, but ad hoc file formats can quietly harden into the long-term model.
-
-### Warning signs
-
-- Content files are inconsistent and manually interpreted.
-- Rich content is stored in opaque blobs without stable schema versions.
-- No ingestion boundary exists between content files and app queries.
-
-### Prevention
-
-- Keep schemas versioned and explicit.
-- Build an ingestion/read-model step instead of reading arbitrary files directly everywhere.
-- Treat file storage as one authoring backend, not the domain model itself.
-
-### Phase to address
-
-Phase 1 and Phase 6
-
-## Sources
-
-- [Shopify headless stack docs](https://shopify.dev/docs/storefronts/headless/bring-your-own-stack/index)
-- [Shopify Checkout Kit for Web changelog](https://shopify.dev/changelog/checkout-kit-for-web-is-now-available-in-early-access)
-- [PayPal Apple Pay integration docs](https://developer.paypal.com/docs/multiparty/checkout/apm/apple-pay/)
-- [Amazon Pay buyer experience docs](https://developer.amazon.com/docs/amazon-pay-checkout/buyer-experience.html)
-- [Apple Pay on the web configuration docs](https://developer.apple.com/help/account/capabilities/configure-apple-pay-on-the-web/)
-- [Railway GitHub autodeploy docs](https://docs.railway.com/guides/github-autodeploys)
+The UI polish phase
