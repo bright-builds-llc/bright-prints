@@ -4,11 +4,11 @@ import type { PrismaClient, User } from "@prisma/client";
 import {
   createCookieSessionStorage,
   type Session,
-  type SessionStorage
+  type SessionStorage,
 } from "react-router";
 
-import { getDb } from "~/lib/db.server";
 import { getServerEnv } from "~/lib/env.server";
+import type { SignGeneratorValues } from "~/lib/generators/sign";
 
 export type PendingIntent =
   | { kind: "save-bookmark"; printSlug: string }
@@ -17,7 +17,15 @@ export type PendingIntent =
   | { kind: "rename-list"; listId: string; name: string }
   | { kind: "delete-list"; listId: string }
   | { kind: "add-print-to-list"; listId: string; printSlug: string }
-  | { kind: "remove-print-from-list"; listId: string; printSlug: string };
+  | { kind: "remove-print-from-list"; listId: string; printSlug: string }
+  | {
+      kind: "save-generator-preset";
+      generatorSlug: string;
+      name: string;
+      values: SignGeneratorValues;
+    }
+  | { kind: "rename-generator-preset"; name: string; presetId: string }
+  | { kind: "delete-generator-preset"; presetId: string };
 
 export type SessionFlashMessage = {
   kind: "error" | "success";
@@ -40,7 +48,9 @@ function buildAuthSessionStorage(): SessionStorage<SessionData> {
   const { NODE_ENV, SESSION_SECRET: maybeSessionSecret } = getServerEnv();
 
   if (!maybeSessionSecret) {
-    throw new Error("SESSION_SECRET is required before auth session features can run.");
+    throw new Error(
+      "SESSION_SECRET is required before auth session features can run.",
+    );
   }
 
   return createCookieSessionStorage<SessionData>({
@@ -50,8 +60,8 @@ function buildAuthSessionStorage(): SessionStorage<SessionData> {
       path: "/",
       sameSite: "lax",
       secrets: [maybeSessionSecret],
-      secure: NODE_ENV === "production"
-    }
+      secure: NODE_ENV === "production",
+    },
   });
 }
 
@@ -92,7 +102,7 @@ export function clearAuthToken(session: Session<SessionData>) {
 }
 
 export function getFlashMessage(
-  session: Session<SessionData>
+  session: Session<SessionData>,
 ): SessionFlashMessage | null {
   const maybeFlash = session.get("flash");
 
@@ -106,13 +116,19 @@ export function getFlashMessage(
 
 export function setFlashMessage(
   session: Session<SessionData>,
-  flash: SessionFlashMessage
+  flash: SessionFlashMessage,
 ) {
   session.set("flash", flash);
 }
 
-export function sanitizeReturnTo(maybeReturnTo: string | null | undefined): string {
-  if (!maybeReturnTo || !maybeReturnTo.startsWith("/") || maybeReturnTo.startsWith("//")) {
+export function sanitizeReturnTo(
+  maybeReturnTo: string | null | undefined,
+): string {
+  if (
+    !maybeReturnTo ||
+    !maybeReturnTo.startsWith("/") ||
+    maybeReturnTo.startsWith("//")
+  ) {
     return "/catalog";
   }
 
@@ -126,18 +142,19 @@ export function sanitizeReturnTo(maybeReturnTo: string | null | undefined): stri
 export function setPendingIntent(
   session: Session<SessionData>,
   pendingIntent: PendingIntent,
-  maybeReturnTo?: string | null
+  maybeReturnTo?: string | null,
 ) {
   session.set("pendingIntent", pendingIntent);
   session.set("returnTo", sanitizeReturnTo(maybeReturnTo));
 }
 
-export function readPendingIntent(
-  session: Session<SessionData>
-): { pendingIntent: PendingIntent | null; returnTo: string } {
+export function readPendingIntent(session: Session<SessionData>): {
+  pendingIntent: PendingIntent | null;
+  returnTo: string;
+} {
   return {
     pendingIntent: session.get("pendingIntent") ?? null,
-    returnTo: sanitizeReturnTo(session.get("returnTo"))
+    returnTo: sanitizeReturnTo(session.get("returnTo")),
   };
 }
 
@@ -149,7 +166,7 @@ export function clearPendingIntent(session: Session<SessionData>) {
 export async function createDatabaseSession(
   db: SessionStore,
   userId: string,
-  now = new Date()
+  now = new Date(),
 ) {
   const token = randomBytes(32).toString("hex");
   const expiresAt = new Date(now.getTime() + 1000 * 60 * 60 * 24 * 30);
@@ -158,15 +175,15 @@ export async function createDatabaseSession(
     data: {
       expiresAt,
       token,
-      userId
-    }
+      userId,
+    },
   });
 }
 
 export async function resolveCurrentUserFromSession(
   db: UserStore,
   session: Session<SessionData>,
-  now = new Date()
+  now = new Date(),
 ): Promise<User | null> {
   const maybeToken = getAuthToken(session);
 
@@ -176,11 +193,11 @@ export async function resolveCurrentUserFromSession(
 
   const maybeStoredSession = await db.session.findUnique({
     include: {
-      user: true
+      user: true,
     },
     where: {
-      token: maybeToken
-    }
+      token: maybeToken,
+    },
   });
 
   if (!maybeStoredSession) {
@@ -190,8 +207,8 @@ export async function resolveCurrentUserFromSession(
   if (maybeStoredSession.expiresAt <= now) {
     await db.session.deleteMany({
       where: {
-        token: maybeToken
-      }
+        token: maybeToken,
+      },
     });
 
     clearAuthToken(session);
@@ -201,8 +218,11 @@ export async function resolveCurrentUserFromSession(
   return maybeStoredSession.user;
 }
 
-export async function getCurrentUserFromRequest(request: Request): Promise<User | null> {
+export async function getCurrentUserFromRequest(
+  request: Request,
+): Promise<User | null> {
   try {
+    const { getDb } = await import("~/lib/db.server");
     const session = await getAuthSession(request.headers.get("Cookie"));
     return resolveCurrentUserFromSession(getDb(), session);
   } catch {
@@ -213,7 +233,7 @@ export async function getCurrentUserFromRequest(request: Request): Promise<User 
 export async function replayPendingIntentAfterAuth(options: {
   replayIntent: (
     pendingIntent: PendingIntent,
-    userId: string
+    userId: string,
   ) => Promise<SessionFlashMessage | null>;
   session: Session<SessionData>;
   userId: string;
@@ -224,7 +244,7 @@ export async function replayPendingIntentAfterAuth(options: {
   if (!pendingIntent) {
     return {
       redirectTo: returnTo,
-      replayed: false
+      replayed: false,
     };
   }
 
@@ -238,6 +258,6 @@ export async function replayPendingIntentAfterAuth(options: {
 
   return {
     redirectTo: returnTo,
-    replayed: true
+    replayed: true,
   };
 }

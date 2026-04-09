@@ -38,10 +38,11 @@ Users can quickly discover beautiful 3D prints and generate or download the righ
 - ✓ The product records provider-agnostic physical-print interest, shows visible build provenance, and preserves open-source privacy boundaries. — v1.0
 - ✓ Bright Prints exposes repo-owned shared UI primitives adapted from selected Magic UI patterns. — Phase 8
 - ✓ Adapted UI motion and emphasis patterns preserve accessibility and task clarity on the first adopted surfaces. — Phase 8
+- ✓ Signed-in users can save, list, rename, delete, and recognize current sign generator presets. — Phase 9
 
 ### Active
 
-- [ ] Signed-in users can save, name, revisit, and redownload generator presets from their account.
+- [ ] Signed-in users can revisit and redownload generator presets from their account.
 - [ ] Generator outputs feel persistent and reusable rather than like one-off downloads.
 - [ ] The new shared primitive layer expands across generator, library, and at least one discovery or print-detail surface where it materially improves UX.
 
@@ -58,6 +59,7 @@ Users can quickly discover beautiful 3D prints and generate or download the righ
 - Accounts and personal library now exist, which makes saved generator state much more valuable than it would have been in v1.0.
 - Magic UI is a better fit than Mystic UI for the current stack because Bright Prints is React-based, but its patterns still need selective adaptation for React Router and Tailwind 4 instead of naive drop-in replacement.
 - Public routes must continue to degrade gracefully when auth or database env is absent.
+- Phase 9 established named preset persistence, generator-side preset management, and current-value recognition without consuming the Phase 10 reopen flow.
 - The v1.0 audit found process debt around stale requirement checkboxes, incomplete `requirements-completed` frontmatter, and missing Nyquist validation artifacts.
 
 ## Constraints
@@ -115,4 +117,4 @@ This document evolves at phase transitions and milestone boundaries.
 
 ---
 
-_Last updated: 2026-04-09 after Phase 8 verification_
+_Last updated: 2026-04-09 after Phase 9 verification_

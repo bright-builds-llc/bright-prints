@@ -7,14 +7,14 @@
 
 ### Saved Generator Presets
 
-- [ ] **PSET-01**: Signed-in user can save the current generator configuration as a named preset.
-- [ ] **PSET-02**: Signed-in user can view a list of saved presets for a generator.
-- [ ] **PSET-03**: Signed-in user can rename or delete a saved preset.
+- [x] **PSET-01**: Signed-in user can save the current generator configuration as a named preset.
+- [x] **PSET-02**: Signed-in user can view a list of saved presets for a generator.
+- [x] **PSET-03**: Signed-in user can rename or delete a saved preset.
 - [ ] **PSET-04**: Signed-in user can reopen a saved preset and repopulate the generator inputs from it.
 
 ### Generator Workflow
 
-- [ ] **GENW-01**: Signed-in user can tell whether the current generator values are unsaved, saved, or edited from a saved preset.
+- [x] **GENW-01**: Signed-in user can tell whether the current generator values are unsaved, saved, or edited from a saved preset.
 - [ ] **GENW-02**: User can regenerate and redownload output from a reopened preset without manually re-entering the saved parameters.
 - [ ] **GENW-03**: Saved preset entries show enough metadata for the user to recognize what they are opening before entering the generator route.
 
@@ -56,11 +56,11 @@
 
 | Requirement | Phase    | Status   |
 | ----------- | -------- | -------- |
-| PSET-01     | Phase 9  | Pending  |
-| PSET-02     | Phase 9  | Pending  |
-| PSET-03     | Phase 9  | Pending  |
+| PSET-01     | Phase 9  | Complete |
+| PSET-02     | Phase 9  | Complete |
+| PSET-03     | Phase 9  | Complete |
 | PSET-04     | Phase 10 | Pending  |
-| GENW-01     | Phase 9  | Pending  |
+| GENW-01     | Phase 9  | Complete |
 | GENW-02     | Phase 10 | Pending  |
 | GENW-03     | Phase 10 | Pending  |
 | GLIB-01     | Phase 10 | Pending  |
@@ -78,4 +78,4 @@
 ---
 
 _Requirements defined: 2026-04-09_
-_Last updated: 2026-04-09 after Phase 8 verification_
+_Last updated: 2026-04-09 after Phase 9 verification_

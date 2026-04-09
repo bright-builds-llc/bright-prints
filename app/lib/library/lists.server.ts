@@ -2,14 +2,17 @@ import type { PrismaClient } from "@prisma/client";
 
 export const bookmarksListName = "Bookmarks";
 
-type ListStore = Pick<PrismaClient, "$transaction" | "savedPrintList" | "savedPrintListItem">;
+type ListStore = Pick<
+  PrismaClient,
+  "$transaction" | "savedPrintList" | "savedPrintListItem"
+>;
 
 export async function ensureBookmarksList(db: ListStore, userId: string) {
   const maybeExisting = await db.savedPrintList.findFirst({
     where: {
       kind: "BOOKMARKS",
-      userId
-    }
+      userId,
+    },
   });
 
   if (maybeExisting) {
@@ -21,72 +24,83 @@ export async function ensureBookmarksList(db: ListStore, userId: string) {
       data: {
         kind: "BOOKMARKS",
         name: bookmarksListName,
-        userId
-      }
+        userId,
+      },
     });
   } catch {
     const bookmarks = await db.savedPrintList.findFirst({
       where: {
         kind: "BOOKMARKS",
-        userId
-      }
+        userId,
+      },
     });
 
     if (!bookmarks) {
-      throw new Error(`Could not create or locate Bookmarks for user "${userId}"`);
+      throw new Error(
+        `Could not create or locate Bookmarks for user "${userId}"`,
+      );
     }
 
     return bookmarks;
   }
 }
 
-export async function getBookmarkedPrintSlugs(db: ListStore, userId: string): Promise<string[]> {
+export async function getBookmarkedPrintSlugs(
+  db: ListStore,
+  userId: string,
+): Promise<string[]> {
   const bookmarks = await ensureBookmarksList(db, userId);
   const items = await db.savedPrintListItem.findMany({
     orderBy: {
-      createdAt: "desc"
+      createdAt: "desc",
     },
     select: {
-      printSlug: true
+      printSlug: true,
     },
     where: {
-      listId: bookmarks.id
-    }
+      listId: bookmarks.id,
+    },
   });
 
-  return items.map((item) => item.printSlug);
+  return items.map((item: { printSlug: string }) => item.printSlug);
 }
 
 export async function getCustomListSummaries(
   db: ListStore,
   userId: string,
-  maybePrintSlug?: string
+  maybePrintSlug?: string,
 ) {
   const customLists = await db.savedPrintList.findMany({
     include: {
       items: maybePrintSlug
         ? {
             select: {
-              printSlug: true
+              printSlug: true,
             },
             where: {
-              printSlug: maybePrintSlug
-            }
+              printSlug: maybePrintSlug,
+            },
           }
-        : false
+        : false,
     },
     orderBy: {
-      createdAt: "asc"
+      createdAt: "asc",
     },
     where: {
       kind: "CUSTOM",
-      userId
-    }
+      userId,
+    },
   });
 
-  return customLists.map((list) => ({
-    containsPrint: maybePrintSlug ? list.items.length > 0 : false,
-    id: list.id,
-    name: list.name
-  }));
+  return customLists.map(
+    (list: {
+      id: string;
+      items: Array<{ printSlug: string }>;
+      name: string;
+    }) => ({
+      containsPrint: maybePrintSlug ? list.items.length > 0 : false,
+      id: list.id,
+      name: list.name,
+    }),
+  );
 }

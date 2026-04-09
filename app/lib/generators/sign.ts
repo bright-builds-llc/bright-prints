@@ -1,10 +1,15 @@
+import { z } from "zod";
+
 import type {
   GeneratorRecord,
   GeneratorParameterRecord,
-  SignGeneratorDefinition
+  SignGeneratorDefinition,
 } from "~/lib/content/schema";
 import { sanitizeSignText, bitmapFont } from "~/lib/generators/sign-font";
-import { buildThreeMfArchive, type ThreeMfMesh } from "~/lib/generators/three-mf";
+import {
+  buildThreeMfArchive,
+  type ThreeMfMesh,
+} from "~/lib/generators/three-mf";
 
 export type SignGeneratorValues = {
   cornerRadiusMm: number;
@@ -18,6 +23,14 @@ export type SignGeneratorValidation = {
   issues: Partial<Record<keyof SignGeneratorValues, string>>;
   sanitizedText: string;
 };
+
+export const signGeneratorValuesSchema = z.object({
+  cornerRadiusMm: z.number().finite(),
+  heightMm: z.number().finite(),
+  text: z.string(),
+  thicknessMm: z.number().finite(),
+  widthMm: z.number().finite(),
+});
 
 export type GeneratedSignArtifact = {
   downloadName: string;
@@ -40,10 +53,14 @@ const glyphRows = 7;
 const glyphGapColumns = 1;
 
 function getParameter(generator: GeneratorRecord, name: string) {
-  const maybeParameter = generator.parameters.find((parameter) => parameter.name === name);
+  const maybeParameter = generator.parameters.find(
+    (parameter) => parameter.name === name,
+  );
 
   if (!maybeParameter) {
-    throw new Error(`Missing generator parameter "${name}" for "${generator.slug}"`);
+    throw new Error(
+      `Missing generator parameter "${name}" for "${generator.slug}"`,
+    );
   }
 
   return maybeParameter;
@@ -52,7 +69,7 @@ function getParameter(generator: GeneratorRecord, name: string) {
 function getNumberValue(
   generator: GeneratorRecord,
   name: string,
-  rawValues?: Record<string, string>
+  rawValues?: Record<string, string>,
 ) {
   const parameter = getParameter(generator, name);
   const rawValue = rawValues?.[name];
@@ -67,7 +84,7 @@ function getNumberValue(
 function getTextValue(
   generator: GeneratorRecord,
   name: string,
-  rawValues?: Record<string, string>
+  rawValues?: Record<string, string>,
 ) {
   const parameter = getParameter(generator, name);
   const rawValue = rawValues?.[name];
@@ -79,26 +96,70 @@ function getTextValue(
   return String(parameter.defaultValue);
 }
 
-export function getDefaultSignValues(generator: GeneratorRecord): SignGeneratorValues {
+export function maybeParseSignGeneratorValues(
+  rawValues: unknown,
+): SignGeneratorValues | null {
+  const parsedValues = signGeneratorValuesSchema.safeParse(rawValues);
+
+  if (!parsedValues.success) {
+    return null;
+  }
+
+  return parsedValues.data;
+}
+
+export function areSignGeneratorValuesEqual(
+  left: SignGeneratorValues,
+  right: SignGeneratorValues,
+) {
+  return (
+    left.cornerRadiusMm === right.cornerRadiusMm &&
+    left.heightMm === right.heightMm &&
+    left.text === right.text &&
+    left.thicknessMm === right.thicknessMm &&
+    left.widthMm === right.widthMm
+  );
+}
+
+export function buildSuggestedSignPresetName(values: SignGeneratorValues) {
+  const sanitizedText = sanitizeSignText(values.text).sanitizedText.trim();
+
+  if (sanitizedText) {
+    return sanitizedText;
+  }
+
+  return `Sign ${values.widthMm}x${values.heightMm}`;
+}
+
+export function describeSignGeneratorValues(values: SignGeneratorValues) {
+  const sanitizedText =
+    sanitizeSignText(values.text).sanitizedText.trim() || "Untitled";
+
+  return `${sanitizedText} · ${values.widthMm} x ${values.heightMm} mm · ${values.thicknessMm} mm thick`;
+}
+
+export function getDefaultSignValues(
+  generator: GeneratorRecord,
+): SignGeneratorValues {
   return {
     cornerRadiusMm: getNumberValue(generator, "corner-radius-mm"),
     heightMm: getNumberValue(generator, "height-mm"),
     text: getTextValue(generator, "text"),
     thicknessMm: getNumberValue(generator, "thickness-mm"),
-    widthMm: getNumberValue(generator, "width-mm")
+    widthMm: getNumberValue(generator, "width-mm"),
   };
 }
 
 function getNumberConstraint(parameter: GeneratorParameterRecord) {
   return {
     max: parameter.max ?? Number.POSITIVE_INFINITY,
-    min: parameter.min ?? Number.NEGATIVE_INFINITY
+    min: parameter.min ?? Number.NEGATIVE_INFINITY,
   };
 }
 
 export function validateSignValues(
   generator: GeneratorRecord,
-  values: SignGeneratorValues
+  values: SignGeneratorValues,
 ): SignGeneratorValidation {
   const issues: SignGeneratorValidation["issues"] = {};
   const textParameter = getParameter(generator, "text");
@@ -127,7 +188,10 @@ export function validateSignValues(
   }
 
   const heightBounds = getNumberConstraint(heightParameter);
-  if (values.heightMm < heightBounds.min || values.heightMm > heightBounds.max) {
+  if (
+    values.heightMm < heightBounds.min ||
+    values.heightMm > heightBounds.max
+  ) {
     issues.heightMm = `Height must stay between ${heightBounds.min} and ${heightBounds.max} mm.`;
   }
 
@@ -154,7 +218,7 @@ export function validateSignValues(
 
   return {
     issues,
-    sanitizedText: text
+    sanitizedText: text,
   };
 }
 
@@ -176,10 +240,17 @@ export function buildSignPreviewLayout(options: {
 }): SignPreviewLayout {
   const { definition, sanitizedText, values } = options;
   const glyphCount = Math.max(sanitizedText.length, 1);
-  const totalColumns = glyphCount * glyphColumns + (glyphCount - 1) * glyphGapColumns;
+  const totalColumns =
+    glyphCount * glyphColumns + (glyphCount - 1) * glyphGapColumns;
   const availableWidth = Math.max(values.widthMm - definition.paddingMm * 2, 1);
-  const availableHeight = Math.max(values.heightMm - definition.paddingMm * 2, 1);
-  const cellSize = Math.min(availableWidth / totalColumns, availableHeight / glyphRows);
+  const availableHeight = Math.max(
+    values.heightMm - definition.paddingMm * 2,
+    1,
+  );
+  const cellSize = Math.min(
+    availableWidth / totalColumns,
+    availableHeight / glyphRows,
+  );
   const contentWidth = cellSize * totalColumns;
   const contentHeight = cellSize * glyphRows;
   const startX = (values.widthMm - contentWidth) / 2;
@@ -188,7 +259,8 @@ export function buildSignPreviewLayout(options: {
   const glyphRects: SignPreviewLayout["glyphRects"] = [];
 
   [...sanitizedText].forEach((character, characterIndex) => {
-    const rows = bitmapFont[character as keyof typeof bitmapFont] ?? bitmapFont[" "];
+    const rows =
+      bitmapFont[character as keyof typeof bitmapFont] ?? bitmapFont[" "];
     rows.forEach((row, rowIndex) => {
       [...row].forEach((cell, columnIndex) => {
         if (cell !== "1") {
@@ -200,9 +272,10 @@ export function buildSignPreviewLayout(options: {
           width: cellSize - insetMm * 2,
           x:
             startX +
-            (characterIndex * (glyphColumns + glyphGapColumns) + columnIndex) * cellSize +
+            (characterIndex * (glyphColumns + glyphGapColumns) + columnIndex) *
+              cellSize +
             insetMm,
-          y: startY + rowIndex * cellSize + insetMm
+          y: startY + rowIndex * cellSize + insetMm,
         });
       });
     });
@@ -211,7 +284,7 @@ export function buildSignPreviewLayout(options: {
   return {
     cellSize,
     glyphRects,
-    insetMm
+    insetMm,
   };
 }
 
@@ -219,7 +292,7 @@ function addVertex(
   vertices: ThreeMfMesh["vertices"],
   x: number,
   y: number,
-  z: number
+  z: number,
 ) {
   vertices.push({ x, y, z });
   return vertices.length - 1;
@@ -227,7 +300,14 @@ function addVertex(
 
 function addBox(
   mesh: ThreeMfMesh,
-  box: { depth: number; height: number; width: number; x: number; y: number; z: number }
+  box: {
+    depth: number;
+    height: number;
+    width: number;
+    x: number;
+    y: number;
+    z: number;
+  },
 ) {
   const { depth, height, width, x, y, z } = box;
   const v0 = addVertex(mesh.vertices, x, y, z);
@@ -240,12 +320,18 @@ function addBox(
   const v7 = addVertex(mesh.vertices, x, y + height, z + depth);
 
   mesh.triangles.push(
-    [v0, v1, v2], [v0, v2, v3],
-    [v4, v7, v6], [v4, v6, v5],
-    [v0, v4, v5], [v0, v5, v1],
-    [v1, v5, v6], [v1, v6, v2],
-    [v2, v6, v7], [v2, v7, v3],
-    [v3, v7, v4], [v3, v4, v0]
+    [v0, v1, v2],
+    [v0, v2, v3],
+    [v4, v7, v6],
+    [v4, v6, v5],
+    [v0, v4, v5],
+    [v0, v5, v1],
+    [v1, v5, v6],
+    [v1, v6, v2],
+    [v2, v6, v7],
+    [v2, v7, v3],
+    [v3, v7, v4],
+    [v3, v4, v0],
   );
 }
 
@@ -257,9 +343,12 @@ export function buildSignMesh(options: {
   const { definition, sanitizedText, values } = options;
   const mesh: ThreeMfMesh = {
     triangles: [],
-    vertices: []
+    vertices: [],
   };
-  const relief = Math.min(definition.textReliefMm, Math.max(values.thicknessMm * 0.4, 0.5));
+  const relief = Math.min(
+    definition.textReliefMm,
+    Math.max(values.thicknessMm * 0.4, 0.5),
+  );
   const baseThickness = Math.max(values.thicknessMm - relief, 0.6);
   const layout = buildSignPreviewLayout({ definition, sanitizedText, values });
 
@@ -269,7 +358,7 @@ export function buildSignMesh(options: {
     width: values.widthMm,
     x: 0,
     y: 0,
-    z: 0
+    z: 0,
   });
 
   layout.glyphRects.forEach((glyphRect) => {
@@ -279,7 +368,7 @@ export function buildSignMesh(options: {
       width: glyphRect.width,
       x: glyphRect.x,
       y: values.heightMm - glyphRect.y - glyphRect.height,
-      z: baseThickness
+      z: baseThickness,
     });
   });
 
@@ -287,11 +376,13 @@ export function buildSignMesh(options: {
 }
 
 function slugifyText(text: string) {
-  return text
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "")
-    .slice(0, 24) || "sign";
+  return (
+    text
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+      .slice(0, 24) || "sign"
+  );
 }
 
 export async function buildGeneratedSignArtifact(options: {
@@ -309,7 +400,7 @@ export async function buildGeneratedSignArtifact(options: {
   const mesh = buildSignMesh({
     definition,
     sanitizedText: validation.sanitizedText,
-    values
+    values,
   });
   const generatedAt = new Date().toISOString();
   const blob = await buildThreeMfArchive({
@@ -321,8 +412,8 @@ export async function buildGeneratedSignArtifact(options: {
       "BrightPrints:widthMm": values.widthMm.toString(),
       "BrightPrints:heightMm": values.heightMm.toString(),
       "BrightPrints:thicknessMm": values.thicknessMm.toString(),
-      "BrightPrints:cornerRadiusMm": values.cornerRadiusMm.toString()
-    }
+      "BrightPrints:cornerRadiusMm": values.cornerRadiusMm.toString(),
+    },
   });
   const objectUrl = URL.createObjectURL(blob);
 
@@ -337,8 +428,8 @@ export async function buildGeneratedSignArtifact(options: {
       thicknessMm: values.thicknessMm,
       triangleCount: mesh.triangles.length,
       vertexCount: mesh.vertices.length,
-      widthMm: values.widthMm
+      widthMm: values.widthMm,
     },
-    objectUrl
+    objectUrl,
   };
 }

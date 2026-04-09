@@ -7,6 +7,7 @@ import generatorDetailStyles from "./generator-detail.css?url";
 import { DiscoveryBadge } from "~/components/discovery/DiscoveryBadge";
 import { DiscoveryCard } from "~/components/discovery/DiscoveryCard";
 import { GeneratedArtifactPanel } from "~/components/generator/GeneratedArtifactPanel";
+import { GeneratorPresetPanel } from "~/components/generator/GeneratorPresetPanel";
 import { GeneratorPreview } from "~/components/generator/GeneratorPreview";
 import { ShimmerButton } from "~/components/ui/shimmer-button";
 import {
@@ -17,6 +18,8 @@ import {
 } from "~/lib/generators/sign";
 import { findGeneratorBySlug } from "~/lib/content/public";
 import { loadPublicContent } from "~/lib/content/load.server";
+import { getServerEnv } from "~/lib/env.server";
+import type { RuntimeGeneratorPreset } from "~/lib/generator-presets/server";
 import {
   buildRelatedDiscoveryItems,
   buildDiscoveryItems,
@@ -27,7 +30,7 @@ export const links: Route.LinksFunction = () => [
   { rel: "stylesheet", href: generatorDetailStyles },
 ];
 
-export async function loader({ params }: Route.LoaderArgs) {
+export async function loader({ params, request }: Route.LoaderArgs) {
   const content = await loadPublicContent();
   const maybeSlug = params.slug;
 
@@ -43,9 +46,38 @@ export async function loader({ params }: Route.LoaderArgs) {
     throw new Response("Not Found", { status: 404 });
   }
 
+  const serverEnv = getServerEnv();
+  const presetsEnabled = Boolean(
+    serverEnv.DATABASE_URL && serverEnv.SESSION_SECRET,
+  );
+  let currentUser: { id: string } | null = null;
+  let presets: RuntimeGeneratorPreset[] = [];
+
+  if (presetsEnabled) {
+    const { getCurrentUserFromRequest } =
+      await import("~/lib/auth/session.server");
+    const maybeCurrentUser = await getCurrentUserFromRequest(request);
+
+    if (maybeCurrentUser) {
+      const { loadRuntimeGeneratorPresets } =
+        await import("~/lib/generator-presets/server");
+      const { getDb } = await import("~/lib/db.server");
+
+      currentUser = { id: maybeCurrentUser.id };
+      presets = await loadRuntimeGeneratorPresets(
+        getDb(),
+        maybeCurrentUser.id,
+        maybeSlug,
+      );
+    }
+  }
+
   return {
+    currentUser,
     generator: maybeGenerator,
     item: maybeItem,
+    presets,
+    presetsEnabled,
     related: buildRelatedDiscoveryItems(items, maybeItem),
   };
 }
@@ -253,6 +285,14 @@ export default function GeneratorDetail({ loaderData }: Route.ComponentProps) {
         </div>
 
         <div className="generator-layout-side">
+          <GeneratorPresetPanel
+            currentUser={loaderData.currentUser}
+            generatorSlug={loaderData.generator.slug}
+            presets={loaderData.presets}
+            presetsEnabled={loaderData.presetsEnabled}
+            returnTo={`/generators/${loaderData.generator.slug}`}
+            values={values}
+          />
           <GeneratedArtifactPanel
             artifact={artifact}
             statusMessage={statusMessage}

@@ -1,10 +1,16 @@
-import type { Prisma, PrismaClient } from "@prisma/client";
+import type { PrismaClient } from "@prisma/client";
 
 import type { PendingIntent } from "~/lib/auth/session.server";
-import { bookmarksListName, ensureBookmarksList } from "~/lib/library/lists.server";
+import {
+  bookmarksListName,
+  ensureBookmarksList,
+} from "~/lib/library/lists.server";
 
-type LibraryDb = Pick<PrismaClient, "$transaction" | "savedPrintList" | "savedPrintListItem">;
-type LibraryTx = Prisma.TransactionClient;
+type LibraryDb = Pick<
+  PrismaClient,
+  "$transaction" | "savedPrintList" | "savedPrintListItem"
+>;
+type LibraryTx = Pick<PrismaClient, "savedPrintList" | "savedPrintListItem">;
 
 export class LibraryMutationError extends Error {
   status: number;
@@ -24,8 +30,8 @@ async function requireOwnedList(tx: LibraryTx, userId: string, listId: string) {
   const maybeList = await tx.savedPrintList.findFirst({
     where: {
       id: listId,
-      userId
-    }
+      userId,
+    },
   });
 
   if (!maybeList) {
@@ -35,22 +41,30 @@ async function requireOwnedList(tx: LibraryTx, userId: string, listId: string) {
   return maybeList;
 }
 
-export async function savePrintToBookmarks(db: LibraryDb, userId: string, printSlug: string) {
-  return db.$transaction(async (tx) => {
-    const bookmarks = await ensureBookmarksList(tx as unknown as LibraryDb, userId);
+export async function savePrintToBookmarks(
+  db: LibraryDb,
+  userId: string,
+  printSlug: string,
+) {
+  return db.$transaction(async (transactionClient) => {
+    const tx = transactionClient as unknown as LibraryTx;
+    const bookmarks = await ensureBookmarksList(
+      tx as unknown as LibraryDb,
+      userId,
+    );
 
     await tx.savedPrintListItem.upsert({
       create: {
         listId: bookmarks.id,
-        printSlug
+        printSlug,
       },
       update: {},
       where: {
         listId_printSlug: {
           listId: bookmarks.id,
-          printSlug
-        }
-      }
+          printSlug,
+        },
+      },
     });
 
     return bookmarks;
@@ -60,16 +74,20 @@ export async function savePrintToBookmarks(db: LibraryDb, userId: string, printS
 export async function removePrintFromBookmarks(
   db: LibraryDb,
   userId: string,
-  printSlug: string
+  printSlug: string,
 ) {
-  return db.$transaction(async (tx) => {
-    const bookmarks = await ensureBookmarksList(tx as unknown as LibraryDb, userId);
+  return db.$transaction(async (transactionClient) => {
+    const tx = transactionClient as unknown as LibraryTx;
+    const bookmarks = await ensureBookmarksList(
+      tx as unknown as LibraryDb,
+      userId,
+    );
 
     await tx.savedPrintListItem.deleteMany({
       where: {
         listId: bookmarks.id,
-        printSlug
-      }
+        printSlug,
+      },
     });
 
     return bookmarks;
@@ -79,7 +97,7 @@ export async function removePrintFromBookmarks(
 export async function createCustomList(
   db: LibraryDb,
   userId: string,
-  name: string
+  name: string,
 ) {
   const normalizedName = normalizeListName(name);
 
@@ -95,8 +113,8 @@ export async function createCustomList(
     data: {
       kind: "CUSTOM",
       name: normalizedName,
-      userId
-    }
+      userId,
+    },
   });
 }
 
@@ -104,7 +122,7 @@ export async function renameCustomList(
   db: LibraryDb,
   userId: string,
   listId: string,
-  name: string
+  name: string,
 ) {
   const normalizedName = normalizeListName(name);
 
@@ -112,7 +130,8 @@ export async function renameCustomList(
     throw new LibraryMutationError("List name is required.");
   }
 
-  return db.$transaction(async (tx) => {
+  return db.$transaction(async (transactionClient) => {
+    const tx = transactionClient as unknown as LibraryTx;
     const list = await requireOwnedList(tx, userId, listId);
 
     if (list.kind === "BOOKMARKS") {
@@ -121,11 +140,11 @@ export async function renameCustomList(
 
     return tx.savedPrintList.update({
       data: {
-        name: normalizedName
+        name: normalizedName,
       },
       where: {
-        id: list.id
-      }
+        id: list.id,
+      },
     });
   });
 }
@@ -133,9 +152,10 @@ export async function renameCustomList(
 export async function deleteCustomList(
   db: LibraryDb,
   userId: string,
-  listId: string
+  listId: string,
 ) {
-  return db.$transaction(async (tx) => {
+  return db.$transaction(async (transactionClient) => {
+    const tx = transactionClient as unknown as LibraryTx;
     const list = await requireOwnedList(tx, userId, listId);
 
     if (list.kind === "BOOKMARKS") {
@@ -144,8 +164,8 @@ export async function deleteCustomList(
 
     await tx.savedPrintList.delete({
       where: {
-        id: list.id
-      }
+        id: list.id,
+      },
     });
 
     return list;
@@ -156,23 +176,24 @@ export async function addPrintToList(
   db: LibraryDb,
   userId: string,
   listId: string,
-  printSlug: string
+  printSlug: string,
 ) {
-  return db.$transaction(async (tx) => {
+  return db.$transaction(async (transactionClient) => {
+    const tx = transactionClient as unknown as LibraryTx;
     await requireOwnedList(tx, userId, listId);
 
     return tx.savedPrintListItem.upsert({
       create: {
         listId,
-        printSlug
+        printSlug,
       },
       update: {},
       where: {
         listId_printSlug: {
           listId,
-          printSlug
-        }
-      }
+          printSlug,
+        },
+      },
     });
   });
 }
@@ -181,16 +202,17 @@ export async function removePrintFromList(
   db: LibraryDb,
   userId: string,
   listId: string,
-  printSlug: string
+  printSlug: string,
 ) {
-  return db.$transaction(async (tx) => {
+  return db.$transaction(async (transactionClient) => {
+    const tx = transactionClient as unknown as LibraryTx;
     await requireOwnedList(tx, userId, listId);
 
     await tx.savedPrintListItem.deleteMany({
       where: {
         listId,
-        printSlug
-      }
+        printSlug,
+      },
     });
 
     return { listId, printSlug };
@@ -200,50 +222,65 @@ export async function removePrintFromList(
 export async function replayPendingLibraryIntent(
   db: LibraryDb,
   userId: string,
-  pendingIntent: PendingIntent
+  pendingIntent: PendingIntent,
 ) {
   switch (pendingIntent.kind) {
     case "save-bookmark":
       await savePrintToBookmarks(db, userId, pendingIntent.printSlug);
       return {
         kind: "success" as const,
-        message: "Saved to Bookmarks."
+        message: "Saved to Bookmarks.",
       };
     case "remove-bookmark":
       await removePrintFromBookmarks(db, userId, pendingIntent.printSlug);
       return {
         kind: "success" as const,
-        message: "Removed from Bookmarks."
+        message: "Removed from Bookmarks.",
       };
     case "create-list":
       await createCustomList(db, userId, pendingIntent.name);
       return {
         kind: "success" as const,
-        message: "List created."
+        message: "List created.",
       };
     case "rename-list":
-      await renameCustomList(db, userId, pendingIntent.listId, pendingIntent.name);
+      await renameCustomList(
+        db,
+        userId,
+        pendingIntent.listId,
+        pendingIntent.name,
+      );
       return {
         kind: "success" as const,
-        message: "List renamed."
+        message: "List renamed.",
       };
     case "delete-list":
       await deleteCustomList(db, userId, pendingIntent.listId);
       return {
         kind: "success" as const,
-        message: "List deleted."
+        message: "List deleted.",
       };
     case "add-print-to-list":
-      await addPrintToList(db, userId, pendingIntent.listId, pendingIntent.printSlug);
+      await addPrintToList(
+        db,
+        userId,
+        pendingIntent.listId,
+        pendingIntent.printSlug,
+      );
       return {
         kind: "success" as const,
-        message: "Print added to list."
+        message: "Print added to list.",
       };
     case "remove-print-from-list":
-      await removePrintFromList(db, userId, pendingIntent.listId, pendingIntent.printSlug);
+      await removePrintFromList(
+        db,
+        userId,
+        pendingIntent.listId,
+        pendingIntent.printSlug,
+      );
       return {
         kind: "success" as const,
-        message: "Print removed from list."
+        message: "Print removed from list.",
       };
   }
 }
