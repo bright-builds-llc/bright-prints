@@ -13,12 +13,12 @@
 
 **4 phases** | **12 v1.1 requirements mapped** | **All v1.1 requirements covered ✓**
 
-| # | Phase | Goal | Requirements | Success Criteria |
-|---|---|---|---|---|
-| 8 | Magic UI Adaptation Baseline | Establish shared React/Tailwind 4 UI primitives adapted from selected Magic UI patterns. | UIG-01, UIG-02 | 3 |
-| 9 | Saved Generator Presets | Let signed-in users save, list, rename, delete, and recognize generator presets. | PSET-01, PSET-02, PSET-03, GENW-01 | 3 |
-| 10 | Preset Reuse and Library Integration | Connect saved presets back into the generator workflow and the user library. | PSET-04, GENW-02, GENW-03, GLIB-01, GLIB-02 | 3 |
-| 11 | Cross-Surface UX Upgrade | Apply the new shared UI layer to the highest-leverage surfaces and finish the milestone polish. | UIG-03 | 3 |
+| #   | Phase                                | Goal                                                                                            | Requirements                                | Success Criteria |
+| --- | ------------------------------------ | ----------------------------------------------------------------------------------------------- | ------------------------------------------- | ---------------- |
+| 8   | Magic UI Adaptation Baseline         | Establish shared React/Tailwind 4 UI primitives adapted from selected Magic UI patterns.        | UIG-01, UIG-02                              | 3                |
+| 9   | Saved Generator Presets              | Let signed-in users save, list, rename, delete, and recognize generator presets.                | PSET-01, PSET-02, PSET-03, GENW-01          | 3                |
+| 10  | Preset Reuse and Library Integration | Connect saved presets back into the generator workflow and the user library.                    | PSET-04, GENW-02, GENW-03, GLIB-01, GLIB-02 | 3                |
+| 11  | Cross-Surface UX Upgrade             | Apply the new shared UI layer to the highest-leverage surfaces and finish the milestone polish. | UIG-03                                      | 3                |
 
 ## Phase Details
 
@@ -28,7 +28,7 @@
 
 **Requirements:** UIG-01, UIG-02
 
-**Status:** Not started
+**Status:** Complete (verified 2026-04-09)
 
 **Success criteria:**
 
@@ -97,4 +97,5 @@
 - v1.0 planning artifacts and audit remain under `.planning/milestones/`.
 
 ---
-_Last updated: 2026-04-09 after creating the v1.1 roadmap_
+
+_Last updated: 2026-04-09 after Phase 8 verification_

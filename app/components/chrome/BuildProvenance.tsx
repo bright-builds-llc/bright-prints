@@ -1,3 +1,9 @@
+import { useState } from "react";
+
+import { LuminousPanel } from "~/components/ui/LuminousPanel";
+import { ShimmerActionButton } from "~/components/ui/ShimmerAction";
+import { ShimmerText } from "~/components/ui/ShimmerText";
+
 type BuildProvenanceProps = {
   buildInfo: {
     commit: string | null;
@@ -11,21 +17,29 @@ function fallback(value: string | null) {
 }
 
 export function BuildProvenance({ buildInfo }: BuildProvenanceProps) {
+  const [copied, setCopied] = useState(false);
   const summary = [
     `Version: ${fallback(buildInfo.version)}`,
     `Commit: ${fallback(buildInfo.commit)}`,
-    `Built: ${fallback(buildInfo.timestamp)}`
+    `Built: ${fallback(buildInfo.timestamp)}`,
   ].join("\n");
 
-  async function handleCopy(event: React.MouseEvent<HTMLButtonElement>) {
+  async function handleCopy() {
     await navigator.clipboard.writeText(summary);
-    event.currentTarget.textContent = "Copied";
+    setCopied(true);
   }
 
   return (
-    <footer className="build-provenance" aria-label="Build provenance">
+    <LuminousPanel
+      as="footer"
+      className="build-provenance"
+      tone="paper"
+      aria-label="Build provenance"
+    >
       <div className="build-provenance-copy">
-        <p className="eyebrow">Build Provenance</p>
+        <p className="eyebrow">
+          <ShimmerText tone="accent">Build Provenance</ShimmerText>
+        </p>
         <dl className="build-provenance-grid">
           <div>
             <dt>Version</dt>
@@ -41,9 +55,9 @@ export function BuildProvenance({ buildInfo }: BuildProvenanceProps) {
           </div>
         </dl>
       </div>
-      <button className="home-secondary-action" onClick={handleCopy} type="button">
-        Copy Build Summary
-      </button>
-    </footer>
+      <ShimmerActionButton onClick={handleCopy} tone="secondary" type="button">
+        {copied ? "Copied" : "Copy Build Summary"}
+      </ShimmerActionButton>
+    </LuminousPanel>
   );
 }

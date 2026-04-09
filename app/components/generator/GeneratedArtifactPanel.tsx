@@ -1,5 +1,8 @@
 import type { GeneratedSignArtifact } from "~/lib/generators/sign";
 
+import { LuminousPanel } from "~/components/ui/LuminousPanel";
+import { ShimmerActionAnchor } from "~/components/ui/ShimmerAction";
+
 type GeneratedArtifactPanelProps = {
   artifact: GeneratedSignArtifact | null;
   statusMessage: string | null;
@@ -7,24 +10,33 @@ type GeneratedArtifactPanelProps = {
 
 export function GeneratedArtifactPanel({
   artifact,
-  statusMessage
+  statusMessage,
 }: GeneratedArtifactPanelProps) {
   return (
-    <section className="generator-artifact-shell" aria-labelledby="generator-artifact-heading">
+    <LuminousPanel
+      as="section"
+      className="generator-artifact-shell"
+      tone="accent"
+      aria-labelledby="generator-artifact-heading"
+    >
       <div className="generator-section-head">
         <p className="eyebrow">Output</p>
         <h2 id="generator-artifact-heading">Generated artifact</h2>
       </div>
 
       <p aria-live="polite" className="generator-status-message">
-        {statusMessage ?? "Generate a sign to see the downloadable artifact and metadata."}
+        {statusMessage ??
+          "Generate a sign to see the downloadable artifact and metadata."}
       </p>
 
       {artifact ? (
         <div className="generator-artifact-card">
-          <a className="home-primary-action" download={artifact.downloadName} href={artifact.objectUrl}>
+          <ShimmerActionAnchor
+            download={artifact.downloadName}
+            href={artifact.objectUrl}
+          >
             Download 3MF
-          </a>
+          </ShimmerActionAnchor>
           <dl className="generator-metadata-grid">
             <div>
               <dt>Text</dt>
@@ -61,6 +73,6 @@ export function GeneratedArtifactPanel({
           </dl>
         </div>
       ) : null}
-    </section>
+    </LuminousPanel>
   );
 }

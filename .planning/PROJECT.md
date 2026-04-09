@@ -36,13 +36,14 @@ Users can quickly discover beautiful 3D prints and generate or download the righ
 - ✓ Users can create accounts, sign in, bookmark prints, create custom lists, and manage a personal library. — v1.0
 - ✓ Users can configure a sign generator in-browser and download a real `.3mf` artifact with generated-model metadata. — v1.0
 - ✓ The product records provider-agnostic physical-print interest, shows visible build provenance, and preserves open-source privacy boundaries. — v1.0
+- ✓ Bright Prints exposes repo-owned shared UI primitives adapted from selected Magic UI patterns. — Phase 8
+- ✓ Adapted UI motion and emphasis patterns preserve accessibility and task clarity on the first adopted surfaces. — Phase 8
 
 ### Active
 
 - [ ] Signed-in users can save, name, revisit, and redownload generator presets from their account.
 - [ ] Generator outputs feel persistent and reusable rather than like one-off downloads.
-- [ ] Bright Prints adopts selected Magic UI patterns where they improve UX while staying native to React Router and Tailwind 4.
-- [ ] Shared UI primitives become strong enough that future discovery, detail, generator, and library work can build on them consistently.
+- [ ] The new shared primitive layer expands across generator, library, and at least one discovery or print-detail surface where it materially improves UX.
 
 ### Out of Scope
 
@@ -70,23 +71,24 @@ Users can quickly discover beautiful 3D prints and generate or download the righ
 
 ## Key Decisions
 
-| Decision | Rationale | Outcome |
-|----------|-----------|---------|
-| Prioritize generator/download experience over storefront depth when scope conflicts emerge | The strongest differentiator is customizable generation plus trustworthy downloadable prints | ✓ Validated in v1.0 |
-| Start with Peter-owned content but design for future multi-creator support | v1 should stay focused, but the model should not trap the product in a single-creator architecture | ✓ Validated in v1.0 |
-| Use repo-backed content and model files initially | Open-source-first workflow and diff-friendly content are valuable early | ✓ Good |
-| Treat physical-print commerce as incremental in v1 | Interest capture and metadata groundwork were enough for first release | ✓ Good |
-| Evaluate Shopify as a leverage layer rather than assuming a fully custom commerce stack | Existing commerce tooling may still reduce future delivery cost | — Revisit in a future commerce milestone |
-| Use React Router 7 as the primary web framework | It fit the product and deployment model without adding platform-specific gravity | ✓ Good |
-| Keep `3mf` generation entirely client-side | Browser-side generation matched the desired UX and avoided backend CAD infrastructure | ✓ Good |
-| Use Bun for package management/build while keeping Node for production runtime | Bun improved workflow consistency without forcing a production-runtime rewrite | ✓ Good |
-| Adopt Magic UI selectively rather than as a blanket dependency rewrite | Bright Prints needs React/Tailwind-native UX improvements without surrendering control of the product surface | — Pending |
+| Decision                                                                                   | Rationale                                                                                                     | Outcome                                  |
+| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------- | ---------------------------------------- |
+| Prioritize generator/download experience over storefront depth when scope conflicts emerge | The strongest differentiator is customizable generation plus trustworthy downloadable prints                  | ✓ Validated in v1.0                      |
+| Start with Peter-owned content but design for future multi-creator support                 | v1 should stay focused, but the model should not trap the product in a single-creator architecture            | ✓ Validated in v1.0                      |
+| Use repo-backed content and model files initially                                          | Open-source-first workflow and diff-friendly content are valuable early                                       | ✓ Good                                   |
+| Treat physical-print commerce as incremental in v1                                         | Interest capture and metadata groundwork were enough for first release                                        | ✓ Good                                   |
+| Evaluate Shopify as a leverage layer rather than assuming a fully custom commerce stack    | Existing commerce tooling may still reduce future delivery cost                                               | — Revisit in a future commerce milestone |
+| Use React Router 7 as the primary web framework                                            | It fit the product and deployment model without adding platform-specific gravity                              | ✓ Good                                   |
+| Keep `3mf` generation entirely client-side                                                 | Browser-side generation matched the desired UX and avoided backend CAD infrastructure                         | ✓ Good                                   |
+| Use Bun for package management/build while keeping Node for production runtime             | Bun improved workflow consistency without forcing a production-runtime rewrite                                | ✓ Good                                   |
+| Adopt Magic UI selectively rather than as a blanket dependency rewrite                     | Bright Prints needs React/Tailwind-native UX improvements without surrendering control of the product surface | ✓ Good                                   |
 
 ## Evolution
 
 This document evolves at phase transitions and milestone boundaries.
 
 **After each phase transition:**
+
 1. Requirements invalidated? → Move to Out of Scope with reason
 2. Requirements validated? → Move to Validated with phase reference
 3. New requirements emerged? → Add to Active
@@ -94,6 +96,7 @@ This document evolves at phase transitions and milestone boundaries.
 5. "What This Is" still accurate? → Update if drifted
 
 **After each milestone:**
+
 1. Full review of all sections
 2. Core Value check — still the right priority?
 3. Audit Out of Scope — reasons still valid?
@@ -111,4 +114,5 @@ This document evolves at phase transitions and milestone boundaries.
 </details>
 
 ---
-_Last updated: 2026-04-09 after starting milestone v1.1_
+
+_Last updated: 2026-04-09 after Phase 8 verification_

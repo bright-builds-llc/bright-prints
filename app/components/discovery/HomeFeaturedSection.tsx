@@ -1,6 +1,6 @@
-import { Link } from "react-router";
-
 import type { DiscoveryItem } from "~/lib/discovery/model";
+
+import { ShimmerActionLink } from "~/components/ui/ShimmerAction";
 
 import { DiscoveryCard } from "./DiscoveryCard";
 import { SectionHeading } from "./SectionHeading";
@@ -9,9 +9,7 @@ type HomeFeaturedSectionProps = {
   items: DiscoveryItem[];
 };
 
-export function HomeFeaturedSection({
-  items
-}: HomeFeaturedSectionProps) {
+export function HomeFeaturedSection({ items }: HomeFeaturedSectionProps) {
   return (
     <section className="home-section">
       <SectionHeading
@@ -27,9 +25,9 @@ export function HomeFeaturedSection({
       </div>
 
       <div className="mt-6 flex flex-wrap gap-3">
-        <Link className="home-primary-action" prefetch="intent" to="/catalog">
+        <ShimmerActionLink prefetch="intent" to="/catalog">
           View Full Catalog
-        </Link>
+        </ShimmerActionLink>
       </div>
     </section>
   );

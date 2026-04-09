@@ -8,7 +8,6 @@
 .generator-hero,
 .generator-form-shell,
 .generator-preview-shell,
-.generator-artifact-shell,
 .generator-related {
   border: 1px solid rgba(19, 32, 43, 0.08);
   border-radius: 1.6rem;
@@ -20,7 +19,6 @@
 .generator-hero,
 .generator-form-shell,
 .generator-preview-shell,
-.generator-artifact-shell,
 .generator-related {
   padding: 1.25rem;
 }
@@ -63,6 +61,10 @@
 .generator-layout-side {
   display: grid;
   gap: 1rem;
+}
+
+.generator-artifact-shell {
+  padding: 1.25rem;
 }
 
 .generator-field {
@@ -111,7 +113,11 @@
   width: 100%;
   height: auto;
   border-radius: 1.2rem;
-  background: linear-gradient(180deg, rgba(20, 94, 86, 0.08), rgba(255, 255, 255, 0.9));
+  background: linear-gradient(
+    180deg,
+    rgba(20, 94, 86, 0.08),
+    rgba(255, 255, 255, 0.9)
+  );
 }
 
 .generator-artifact-card {

@@ -25,8 +25,8 @@
 
 ### UI System Upgrade
 
-- [ ] **UIG-01**: The app exposes shared React/Tailwind 4 UI primitives adapted from selected Magic UI patterns rather than route-local one-off copies.
-- [ ] **UIG-02**: Adapted Magic UI motion and visual effects preserve accessibility and do not obscure core generator, file, trust, or library tasks.
+- [x] **UIG-01**: The app exposes shared React/Tailwind 4 UI primitives adapted from selected Magic UI patterns rather than route-local one-off copies.
+- [x] **UIG-02**: Adapted Magic UI motion and visual effects preserve accessibility and do not obscure core generator, file, trust, or library tasks.
 - [ ] **UIG-03**: At least the generator, library, and one discovery or print-detail surface use the new shared primitive layer where it measurably improves UX.
 
 ## Future Requirements
@@ -45,29 +45,29 @@
 
 ## Out of Scope
 
-| Feature | Reason |
-|---------|--------|
-| Server-stored generated `.3mf` binaries in v1.1 | Saved presets are the priority; binary storage adds cost and complexity before the reuse loop is proven |
-| A broad full-site Magic UI rewrite | This milestone should adopt only the patterns that materially improve product flows |
-| Full live checkout in v1.1 | Commerce groundwork is already in place, but checkout breadth would distract from the generator-first product loop |
-| Multi-creator publishing in v1.1 | The architecture supports it later, but this milestone should deepen first-party retention first |
+| Feature                                         | Reason                                                                                                             |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| Server-stored generated `.3mf` binaries in v1.1 | Saved presets are the priority; binary storage adds cost and complexity before the reuse loop is proven            |
+| A broad full-site Magic UI rewrite              | This milestone should adopt only the patterns that materially improve product flows                                |
+| Full live checkout in v1.1                      | Commerce groundwork is already in place, but checkout breadth would distract from the generator-first product loop |
+| Multi-creator publishing in v1.1                | The architecture supports it later, but this milestone should deepen first-party retention first                   |
 
 ## Traceability
 
-| Requirement | Phase | Status |
-|-------------|-------|--------|
-| PSET-01 | Phase 9 | Pending |
-| PSET-02 | Phase 9 | Pending |
-| PSET-03 | Phase 9 | Pending |
-| PSET-04 | Phase 10 | Pending |
-| GENW-01 | Phase 9 | Pending |
-| GENW-02 | Phase 10 | Pending |
-| GENW-03 | Phase 10 | Pending |
-| GLIB-01 | Phase 10 | Pending |
-| GLIB-02 | Phase 10 | Pending |
-| UIG-01 | Phase 8 | Pending |
-| UIG-02 | Phase 8 | Pending |
-| UIG-03 | Phase 11 | Pending |
+| Requirement | Phase    | Status   |
+| ----------- | -------- | -------- |
+| PSET-01     | Phase 9  | Pending  |
+| PSET-02     | Phase 9  | Pending  |
+| PSET-03     | Phase 9  | Pending  |
+| PSET-04     | Phase 10 | Pending  |
+| GENW-01     | Phase 9  | Pending  |
+| GENW-02     | Phase 10 | Pending  |
+| GENW-03     | Phase 10 | Pending  |
+| GLIB-01     | Phase 10 | Pending  |
+| GLIB-02     | Phase 10 | Pending  |
+| UIG-01      | Phase 8  | Complete |
+| UIG-02      | Phase 8  | Complete |
+| UIG-03      | Phase 11 | Pending  |
 
 **Coverage:**
 
@@ -76,5 +76,6 @@
 - Unmapped: 0 ✓
 
 ---
-*Requirements defined: 2026-04-09*
-*Last updated: 2026-04-09 after creating the v1.1 roadmap*
+
+_Requirements defined: 2026-04-09_
+_Last updated: 2026-04-09 after Phase 8 verification_
