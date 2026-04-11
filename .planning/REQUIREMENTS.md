@@ -10,18 +10,18 @@
 - [x] **PSET-01**: Signed-in user can save the current generator configuration as a named preset.
 - [x] **PSET-02**: Signed-in user can view a list of saved presets for a generator.
 - [x] **PSET-03**: Signed-in user can rename or delete a saved preset.
-- [ ] **PSET-04**: Signed-in user can reopen a saved preset and repopulate the generator inputs from it.
+- [x] **PSET-04**: Signed-in user can reopen a saved preset and repopulate the generator inputs from it.
 
 ### Generator Workflow
 
 - [x] **GENW-01**: Signed-in user can tell whether the current generator values are unsaved, saved, or edited from a saved preset.
-- [ ] **GENW-02**: User can regenerate and redownload output from a reopened preset without manually re-entering the saved parameters.
-- [ ] **GENW-03**: Saved preset entries show enough metadata for the user to recognize what they are opening before entering the generator route.
+- [x] **GENW-02**: User can regenerate and redownload output from a reopened preset without manually re-entering the saved parameters.
+- [x] **GENW-03**: Saved preset entries show enough metadata for the user to recognize what they are opening before entering the generator route.
 
 ### Library Integration
 
-- [ ] **GLIB-01**: Signed-in user can access saved generator presets from their library.
-- [ ] **GLIB-02**: Library links can open the generator editor directly in preset context.
+- [x] **GLIB-01**: Signed-in user can access saved generator presets from their library.
+- [x] **GLIB-02**: Library links can open the generator editor directly in preset context.
 
 ### UI System Upgrade
 
@@ -59,12 +59,12 @@
 | PSET-01     | Phase 9  | Complete |
 | PSET-02     | Phase 9  | Complete |
 | PSET-03     | Phase 9  | Complete |
-| PSET-04     | Phase 10 | Pending  |
+| PSET-04     | Phase 10 | Complete |
 | GENW-01     | Phase 9  | Complete |
-| GENW-02     | Phase 10 | Pending  |
-| GENW-03     | Phase 10 | Pending  |
-| GLIB-01     | Phase 10 | Pending  |
-| GLIB-02     | Phase 10 | Pending  |
+| GENW-02     | Phase 10 | Complete |
+| GENW-03     | Phase 10 | Complete |
+| GLIB-01     | Phase 10 | Complete |
+| GLIB-02     | Phase 10 | Complete |
 | UIG-01      | Phase 8  | Complete |
 | UIG-02      | Phase 8  | Complete |
 | UIG-03      | Phase 11 | Pending  |
@@ -78,4 +78,4 @@
 ---
 
 _Requirements defined: 2026-04-09_
-_Last updated: 2026-04-11 after Phase 9 verification_
+_Last updated: 2026-04-11 after Phase 10 verification_

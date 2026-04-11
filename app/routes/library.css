@@ -7,6 +7,9 @@
 .library-shell,
 .library-sidebar,
 .library-list-forms,
+.library-preset-card,
+.library-preset-empty,
+.library-preset-section,
 .library-empty-state,
 .library-grid-card {
   border: 1px solid rgba(19, 32, 43, 0.08);
@@ -18,6 +21,9 @@
 .library-shell,
 .library-sidebar,
 .library-list-forms,
+.library-preset-card,
+.library-preset-empty,
+.library-preset-section,
 .library-empty-state,
 .library-grid-card {
   padding: 1.25rem;
@@ -37,6 +43,7 @@
 }
 
 .library-shell p,
+.library-preset-head p,
 .library-empty-state p,
 .library-missing-note {
   margin: 0;
@@ -49,12 +56,36 @@
   gap: 1rem;
 }
 
+.library-preset-grid,
 .library-sidebar-links,
 .library-list-forms,
 .library-grid,
 .library-grid-actions {
   display: grid;
   gap: 0.8rem;
+}
+
+.library-preset-head,
+.library-preset-meta,
+.library-preset-copy {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.library-preset-copy h3 {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.library-preset-generator,
+.library-preset-updated {
+  margin: 0;
+  color: #475569;
+}
+
+.library-preset-card {
+  display: grid;
+  gap: 0.9rem;
 }
 
 .library-sidebar-link {
@@ -69,6 +100,7 @@
 }
 
 .library-sidebar-link:focus-visible,
+.library-preset-card a:focus-visible,
 .library-list-form input:focus-visible,
 .library-list-form button:focus-visible,
 .library-empty-state a:focus-visible,
@@ -121,6 +153,10 @@
 @media (min-width: 960px) {
   .library-page {
     padding: 2.5rem;
+  }
+
+  .library-preset-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .library-layout {

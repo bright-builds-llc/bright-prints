@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { buildLibraryModel } from "~/lib/library/model";
+import { buildSignGeneratorPresetComparisonKey } from "~/lib/generator-presets/model";
 import { creatorSchema, generatorSchema, printSchema } from "~/lib/content/schema";
 
 function buildContent() {
@@ -100,6 +101,7 @@ describe("buildLibraryModel", () => {
     // Arrange
     const model = buildLibraryModel({
       content: buildContent(),
+      generatorPresets: [],
       maybeSelectedListId: null,
       runtimeLists: [
         {
@@ -126,6 +128,7 @@ describe("buildLibraryModel", () => {
     // Arrange
     const model = buildLibraryModel({
       content: buildContent(),
+      generatorPresets: [],
       maybeSelectedListId: "bookmarks",
       runtimeLists: [
         {
@@ -142,5 +145,61 @@ describe("buildLibraryModel", () => {
       ctaHref: "/catalog?type=prints",
       title: "Bookmarks are empty"
     });
+  });
+
+  it("builds dedicated library preset entries with deep links", () => {
+    // Arrange
+    const model = buildLibraryModel({
+      content: buildContent(),
+      generatorPresets: [
+        {
+          comparisonKey: buildSignGeneratorPresetComparisonKey({
+            cornerRadiusMm: 6,
+            heightMm: 60,
+            text: "HELLO",
+            thicknessMm: 4,
+            widthMm: 120
+          }),
+          createdAt: "2026-04-11T00:00:00.000Z",
+          generatorSlug: "sign",
+          id: "preset-1",
+          name: "Desk Sign",
+          snapshot: {
+            kind: "sign-v1",
+            values: {
+              cornerRadiusMm: 6,
+              heightMm: 60,
+              text: "HELLO",
+              thicknessMm: 4,
+              widthMm: 120
+            }
+          },
+          summary: {
+            size: "120 x 60 mm",
+            text: "HELLO"
+          },
+          updatedAt: "2026-04-11T00:00:00.000Z"
+        }
+      ],
+      maybeSelectedListId: "bookmarks",
+      runtimeLists: [
+        {
+          id: "bookmarks",
+          items: [],
+          kind: "BOOKMARKS",
+          name: "Bookmarks"
+        }
+      ]
+    });
+
+    // Assert
+    expect(model.generatorPresets).toEqual([
+      expect.objectContaining({
+        generatorTitle: "Sign Generator",
+        href: "/generators/sign?preset=preset-1",
+        name: "Desk Sign",
+        text: "HELLO"
+      })
+    ]);
   });
 });

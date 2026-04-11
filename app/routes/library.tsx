@@ -4,6 +4,7 @@ import type { Route } from "./+types/library";
 import libraryStyles from "./library.css?url";
 
 import { LibraryListForms } from "~/components/library/LibraryListForms";
+import { LibraryPresetSection } from "~/components/library/LibraryPresetSection";
 import { LibraryPrintGrid } from "~/components/library/LibraryPrintGrid";
 import { LibrarySidebar } from "~/components/library/LibrarySidebar";
 import { loadPublicContent } from "~/lib/content/load.server";
@@ -16,6 +17,9 @@ export const links: Route.LinksFunction = () => [
 export async function loader({ request }: Route.LoaderArgs) {
   const { getCurrentUserFromRequest } = await import("~/lib/auth/session.server");
   const { getDb } = await import("~/lib/db.server");
+  const { loadGeneratorPresetLibraryEntries } = await import(
+    "~/lib/generator-presets/query.server"
+  );
   const { loadRuntimeLibraryLists } = await import("~/lib/library/query.server");
   const maybeCurrentUser = await getCurrentUserFromRequest(request);
 
@@ -24,10 +28,15 @@ export async function loader({ request }: Route.LoaderArgs) {
   }
 
   const content = await loadPublicContent();
+  const generatorPresets = await loadGeneratorPresetLibraryEntries(
+    getDb(),
+    maybeCurrentUser.id
+  );
   const runtimeLists = await loadRuntimeLibraryLists(getDb(), maybeCurrentUser.id);
   const url = new URL(request.url);
   const model = buildLibraryModel({
     content,
+    generatorPresets,
     maybeSelectedListId: url.searchParams.get("list"),
     runtimeLists
   });
@@ -49,9 +58,11 @@ export default function LibraryRoute({ loaderData }: Route.ComponentProps) {
         <p className="eyebrow">Personal Library</p>
         <h1>Saved prints stay close</h1>
         <p>
-          Bookmarks stay primary, custom lists stay nearby, and empty states send you back into discovery.
+          Bookmarks stay primary, generator presets stay close by, and empty states send you back into discovery.
         </p>
       </section>
+
+      <LibraryPresetSection presets={loaderData.model.generatorPresets} />
 
       <div className="library-layout">
         <div className="library-layout-side">

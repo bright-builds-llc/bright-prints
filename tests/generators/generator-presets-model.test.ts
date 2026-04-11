@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest"
 
 import { generatorSchema } from "~/lib/content/schema"
 import {
+  buildGeneratorPresetHref,
   buildSignGeneratorPresetComparisonKey,
   buildSignGeneratorPresetSnapshot,
   deriveGeneratorPresetState,
@@ -153,6 +154,28 @@ describe("generator preset model helpers", () => {
     })
   })
 
+  it("prefers the tracked preset when reopened state matches multiple presets", () => {
+    // Arrange
+    const preset = buildPreset()
+    const duplicatePreset = buildPreset({
+      id: "preset-2",
+      name: "Desk Sign Copy"
+    })
+
+    // Act
+    const state = deriveGeneratorPresetState({
+      currentComparisonKey: preset.comparisonKey,
+      maybeTrackedPresetId: duplicatePreset.id,
+      presets: [preset, duplicatePreset]
+    })
+
+    // Assert
+    expect(state).toEqual({
+      kind: "saved",
+      preset: duplicatePreset
+    })
+  })
+
   it("reports edited state when a tracked preset no longer matches", () => {
     // Arrange
     const preset = buildPreset()
@@ -176,5 +199,13 @@ describe("generator preset model helpers", () => {
       kind: "edited",
       preset
     })
+  })
+
+  it("builds deep links back into generator preset context", () => {
+    // Arrange / Act
+    const href = buildGeneratorPresetHref("sign", "preset-1")
+
+    // Assert
+    expect(href).toBe("/generators/sign?preset=preset-1")
   })
 })

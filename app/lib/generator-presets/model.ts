@@ -52,6 +52,10 @@ export class GeneratorPresetModelError extends Error {
   }
 }
 
+export function buildGeneratorPresetHref(generatorSlug: string, presetId: string) {
+  return `/generators/${generatorSlug}?preset=${presetId}`
+}
+
 export function normalizeGeneratorPresetName(name: string) {
   return name.trim()
 }
@@ -127,6 +131,21 @@ export function deriveGeneratorPresetState(options: {
   presets: RuntimeGeneratorPreset[]
 }): GeneratorPresetState {
   const { currentComparisonKey, maybeTrackedPresetId, presets } = options
+  const maybeTrackedPreset =
+    maybeTrackedPresetId
+      ? presets.find((preset) => preset.id === maybeTrackedPresetId) ?? null
+      : null
+
+  if (
+    maybeTrackedPreset &&
+    maybeTrackedPreset.comparisonKey === currentComparisonKey
+  ) {
+    return {
+      kind: "saved",
+      preset: maybeTrackedPreset
+    }
+  }
+
   const maybeMatchingPreset =
     presets.find((preset) => preset.comparisonKey === currentComparisonKey) ?? null
 
@@ -142,9 +161,6 @@ export function deriveGeneratorPresetState(options: {
       kind: "unsaved"
     }
   }
-
-  const maybeTrackedPreset =
-    presets.find((preset) => preset.id === maybeTrackedPresetId) ?? null
 
   if (!maybeTrackedPreset) {
     return {

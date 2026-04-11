@@ -1,6 +1,13 @@
 import type { RuntimeLibraryList } from "~/lib/library/query.server";
 import type { PublicContentIndex } from "~/lib/content/public";
+import {
+  findGeneratorBySlug,
+} from "~/lib/content/public";
 import { buildDiscoveryItems, type DiscoveryItem } from "~/lib/discovery/model";
+import {
+  buildGeneratorPresetHref,
+  type RuntimeGeneratorPreset,
+} from "~/lib/generator-presets/model";
 
 export type LibraryModel = {
   emptyState: {
@@ -9,6 +16,16 @@ export type LibraryModel = {
     description: string;
     title: string;
   } | null;
+  generatorPresets: Array<{
+    generatorSlug: string;
+    generatorTitle: string;
+    href: string;
+    id: string;
+    name: string;
+    size: string;
+    text: string;
+    updatedAt: string;
+  }>;
   lists: Array<{
     count: number;
     id: string;
@@ -48,17 +65,39 @@ function buildEmptyState(listName: string): LibraryModel["emptyState"] {
 
 export function buildLibraryModel(options: {
   content: PublicContentIndex;
+  generatorPresets: RuntimeGeneratorPreset[];
   maybeSelectedListId: string | null;
   runtimeLists: RuntimeLibraryList[];
 }): LibraryModel {
-  const { content, maybeSelectedListId, runtimeLists } = options;
+  const { content, generatorPresets, maybeSelectedListId, runtimeLists } = options;
   const discoveryPrints = buildDiscoveryItems(content).filter((item) => item.kind === "print");
   const selectedList =
     runtimeLists.find((list) => list.id === maybeSelectedListId) ?? runtimeLists[0];
+  const presetEntries = generatorPresets.flatMap((preset) => {
+    const maybeGenerator = findGeneratorBySlug(content, preset.generatorSlug);
+
+    if (!maybeGenerator) {
+      return [];
+    }
+
+    return [
+      {
+        generatorSlug: preset.generatorSlug,
+        generatorTitle: maybeGenerator.title,
+        href: buildGeneratorPresetHref(preset.generatorSlug, preset.id),
+        id: preset.id,
+        name: preset.name,
+        size: preset.summary.size,
+        text: preset.summary.text,
+        updatedAt: preset.updatedAt,
+      },
+    ];
+  });
 
   if (!selectedList) {
     return {
       emptyState: buildEmptyState("Bookmarks"),
+      generatorPresets: presetEntries,
       lists: [],
       selectedList: {
         id: "bookmarks",
@@ -100,6 +139,7 @@ export function buildLibraryModel(options: {
 
   return {
     emptyState: selectedPrints.length === 0 ? buildEmptyState(selectedList.name) : null,
+    generatorPresets: presetEntries,
     lists: runtimeLists.map((list) => ({
       count: list.items.length,
       id: list.id,

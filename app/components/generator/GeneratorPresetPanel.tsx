@@ -3,6 +3,7 @@ import { Link, useFetcher } from "react-router"
 
 import type { GeneratorRecord } from "~/lib/content/schema"
 import {
+  buildGeneratorPresetHref,
   buildSignGeneratorPresetComparisonKey,
   buildSignGeneratorPresetSnapshot,
   deriveGeneratorPresetState,
@@ -26,6 +27,7 @@ type PresetActionData = {
 type GeneratorPresetPanelProps = {
   currentUser: { id: string } | null
   generator: GeneratorRecord
+  maybeTrackedPresetId: string | null
   presets: RuntimeGeneratorPreset[]
   returnTo: string
   validation: SignGeneratorValidation
@@ -67,6 +69,13 @@ function PresetRow(props: {
       ) : null}
 
       <div className="generator-preset-inline-actions">
+        <Link
+          className="home-secondary-action"
+          prefetch="intent"
+          to={buildGeneratorPresetHref(preset.generatorSlug, preset.id)}
+        >
+          Open Preset
+        </Link>
         <renameFetcher.Form
           action="/actions/generator-presets"
           className="generator-preset-rename-form"
@@ -117,16 +126,21 @@ function PresetRow(props: {
 }
 
 export function GeneratorPresetPanel(props: GeneratorPresetPanelProps) {
-  const { currentUser, generator, presets, returnTo, validation, values } = props
+  const {
+    currentUser,
+    generator,
+    maybeTrackedPresetId,
+    presets,
+    returnTo,
+    validation,
+    values
+  } = props
   const saveFetcher = useFetcher<PresetActionData>()
   const [presetName, setPresetName] = useState("")
   const hasValidationIssues = Object.keys(validation.issues).length > 0
   const currentComparisonKey = buildSignGeneratorPresetComparisonKey(values)
   const maybeCurrentMatchingPreset =
     presets.find((preset) => preset.comparisonKey === currentComparisonKey) ?? null
-  const [initialTrackedPresetId] = useState<string | null>(
-    () => maybeCurrentMatchingPreset?.id ?? null
-  )
   const maybeSavedPresetId =
     saveFetcher.data?.ok &&
     saveFetcher.data.intent === "save-generator-preset" &&
@@ -139,7 +153,7 @@ export function GeneratorPresetPanel(props: GeneratorPresetPanelProps) {
   const presetState = deriveGeneratorPresetState({
     currentComparisonKey,
     maybeTrackedPresetId:
-      maybeCurrentMatchingPreset?.id ?? maybeSavedPresetId ?? initialTrackedPresetId,
+      maybeTrackedPresetId ?? maybeSavedPresetId ?? maybeCurrentMatchingPreset?.id ?? null,
     presets
   })
 
@@ -152,7 +166,7 @@ export function GeneratorPresetPanel(props: GeneratorPresetPanelProps) {
         <p className="eyebrow">Presets</p>
         <h2 id="generator-preset-heading">Save this setup</h2>
         <p>
-          Save a named preset for this generator, keep the list nearby, and track
+          Save a named preset for this generator, reopen it later, and track
           whether the current values still match a saved setup.
         </p>
       </div>

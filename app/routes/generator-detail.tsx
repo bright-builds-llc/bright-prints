@@ -46,6 +46,8 @@ export async function loader({ params, request }: Route.LoaderArgs) {
 
   const { getCurrentUserFromRequest } = await import("~/lib/auth/session.server");
   const maybeCurrentUser = await getCurrentUserFromRequest(request);
+  const url = new URL(request.url);
+  const maybeSelectedPresetId = url.searchParams.get("preset");
   let presets: Array<{
     comparisonKey: string;
     createdAt: string;
@@ -62,14 +64,44 @@ export async function loader({ params, request }: Route.LoaderArgs) {
     };
     updatedAt: string;
   }> = [];
+  let selectedPreset:
+    | {
+        comparisonKey: string;
+        createdAt: string;
+        generatorSlug: string;
+        id: string;
+        name: string;
+        snapshot: {
+          kind: "sign-v1";
+          values: SignGeneratorValues;
+        };
+        summary: {
+          size: string;
+          text: string;
+        };
+        updatedAt: string;
+      }
+    | null = null;
 
   if (maybeCurrentUser) {
     const { getDb } = await import("~/lib/db.server");
-    const { loadGeneratorPresets } = await import(
+    const { loadGeneratorPresetById, loadGeneratorPresets } = await import(
       "~/lib/generator-presets/query.server"
     );
 
     presets = await loadGeneratorPresets(getDb(), maybeCurrentUser.id, maybeSlug);
+
+    if (maybeSelectedPresetId) {
+      const maybePreset = await loadGeneratorPresetById(
+        getDb(),
+        maybeCurrentUser.id,
+        maybeSelectedPresetId
+      );
+
+      if (maybePreset?.generatorSlug === maybeSlug) {
+        selectedPreset = maybePreset;
+      }
+    }
   }
 
   return {
@@ -77,6 +109,7 @@ export async function loader({ params, request }: Route.LoaderArgs) {
     generator: maybeGenerator,
     item: maybeItem,
     presets,
+    selectedPreset,
     related: buildRelatedDiscoveryItems(items, maybeItem),
   };
 }
@@ -96,11 +129,16 @@ export function meta({ data }: Route.MetaArgs) {
   ];
 }
 
-export default function GeneratorDetail({ loaderData }: Route.ComponentProps) {
+function GeneratorDetailScreen({ loaderData }: Route.ComponentProps) {
   const [values, setValues] = useState<SignGeneratorValues>(() =>
-    getDefaultSignValues(loaderData.generator),
+    loaderData.selectedPreset?.snapshot.values ??
+      getDefaultSignValues(loaderData.generator),
   );
-  const [statusMessage, setStatusMessage] = useState<string | null>(null);
+  const [statusMessage, setStatusMessage] = useState<string | null>(
+    loaderData.selectedPreset
+      ? `Loaded "${loaderData.selectedPreset.name}". Generate 3MF to create a fresh download.`
+      : null,
+  );
   const [artifact, setArtifact] = useState<Awaited<
     ReturnType<typeof buildGeneratedSignArtifact>
   > | null>(null);
@@ -292,6 +330,7 @@ export default function GeneratorDetail({ loaderData }: Route.ComponentProps) {
           <GeneratorPresetPanel
             currentUser={loaderData.currentUser}
             generator={loaderData.generator}
+            maybeTrackedPresetId={loaderData.selectedPreset?.id ?? null}
             presets={loaderData.presets}
             returnTo={`/generators/${loaderData.generator.slug}`}
             validation={saveValidation}
@@ -312,4 +351,10 @@ export default function GeneratorDetail({ loaderData }: Route.ComponentProps) {
       ) : null}
     </main>
   );
+}
+
+export default function GeneratorDetail(props: Route.ComponentProps) {
+  const presetKey = props.loaderData.selectedPreset?.id ?? "default";
+
+  return <GeneratorDetailScreen key={presetKey} {...props} />;
 }

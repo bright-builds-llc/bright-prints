@@ -93,6 +93,7 @@ describe("generator preset panel", () => {
           element: createElement(GeneratorPresetPanel, {
             currentUser: { id: "user-1" },
             generator: signGenerator,
+            maybeTrackedPresetId: "preset-1",
             presets: [
               {
                 comparisonKey: buildSignGeneratorPresetComparisonKey(snapshot.values),
@@ -134,5 +135,7 @@ describe("generator preset panel", () => {
     expect(markup).toContain('Current values match &quot;Desk Sign&quot;.')
     expect(markup).toContain("Desk Sign")
     expect(markup).toContain("HELLO")
+    expect(markup).toContain("/generators/sign?preset=preset-1")
+    expect(markup).toContain("Open Preset")
   })
 })
