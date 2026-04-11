@@ -7,7 +7,7 @@
 ## Milestones
 
 - ✅ **v1.0 MVP** — [roadmap archive](./milestones/v1.0-ROADMAP.md), [requirements archive](./milestones/v1.0-REQUIREMENTS.md), and [audit](./milestones/v1.0-MILESTONE-AUDIT.md) (`tech_debt`, shipped 2026-04-09)
-- 🚧 **v1.1 Saved Generators and Magic UI Upgrade** — Phases 8-11 (in progress)
+- 🚧 **v1.1 Saved Generators and Magic UI Upgrade** — Phases 8-11 (all phases complete; ready for milestone completion)
 
 ## Summary
 
@@ -70,7 +70,7 @@
 
 **Requirements:** UIG-03
 
-**Status:** Not started
+**Status:** Complete (verified 2026-04-11)
 
 **Success criteria:**
 
@@ -98,4 +98,4 @@
 
 ---
 
-_Last updated: 2026-04-11 after Phase 10 verification_
+_Last updated: 2026-04-11 after Phase 11 verification_

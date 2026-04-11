@@ -1,5 +1,7 @@
 import { Link } from "react-router";
 
+import { LuminousPanel } from "~/components/ui/luminous-panel";
+
 type LibraryPresetSectionProps = {
   presets: Array<{
     generatorSlug: string;
@@ -22,23 +24,36 @@ function formatPresetDate(isoDate: string) {
 
 export function LibraryPresetSection({ presets }: LibraryPresetSectionProps) {
   return (
-    <section className="library-preset-section" aria-labelledby="library-preset-heading">
+    <LuminousPanel
+      aria-labelledby="library-preset-heading"
+      className="library-preset-section"
+      tone="accent"
+    >
       <div className="library-preset-head">
         <div>
           <p className="eyebrow">Generator Presets</p>
           <h2 id="library-preset-heading">Resume saved generator work</h2>
         </div>
         <p>
-          Jump straight back into generator context with the preset already loaded.
+          Jump straight back into generator context with the preset already
+          loaded.
         </p>
       </div>
 
       {presets.length > 0 ? (
         <div className="library-preset-grid">
           {presets.map((preset) => (
-            <article className="library-preset-card" key={preset.id}>
+            <LuminousPanel
+              as="article"
+              className="library-preset-card"
+              frameClassName="h-full"
+              key={preset.id}
+              tone="paper"
+            >
               <div className="library-preset-meta">
-                <p className="library-preset-generator">{preset.generatorTitle}</p>
+                <p className="library-preset-generator">
+                  {preset.generatorTitle}
+                </p>
                 <p className="library-preset-updated">
                   Updated {formatPresetDate(preset.updatedAt)}
                 </p>
@@ -48,20 +63,24 @@ export function LibraryPresetSection({ presets }: LibraryPresetSectionProps) {
                 <p>{preset.text}</p>
                 <p>{preset.size}</p>
               </div>
-              <Link className="home-secondary-action" prefetch="intent" to={preset.href}>
+              <Link
+                className="home-secondary-action"
+                prefetch="intent"
+                to={preset.href}
+              >
                 Open in Generator
               </Link>
-            </article>
+            </LuminousPanel>
           ))}
         </div>
       ) : (
-        <div className="library-preset-empty">
+        <LuminousPanel as="div" className="library-preset-empty" tone="paper">
           <p>
-            Save a generator preset first, then it will show up here as a quick reopen
-            launch point.
+            Save a generator preset first, then it will show up here as a quick
+            reopen launch point.
           </p>
-        </div>
+        </LuminousPanel>
       )}
-    </section>
+    </LuminousPanel>
   );
 }

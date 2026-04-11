@@ -10,19 +10,7 @@
 .generator-preview-shell,
 .generator-preset-shell,
 .generator-related {
-  border: 1px solid rgba(19, 32, 43, 0.08);
-  border-radius: 1.6rem;
-  background: rgba(255, 255, 255, 0.74);
-  backdrop-filter: blur(14px);
-}
-
-.generator-shell,
-.generator-hero,
-.generator-form-shell,
-.generator-preview-shell,
-.generator-preset-shell,
-.generator-related {
-  padding: 1.25rem;
+  min-width: 0;
 }
 
 .generator-shell {
@@ -63,10 +51,6 @@
 .generator-layout-side {
   display: grid;
   gap: 1rem;
-}
-
-.generator-artifact-shell {
-  padding: 1.25rem;
 }
 
 .generator-preset-shell {

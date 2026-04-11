@@ -11,18 +11,23 @@ import { PrintHeroActions } from "~/components/print-detail/PrintHeroActions";
 import { PrintSaveActions } from "~/components/print-detail/PrintSaveActions";
 import { PrintSpecsSection } from "~/components/print-detail/PrintSpecsSection";
 import { PrintTrustSection } from "~/components/print-detail/PrintTrustSection";
+import { LuminousPanel } from "~/components/ui/luminous-panel";
 import { findPrintBySlug } from "~/lib/content/public";
 import { loadPublicContent } from "~/lib/content/load.server";
 import { buildPrintDetailModel } from "~/lib/prints/detail";
-import { resolvePrintFileSections, resolvePrintHeroActions } from "~/lib/prints/launch";
+import {
+  resolvePrintFileSections,
+  resolvePrintHeroActions,
+} from "~/lib/prints/launch";
 
 export const links: Route.LinksFunction = () => [
-  { rel: "stylesheet", href: printDetailStyles }
+  { rel: "stylesheet", href: printDetailStyles },
 ];
 
 export async function loader({ params, request }: Route.LoaderArgs) {
   const content = await loadPublicContent();
-  const { getCurrentUserFromRequest } = await import("~/lib/auth/session.server");
+  const { getCurrentUserFromRequest } =
+    await import("~/lib/auth/session.server");
   const maybeCurrentUser = await getCurrentUserFromRequest(request);
   const maybeSlug = params.slug;
 
@@ -39,16 +44,20 @@ export async function loader({ params, request }: Route.LoaderArgs) {
   const detail = buildPrintDetailModel(content, maybePrint);
   const fileSections = resolvePrintFileSections({
     fileSections: detail.fileSections,
-    slug: maybePrint.slug
+    slug: maybePrint.slug,
   });
-  let customLists: Array<{ containsPrint: boolean; id: string; name: string }> = [];
+  let customLists: Array<{ containsPrint: boolean; id: string; name: string }> =
+    [];
 
   if (maybeCurrentUser) {
-    const { getCustomListSummaries } = await import(
-      "~/lib/library/lists.server"
-    );
+    const { getCustomListSummaries } =
+      await import("~/lib/library/lists.server");
     const { getDb } = await import("~/lib/db.server");
-    customLists = await getCustomListSummaries(getDb(), maybeCurrentUser.id, maybePrint.slug);
+    customLists = await getCustomListSummaries(
+      getDb(),
+      maybeCurrentUser.id,
+      maybePrint.slug,
+    );
   }
 
   return {
@@ -57,20 +66,24 @@ export async function loader({ params, request }: Route.LoaderArgs) {
       actionIntents: detail.actionIntents,
       fileSections,
       print: maybePrint,
-      siteOrigin: new URL(request.url).origin
+      siteOrigin: new URL(request.url).origin,
     }),
     customLists,
-    fileSections
+    fileSections,
   };
 }
 
 export function meta({ data }: Route.MetaArgs) {
   return [
-    { title: data ? `${data.hero.title} | Bright Prints` : "Print | Bright Prints" },
+    {
+      title: data
+        ? `${data.hero.title} | Bright Prints`
+        : "Print | Bright Prints",
+    },
     {
       content: data?.hero.summary ?? "Print detail page for Bright Prints.",
-      name: "description"
-    }
+      name: "description",
+    },
   ];
 }
 
@@ -86,9 +99,13 @@ export default function PrintDetail({ loaderData }: Route.ComponentProps) {
           <span>Print</span>
         </p>
 
-        <article className="print-detail-hero">
+        <LuminousPanel as="article" className="print-detail-hero" tone="paper">
           <div className="print-detail-poster">
-            <DiscoveryCard interactive={false} item={loaderData.posterItem} variant="hero" />
+            <DiscoveryCard
+              interactive={false}
+              item={loaderData.posterItem}
+              variant="hero"
+            />
           </div>
 
           <div className="print-detail-main">
@@ -104,10 +121,13 @@ export default function PrintDetail({ loaderData }: Route.ComponentProps) {
 
             <h1>{loaderData.hero.title}</h1>
             <p className="print-detail-summary">{loaderData.hero.summary}</p>
-            <p className="print-detail-description">{loaderData.hero.description}</p>
+            <p className="print-detail-description">
+              {loaderData.hero.description}
+            </p>
             <p className="print-detail-kicker">
-              The page now starts with the next real decision: understand the offer,
-              choose the right file path, and keep trust close to the action.
+              The page now starts with the next real decision: understand the
+              offer, choose the right file path, and keep trust close to the
+              action.
             </p>
 
             <PrintHeroActions
@@ -120,7 +140,7 @@ export default function PrintDetail({ loaderData }: Route.ComponentProps) {
               returnTo={`/prints/${loaderData.print.slug}`}
             />
           </div>
-        </article>
+        </LuminousPanel>
 
         <div className="print-detail-content">
           <div className="print-detail-content-main">
@@ -136,19 +156,22 @@ export default function PrintDetail({ loaderData }: Route.ComponentProps) {
           </div>
 
           <div className="print-detail-content-side">
-            <PrintSpecsSection guidance={loaderData.guidance} hero={loaderData.hero} />
+            <PrintSpecsSection
+              guidance={loaderData.guidance}
+              hero={loaderData.hero}
+            />
           </div>
         </div>
 
         {loaderData.relatedItems.length > 0 ? (
-          <section className="print-detail-related">
+          <LuminousPanel className="print-detail-related" tone="ink">
             <p className="eyebrow">More to Explore</p>
             <div className="print-detail-related-grid">
               {loaderData.relatedItems.map((item) => (
                 <DiscoveryCard key={item.id} item={item} variant="feature" />
               ))}
             </div>
-          </section>
+          </LuminousPanel>
         ) : null}
       </section>
     </main>

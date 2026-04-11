@@ -1,11 +1,16 @@
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
+import { createMemoryRouter, RouterProvider } from "react-router";
 import { describe, expect, it } from "vitest";
 
 import { BuildProvenance } from "~/components/chrome/BuildProvenance";
 import { SectionHeading } from "~/components/discovery/SectionHeading";
 import { GeneratedArtifactPanel } from "~/components/generator/GeneratedArtifactPanel";
+import { GeneratorPreview } from "~/components/generator/GeneratorPreview";
+import { LibraryPresetSection } from "~/components/library/LibraryPresetSection";
+import { PrintTrustSection } from "~/components/print-detail/PrintTrustSection";
 import { AnimatedShinyText } from "~/components/ui/animated-shiny-text";
+import { LuminousPanel } from "~/components/ui/luminous-panel";
 import { ShimmerButton } from "~/components/ui/shimmer-button";
 
 describe("Phase 8 Magic UI primitives", () => {
@@ -62,5 +67,90 @@ describe("Phase 8 Magic UI primitives", () => {
     expect(sectionMarkup).toContain("animate-shiny-text");
     expect(artifactMarkup).toContain("Generated artifact");
     expect(provenanceMarkup).toContain("animate-shimmer-slide");
+  });
+
+  it("renders the shared luminous panel wrapper without extra providers", () => {
+    // Arrange / Act
+    const panelMarkup = renderToStaticMarkup(
+      createElement(
+        LuminousPanel,
+        { className: "test-panel", tone: "accent" },
+        createElement("p", null, "Panel body"),
+      ),
+    );
+
+    // Assert
+    expect(panelMarkup).toContain("luminous-panel");
+    expect(panelMarkup).toContain("Panel body");
+  });
+
+  it("applies the shared surface layer to generator, library, and print-detail sections", () => {
+    // Arrange / Act
+    const previewMarkup = renderToStaticMarkup(
+      createElement(GeneratorPreview, {
+        definition: {
+          paddingMm: 4,
+          previewCellInsetRatio: 0.12,
+          textReliefMm: 0.8,
+          type: "sign-v1",
+        },
+        validation: {
+          issues: {},
+          sanitizedText: "HELLO",
+        },
+        values: {
+          cornerRadiusMm: 6,
+          heightMm: 60,
+          text: "HELLO",
+          thicknessMm: 4,
+          widthMm: 120,
+        },
+      }),
+    );
+    const presetRouter = createMemoryRouter(
+      [
+        {
+          element: createElement(LibraryPresetSection, {
+            presets: [
+              {
+                generatorSlug: "sign",
+                generatorTitle: "Sign Generator",
+                href: "/generators/sign?preset=preset-1",
+                id: "preset-1",
+                name: "Desk Sign",
+                size: "120 x 60 mm",
+                text: "HELLO",
+                updatedAt: "2026-04-11T00:00:00.000Z",
+              },
+            ],
+          }),
+          path: "/library",
+        },
+      ],
+      { initialEntries: ["/library"] },
+    );
+    const presetMarkup = renderToStaticMarkup(
+      createElement(RouterProvider, { router: presetRouter }),
+    );
+    const trustMarkup = renderToStaticMarkup(
+      createElement(PrintTrustSection, {
+        fields: [
+          {
+            href: null,
+            isUnavailable: true,
+            label: "License",
+            value: "Unavailable",
+          },
+        ],
+      }),
+    );
+
+    // Assert
+    expect(previewMarkup).toContain("luminous-panel");
+    expect(previewMarkup).toContain("Live sign preview");
+    expect(presetMarkup).toContain("luminous-panel");
+    expect(presetMarkup).toContain("Resume saved generator work");
+    expect(trustMarkup).toContain("luminous-panel");
+    expect(trustMarkup).toContain("Know what is here and what is not");
   });
 });

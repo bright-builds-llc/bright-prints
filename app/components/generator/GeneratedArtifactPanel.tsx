@@ -1,4 +1,5 @@
 import type { GeneratedSignArtifact } from "~/lib/generators/sign";
+import { LuminousPanel } from "~/components/ui/luminous-panel";
 
 type GeneratedArtifactPanelProps = {
   artifact: GeneratedSignArtifact | null;
@@ -10,9 +11,10 @@ export function GeneratedArtifactPanel({
   statusMessage,
 }: GeneratedArtifactPanelProps) {
   return (
-    <section
+    <LuminousPanel
       className="generator-artifact-shell"
       aria-labelledby="generator-artifact-heading"
+      tone="ink"
     >
       <div className="generator-section-head">
         <p className="eyebrow">Output</p>
@@ -69,6 +71,6 @@ export function GeneratedArtifactPanel({
           </dl>
         </div>
       ) : null}
-    </section>
+    </LuminousPanel>
   );
 }

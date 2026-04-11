@@ -32,21 +32,16 @@
 }
 
 .print-detail-hero,
-.print-file-section-card,
 .print-commerce-interest,
 .print-trust-section,
 .print-specs-section,
 .print-detail-related {
-  border: 1px solid rgba(19, 32, 43, 0.08);
-  border-radius: 1.6rem;
-  background: rgba(255, 255, 255, 0.72);
-  backdrop-filter: blur(16px);
+  min-width: 0;
 }
 
 .print-detail-hero {
   display: grid;
   gap: 1.25rem;
-  padding: 1.25rem;
 }
 
 .print-detail-poster {
@@ -201,16 +196,8 @@
   gap: 1rem;
 }
 
-.print-file-section-card,
-.print-commerce-interest,
-.print-trust-section,
-.print-specs-section,
-.print-detail-related {
+.print-file-section-card {
   padding: 1.25rem;
-}
-
-.print-detail-related {
-  background: rgba(255, 255, 255, 0.62);
 }
 
 .print-section-head {

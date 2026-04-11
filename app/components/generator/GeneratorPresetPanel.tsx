@@ -1,54 +1,55 @@
-import { useState } from "react"
-import { Link, useFetcher } from "react-router"
+import { useState } from "react";
+import { Link, useFetcher } from "react-router";
 
-import type { GeneratorRecord } from "~/lib/content/schema"
+import { LuminousPanel } from "~/components/ui/luminous-panel";
+import type { GeneratorRecord } from "~/lib/content/schema";
 import {
   buildGeneratorPresetHref,
   buildSignGeneratorPresetComparisonKey,
   buildSignGeneratorPresetSnapshot,
   deriveGeneratorPresetState,
   generatorPresetNameMaxLength,
-  type RuntimeGeneratorPreset
-} from "~/lib/generator-presets/model"
+  type RuntimeGeneratorPreset,
+} from "~/lib/generator-presets/model";
 import type {
   SignGeneratorValidation,
-  SignGeneratorValues
-} from "~/lib/generators/sign"
-import { ShimmerButton } from "~/components/ui/shimmer-button"
+  SignGeneratorValues,
+} from "~/lib/generators/sign";
+import { ShimmerButton } from "~/components/ui/shimmer-button";
 
 type PresetActionData = {
-  formError?: string | null
-  intent: string | null
-  name?: string
-  ok: boolean
-  presetId?: string
-}
+  formError?: string | null;
+  intent: string | null;
+  name?: string;
+  ok: boolean;
+  presetId?: string;
+};
 
 type GeneratorPresetPanelProps = {
-  currentUser: { id: string } | null
-  generator: GeneratorRecord
-  maybeTrackedPresetId: string | null
-  presets: RuntimeGeneratorPreset[]
-  returnTo: string
-  validation: SignGeneratorValidation
-  values: SignGeneratorValues
-}
+  currentUser: { id: string } | null;
+  generator: GeneratorRecord;
+  maybeTrackedPresetId: string | null;
+  presets: RuntimeGeneratorPreset[];
+  returnTo: string;
+  validation: SignGeneratorValidation;
+  values: SignGeneratorValues;
+};
 
 function formatPresetDate(isoDate: string) {
   return new Intl.DateTimeFormat("en-US", {
     day: "numeric",
-    month: "short"
-  }).format(new Date(isoDate))
+    month: "short",
+  }).format(new Date(isoDate));
 }
 
 function PresetRow(props: {
-  isTracked: boolean
-  preset: RuntimeGeneratorPreset
-  returnTo: string
+  isTracked: boolean;
+  preset: RuntimeGeneratorPreset;
+  returnTo: string;
 }) {
-  const { isTracked, preset, returnTo } = props
-  const renameFetcher = useFetcher<PresetActionData>()
-  const deleteFetcher = useFetcher<PresetActionData>()
+  const { isTracked, preset, returnTo } = props;
+  const renameFetcher = useFetcher<PresetActionData>();
+  const deleteFetcher = useFetcher<PresetActionData>();
 
   return (
     <li className="generator-preset-row">
@@ -116,13 +117,17 @@ function PresetRow(props: {
       </div>
 
       {renameFetcher.data?.formError ? (
-        <p className="generator-error-message">{renameFetcher.data.formError}</p>
+        <p className="generator-error-message">
+          {renameFetcher.data.formError}
+        </p>
       ) : null}
       {deleteFetcher.data?.formError ? (
-        <p className="generator-error-message">{deleteFetcher.data.formError}</p>
+        <p className="generator-error-message">
+          {deleteFetcher.data.formError}
+        </p>
       ) : null}
     </li>
-  )
+  );
 }
 
 export function GeneratorPresetPanel(props: GeneratorPresetPanelProps) {
@@ -133,34 +138,39 @@ export function GeneratorPresetPanel(props: GeneratorPresetPanelProps) {
     presets,
     returnTo,
     validation,
-    values
-  } = props
-  const saveFetcher = useFetcher<PresetActionData>()
-  const [presetName, setPresetName] = useState("")
-  const hasValidationIssues = Object.keys(validation.issues).length > 0
-  const currentComparisonKey = buildSignGeneratorPresetComparisonKey(values)
+    values,
+  } = props;
+  const saveFetcher = useFetcher<PresetActionData>();
+  const [presetName, setPresetName] = useState("");
+  const hasValidationIssues = Object.keys(validation.issues).length > 0;
+  const currentComparisonKey = buildSignGeneratorPresetComparisonKey(values);
   const maybeCurrentMatchingPreset =
-    presets.find((preset) => preset.comparisonKey === currentComparisonKey) ?? null
+    presets.find((preset) => preset.comparisonKey === currentComparisonKey) ??
+    null;
   const maybeSavedPresetId =
     saveFetcher.data?.ok &&
     saveFetcher.data.intent === "save-generator-preset" &&
     saveFetcher.data.presetId
       ? saveFetcher.data.presetId
-      : null
+      : null;
   const maybeSaveSnapshot = !hasValidationIssues
     ? buildSignGeneratorPresetSnapshot(generator, values)
-    : null
+    : null;
   const presetState = deriveGeneratorPresetState({
     currentComparisonKey,
     maybeTrackedPresetId:
-      maybeTrackedPresetId ?? maybeSavedPresetId ?? maybeCurrentMatchingPreset?.id ?? null,
-    presets
-  })
+      maybeTrackedPresetId ??
+      maybeSavedPresetId ??
+      maybeCurrentMatchingPreset?.id ??
+      null,
+    presets,
+  });
 
   return (
-    <section
+    <LuminousPanel
       className="generator-preset-shell"
       aria-labelledby="generator-preset-heading"
+      tone="ink"
     >
       <div className="generator-section-head">
         <p className="eyebrow">Presets</p>
@@ -227,7 +237,11 @@ export function GeneratorPresetPanel(props: GeneratorPresetPanelProps) {
             Save Preset
           </ShimmerButton>
           {!currentUser ? (
-            <Link className="home-secondary-action" prefetch="intent" to="/account?mode=sign-in">
+            <Link
+              className="home-secondary-action"
+              prefetch="intent"
+              to="/account?mode=sign-in"
+            >
               Sign In
             </Link>
           ) : null}
@@ -259,6 +273,6 @@ export function GeneratorPresetPanel(props: GeneratorPresetPanelProps) {
           </p>
         )
       ) : null}
-    </section>
-  )
+    </LuminousPanel>
+  );
 }

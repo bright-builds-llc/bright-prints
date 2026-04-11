@@ -1,28 +1,28 @@
-import { createElement } from "react"
-import { renderToStaticMarkup } from "react-dom/server"
-import { createMemoryRouter, RouterProvider } from "react-router"
-import { describe, expect, it } from "vitest"
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import { createMemoryRouter, RouterProvider } from "react-router";
+import { describe, expect, it } from "vitest";
 
-import { GeneratorPresetPanel } from "~/components/generator/GeneratorPresetPanel"
-import { generatorSchema } from "~/lib/content/schema"
+import { GeneratorPresetPanel } from "~/components/generator/GeneratorPresetPanel";
+import { generatorSchema } from "~/lib/content/schema";
 import {
   buildSignGeneratorPresetComparisonKey,
-  buildSignGeneratorPresetSnapshot
-} from "~/lib/generator-presets/model"
+  buildSignGeneratorPresetSnapshot,
+} from "~/lib/generator-presets/model";
 
 const signGenerator = generatorSchema.parse({
   availability: "open-source",
   categories: ["signage"],
   creatorSlug: "bright-builds",
   definition: {
-    type: "sign-v1"
+    type: "sign-v1",
   },
   description: "Generator",
   discovery: {
     accentTone: "verdigris",
     catalogRank: 1,
     eyebrow: "Generator",
-    mark: "BP"
+    mark: "BP",
   },
   outputFormat: "3mf",
   parameters: [
@@ -31,7 +31,7 @@ const signGenerator = generatorSchema.parse({
       label: "Text",
       maxLength: 12,
       name: "text",
-      type: "text"
+      type: "text",
     },
     {
       defaultValue: 120,
@@ -40,7 +40,7 @@ const signGenerator = generatorSchema.parse({
       min: 60,
       name: "width-mm",
       type: "number",
-      unit: "mm"
+      unit: "mm",
     },
     {
       defaultValue: 60,
@@ -49,7 +49,7 @@ const signGenerator = generatorSchema.parse({
       min: 30,
       name: "height-mm",
       type: "number",
-      unit: "mm"
+      unit: "mm",
     },
     {
       defaultValue: 4,
@@ -58,7 +58,7 @@ const signGenerator = generatorSchema.parse({
       min: 2,
       name: "thickness-mm",
       type: "number",
-      unit: "mm"
+      unit: "mm",
     },
     {
       defaultValue: 6,
@@ -67,15 +67,15 @@ const signGenerator = generatorSchema.parse({
       min: 0,
       name: "corner-radius-mm",
       type: "number",
-      unit: "mm"
-    }
+      unit: "mm",
+    },
   ],
   publishedOn: "2026-04-08",
   schemaVersion: 1,
   slug: "sign",
   summary: "Generator",
-  title: "Sign Generator"
-})
+  title: "Sign Generator",
+});
 
 describe("generator preset panel", () => {
   it("renders saved-state copy and preset summaries for signed-in users", () => {
@@ -85,8 +85,8 @@ describe("generator preset panel", () => {
       heightMm: 60,
       text: "HELLO",
       thicknessMm: 4,
-      widthMm: 120
-    })
+      widthMm: 120,
+    });
     const router = createMemoryRouter(
       [
         {
@@ -96,7 +96,9 @@ describe("generator preset panel", () => {
             maybeTrackedPresetId: "preset-1",
             presets: [
               {
-                comparisonKey: buildSignGeneratorPresetComparisonKey(snapshot.values),
+                comparisonKey: buildSignGeneratorPresetComparisonKey(
+                  snapshot.values,
+                ),
                 createdAt: "2026-04-11T00:00:00.000Z",
                 generatorSlug: "sign",
                 id: "preset-1",
@@ -104,38 +106,39 @@ describe("generator preset panel", () => {
                 snapshot,
                 summary: {
                   size: "120 x 60 mm",
-                  text: "HELLO"
+                  text: "HELLO",
                 },
-                updatedAt: "2026-04-11T00:00:00.000Z"
-              }
+                updatedAt: "2026-04-11T00:00:00.000Z",
+              },
             ],
             returnTo: "/generators/sign",
             validation: {
               issues: {},
-              sanitizedText: "HELLO"
+              sanitizedText: "HELLO",
             },
-            values: snapshot.values
+            values: snapshot.values,
           }),
-          path: "/generators/sign"
+          path: "/generators/sign",
         },
         {
           action: async () => null,
-          path: "/actions/generator-presets"
-        }
+          path: "/actions/generator-presets",
+        },
       ],
-      { initialEntries: ["/generators/sign"] }
-    )
+      { initialEntries: ["/generators/sign"] },
+    );
 
     // Act
     const markup = renderToStaticMarkup(
-      createElement(RouterProvider, { router })
-    )
+      createElement(RouterProvider, { router }),
+    );
 
     // Assert
-    expect(markup).toContain('Current values match &quot;Desk Sign&quot;.')
-    expect(markup).toContain("Desk Sign")
-    expect(markup).toContain("HELLO")
-    expect(markup).toContain("/generators/sign?preset=preset-1")
-    expect(markup).toContain("Open Preset")
-  })
-})
+    expect(markup).toContain("Current values match &quot;Desk Sign&quot;.");
+    expect(markup).toContain("Desk Sign");
+    expect(markup).toContain("HELLO");
+    expect(markup).toContain("/generators/sign?preset=preset-1");
+    expect(markup).toContain("Open Preset");
+    expect(markup).toContain("luminous-panel");
+  });
+});

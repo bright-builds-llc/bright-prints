@@ -1,4 +1,5 @@
 import type { PrintDetailGuidance, PrintDetailHero } from "~/lib/prints/detail";
+import { LuminousPanel } from "~/components/ui/luminous-panel";
 
 type PrintSpecsSectionProps = {
   guidance: PrintDetailGuidance;
@@ -6,10 +7,15 @@ type PrintSpecsSectionProps = {
 };
 
 export function PrintSpecsSection({ guidance, hero }: PrintSpecsSectionProps) {
-  const categories = hero.categories.length > 0 ? hero.categories.join(", ") : "Unavailable";
+  const categories =
+    hero.categories.length > 0 ? hero.categories.join(", ") : "Unavailable";
 
   return (
-    <section className="print-specs-section" aria-labelledby="print-specs-heading">
+    <LuminousPanel
+      aria-labelledby="print-specs-heading"
+      className="print-specs-section"
+      tone="accent"
+    >
       <div className="print-section-head">
         <p className="eyebrow">Print Guidance</p>
         <h2 id="print-specs-heading">Model details and settings</h2>
@@ -39,9 +45,14 @@ export function PrintSpecsSection({ guidance, hero }: PrintSpecsSectionProps) {
       </dl>
 
       {guidance.specialSteps.length > 0 ? (
-        <section className="print-special-steps" aria-labelledby="print-special-steps-heading">
+        <section
+          className="print-special-steps"
+          aria-labelledby="print-special-steps-heading"
+        >
           <p className="eyebrow">Special Steps</p>
-          <h3 id="print-special-steps-heading">Worth checking before you print</h3>
+          <h3 id="print-special-steps-heading">
+            Worth checking before you print
+          </h3>
           <ul>
             {guidance.specialSteps.map((step) => (
               <li key={step}>{step}</li>
@@ -49,6 +60,6 @@ export function PrintSpecsSection({ guidance, hero }: PrintSpecsSectionProps) {
           </ul>
         </section>
       ) : null}
-    </section>
+    </LuminousPanel>
   );
 }

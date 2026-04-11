@@ -12,21 +12,7 @@
 .library-preset-section,
 .library-empty-state,
 .library-grid-card {
-  border: 1px solid rgba(19, 32, 43, 0.08);
-  border-radius: 1.6rem;
-  background: rgba(255, 255, 255, 0.74);
-  backdrop-filter: blur(14px);
-}
-
-.library-shell,
-.library-sidebar,
-.library-list-forms,
-.library-preset-card,
-.library-preset-empty,
-.library-preset-section,
-.library-empty-state,
-.library-grid-card {
-  padding: 1.25rem;
+  min-width: 0;
 }
 
 .library-shell {

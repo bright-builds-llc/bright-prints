@@ -1,5 +1,7 @@
 import { useFetcher } from "react-router";
 
+import { LuminousPanel } from "~/components/ui/luminous-panel";
+
 type PrintCommerceInterestProps = {
   leadTime: string | null;
   notes: string | null;
@@ -20,9 +22,10 @@ export function PrintCommerceInterest({
   const submitLabel = isSubmitting ? "Sending Request" : "Submit Interest";
 
   return (
-    <section
+    <LuminousPanel
       className="print-commerce-interest"
       aria-labelledby="print-commerce-interest-heading"
+      tone="accent"
     >
       <div className="print-section-head">
         <p className="eyebrow">Physical Print</p>
@@ -70,6 +73,6 @@ export function PrintCommerceInterest({
           {submitLabel}
         </button>
       </fetcher.Form>
-    </section>
+    </LuminousPanel>
   );
 }

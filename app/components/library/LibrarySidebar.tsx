@@ -1,5 +1,7 @@
 import { Link } from "react-router";
 
+import { LuminousPanel } from "~/components/ui/luminous-panel";
+
 type LibrarySidebarProps = {
   lists: Array<{
     count: number;
@@ -12,7 +14,12 @@ type LibrarySidebarProps = {
 
 export function LibrarySidebar({ lists }: LibrarySidebarProps) {
   return (
-    <aside className="library-sidebar" aria-label="Saved lists">
+    <LuminousPanel
+      as="aside"
+      aria-label="Saved lists"
+      className="library-sidebar"
+      tone="ink"
+    >
       <p className="eyebrow">Lists</p>
       <div className="library-sidebar-links">
         {lists.map((list) => (
@@ -27,6 +34,6 @@ export function LibrarySidebar({ lists }: LibrarySidebarProps) {
           </Link>
         ))}
       </div>
-    </aside>
+    </LuminousPanel>
   );
 }

@@ -1,4 +1,5 @@
 import type { PrintDetailFileSection } from "~/lib/prints/detail";
+import { LuminousPanel } from "~/components/ui/luminous-panel";
 
 type PrintFileSectionsProps = {
   sections: PrintDetailFileSection[];
@@ -6,13 +7,17 @@ type PrintFileSectionsProps = {
 
 export function PrintFileSections({ sections }: PrintFileSectionsProps) {
   return (
-    <section className="print-file-sections" aria-labelledby="print-file-sections-heading">
+    <LuminousPanel
+      aria-labelledby="print-file-sections-heading"
+      className="print-file-sections"
+      tone="paper"
+    >
       <div className="print-section-head">
         <p className="eyebrow">Files</p>
         <h2 id="print-file-sections-heading">Choose the right file path</h2>
         <p>
-          Print-ready assets stay separate from editable source files so the next step
-          is obvious before you click anything.
+          Print-ready assets stay separate from editable source files so the
+          next step is obvious before you click anything.
         </p>
       </div>
 
@@ -22,7 +27,11 @@ export function PrintFileSections({ sections }: PrintFileSectionsProps) {
             key={section.kind}
             className="print-file-section-card"
             data-status={section.status}
-            id={section.kind === "print-ready" ? "print-ready-files" : "source-files"}
+            id={
+              section.kind === "print-ready"
+                ? "print-ready-files"
+                : "source-files"
+            }
           >
             <div className="print-file-section-copy">
               <div className="print-file-status-row">
@@ -42,14 +51,21 @@ export function PrintFileSections({ sections }: PrintFileSectionsProps) {
             {section.items.length > 0 ? (
               <ul className="print-file-list">
                 {section.items.map((item) => (
-                  <li key={`${section.kind}-${item.label}`} className="print-file-row">
+                  <li
+                    key={`${section.kind}-${item.label}`}
+                    className="print-file-row"
+                  >
                     <div>
                       <div className="print-file-link-heading">
                         {item.href ? (
                           <a
                             aria-label={`${item.label} (${item.isExternal ? "opens external destination" : "downloads from Bright Prints"})`}
                             href={item.href}
-                            rel={item.isExternal ? "noopener noreferrer" : undefined}
+                            rel={
+                              item.isExternal
+                                ? "noopener noreferrer"
+                                : undefined
+                            }
                             target={item.isExternal ? "_blank" : undefined}
                           >
                             {item.label}
@@ -58,7 +74,9 @@ export function PrintFileSections({ sections }: PrintFileSectionsProps) {
                           item.label
                         )}
                         <span className="print-file-link-note">
-                          {item.isExternal ? "External destination" : "Direct download"}
+                          {item.isExternal
+                            ? "External destination"
+                            : "Direct download"}
                         </span>
                       </div>
                       <p>{item.purpose}</p>
@@ -88,6 +106,6 @@ export function PrintFileSections({ sections }: PrintFileSectionsProps) {
           </section>
         ))}
       </div>
-    </section>
+    </LuminousPanel>
   );
 }

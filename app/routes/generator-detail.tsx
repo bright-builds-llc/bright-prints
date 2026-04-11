@@ -9,6 +9,7 @@ import { DiscoveryCard } from "~/components/discovery/DiscoveryCard";
 import { GeneratedArtifactPanel } from "~/components/generator/GeneratedArtifactPanel";
 import { GeneratorPresetPanel } from "~/components/generator/GeneratorPresetPanel";
 import { GeneratorPreview } from "~/components/generator/GeneratorPreview";
+import { LuminousPanel } from "~/components/ui/luminous-panel";
 import { ShimmerButton } from "~/components/ui/shimmer-button";
 import {
   buildGeneratedSignArtifact,
@@ -44,7 +45,8 @@ export async function loader({ params, request }: Route.LoaderArgs) {
     throw new Response("Not Found", { status: 404 });
   }
 
-  const { getCurrentUserFromRequest } = await import("~/lib/auth/session.server");
+  const { getCurrentUserFromRequest } =
+    await import("~/lib/auth/session.server");
   const maybeCurrentUser = await getCurrentUserFromRequest(request);
   const url = new URL(request.url);
   const maybeSelectedPresetId = url.searchParams.get("preset");
@@ -64,38 +66,39 @@ export async function loader({ params, request }: Route.LoaderArgs) {
     };
     updatedAt: string;
   }> = [];
-  let selectedPreset:
-    | {
-        comparisonKey: string;
-        createdAt: string;
-        generatorSlug: string;
-        id: string;
-        name: string;
-        snapshot: {
-          kind: "sign-v1";
-          values: SignGeneratorValues;
-        };
-        summary: {
-          size: string;
-          text: string;
-        };
-        updatedAt: string;
-      }
-    | null = null;
+  let selectedPreset: {
+    comparisonKey: string;
+    createdAt: string;
+    generatorSlug: string;
+    id: string;
+    name: string;
+    snapshot: {
+      kind: "sign-v1";
+      values: SignGeneratorValues;
+    };
+    summary: {
+      size: string;
+      text: string;
+    };
+    updatedAt: string;
+  } | null = null;
 
   if (maybeCurrentUser) {
     const { getDb } = await import("~/lib/db.server");
-    const { loadGeneratorPresetById, loadGeneratorPresets } = await import(
-      "~/lib/generator-presets/query.server"
-    );
+    const { loadGeneratorPresetById, loadGeneratorPresets } =
+      await import("~/lib/generator-presets/query.server");
 
-    presets = await loadGeneratorPresets(getDb(), maybeCurrentUser.id, maybeSlug);
+    presets = await loadGeneratorPresets(
+      getDb(),
+      maybeCurrentUser.id,
+      maybeSlug,
+    );
 
     if (maybeSelectedPresetId) {
       const maybePreset = await loadGeneratorPresetById(
         getDb(),
         maybeCurrentUser.id,
-        maybeSelectedPresetId
+        maybeSelectedPresetId,
       );
 
       if (maybePreset?.generatorSlug === maybeSlug) {
@@ -130,8 +133,9 @@ export function meta({ data }: Route.MetaArgs) {
 }
 
 function GeneratorDetailScreen({ loaderData }: Route.ComponentProps) {
-  const [values, setValues] = useState<SignGeneratorValues>(() =>
-    loaderData.selectedPreset?.snapshot.values ??
+  const [values, setValues] = useState<SignGeneratorValues>(
+    () =>
+      loaderData.selectedPreset?.snapshot.values ??
       getDefaultSignValues(loaderData.generator),
   );
   const [statusMessage, setStatusMessage] = useState<string | null>(
@@ -192,13 +196,13 @@ function GeneratorDetailScreen({ loaderData }: Route.ComponentProps) {
 
   return (
     <main className="generator-page">
-      <section className="generator-shell">
+      <LuminousPanel className="generator-shell" tone="accent">
         <p className="eyebrow">Generator</p>
         <h1>{loaderData.item.title}</h1>
         <p>{loaderData.item.description}</p>
-      </section>
+      </LuminousPanel>
 
-      <article className="generator-hero">
+      <LuminousPanel as="article" className="generator-hero" tone="paper">
         <div className="generator-hero-poster">
           <DiscoveryCard
             interactive={false}
@@ -220,13 +224,14 @@ function GeneratorDetailScreen({ loaderData }: Route.ComponentProps) {
             into a live preview and downloadable artifact.
           </p>
         </div>
-      </article>
+      </LuminousPanel>
 
       <section className="generator-layout">
         <div className="generator-layout-main">
-          <section
+          <LuminousPanel
             className="generator-form-shell"
             aria-labelledby="generator-form-heading"
+            tone="paper"
           >
             <div className="generator-section-head">
               <p className="eyebrow">Parameters</p>
@@ -313,7 +318,7 @@ function GeneratorDetailScreen({ loaderData }: Route.ComponentProps) {
                 </Link>
               </div>
             </form>
-          </section>
+          </LuminousPanel>
 
           <GeneratorPreview
             definition={loaderData.generator.definition}
@@ -340,14 +345,14 @@ function GeneratorDetailScreen({ loaderData }: Route.ComponentProps) {
       </section>
 
       {loaderData.related.length > 0 ? (
-        <section className="generator-related">
+        <LuminousPanel className="generator-related" tone="ink">
           <p className="eyebrow">Related Discovery</p>
           <div className="generator-related-grid">
             {loaderData.related.map((item) => (
               <DiscoveryCard key={item.id} item={item} variant="feature" />
             ))}
           </div>
-        </section>
+        </LuminousPanel>
       ) : null}
     </main>
   );

@@ -1,4 +1,5 @@
 import type { PrintDetailTrustField } from "~/lib/prints/detail";
+import { LuminousPanel } from "~/components/ui/luminous-panel";
 
 type PrintTrustSectionProps = {
   fields: PrintDetailTrustField[];
@@ -19,11 +20,19 @@ function buildUnavailableNote(label: string): string {
 
 export function PrintTrustSection({ fields }: PrintTrustSectionProps) {
   return (
-    <section className="print-trust-section" aria-labelledby="print-trust-heading" id="print-trust">
+    <LuminousPanel
+      aria-labelledby="print-trust-heading"
+      className="print-trust-section"
+      id="print-trust"
+      tone="ink"
+    >
       <div className="print-section-head">
         <p className="eyebrow">Trust</p>
         <h2 id="print-trust-heading">Know what is here and what is not</h2>
-        <p>Key trust fields stay visible even when the answer is simply that the data is unavailable.</p>
+        <p>
+          Key trust fields stay visible even when the answer is simply that the
+          data is unavailable.
+        </p>
       </div>
 
       <dl className="print-trust-grid">
@@ -39,10 +48,12 @@ export function PrintTrustSection({ fields }: PrintTrustSectionProps) {
                 field.value
               )}
             </dd>
-            {field.isUnavailable ? <p>{buildUnavailableNote(field.label)}</p> : null}
+            {field.isUnavailable ? (
+              <p>{buildUnavailableNote(field.label)}</p>
+            ) : null}
           </div>
         ))}
       </dl>
-    </section>
+    </LuminousPanel>
   );
 }

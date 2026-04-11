@@ -1,5 +1,9 @@
-import type { SignGeneratorValues, SignGeneratorValidation } from "~/lib/generators/sign";
+import type {
+  SignGeneratorValues,
+  SignGeneratorValidation,
+} from "~/lib/generators/sign";
 import type { SignGeneratorDefinition } from "~/lib/content/schema";
+import { LuminousPanel } from "~/components/ui/luminous-panel";
 import { buildSignPreviewLayout } from "~/lib/generators/sign";
 
 type GeneratorPreviewProps = {
@@ -11,21 +15,28 @@ type GeneratorPreviewProps = {
 export function GeneratorPreview({
   definition,
   validation,
-  values
+  values,
 }: GeneratorPreviewProps) {
   const previewText = validation.sanitizedText.trim() || "SIGN";
   const layout = buildSignPreviewLayout({
     definition,
     sanitizedText: previewText,
-    values
+    values,
   });
 
   return (
-    <section className="generator-preview-shell" aria-labelledby="generator-preview-heading">
+    <LuminousPanel
+      aria-labelledby="generator-preview-heading"
+      className="generator-preview-shell"
+      tone="accent"
+    >
       <div className="generator-section-head">
         <p className="eyebrow">Preview</p>
         <h2 id="generator-preview-heading">Live sign preview</h2>
-        <p>The preview stays approximate and fast while the downloadable `3mf` uses the same geometry inputs.</p>
+        <p>
+          The preview stays approximate and fast while the downloadable `3mf`
+          uses the same geometry inputs.
+        </p>
       </div>
 
       <svg
@@ -57,6 +68,6 @@ export function GeneratorPreview({
           />
         ))}
       </svg>
-    </section>
+    </LuminousPanel>
   );
 }

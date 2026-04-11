@@ -7,20 +7,22 @@ import { LibraryListForms } from "~/components/library/LibraryListForms";
 import { LibraryPresetSection } from "~/components/library/LibraryPresetSection";
 import { LibraryPrintGrid } from "~/components/library/LibraryPrintGrid";
 import { LibrarySidebar } from "~/components/library/LibrarySidebar";
+import { LuminousPanel } from "~/components/ui/luminous-panel";
 import { loadPublicContent } from "~/lib/content/load.server";
 import { buildLibraryModel } from "~/lib/library/model";
 
 export const links: Route.LinksFunction = () => [
-  { rel: "stylesheet", href: libraryStyles }
+  { rel: "stylesheet", href: libraryStyles },
 ];
 
 export async function loader({ request }: Route.LoaderArgs) {
-  const { getCurrentUserFromRequest } = await import("~/lib/auth/session.server");
+  const { getCurrentUserFromRequest } =
+    await import("~/lib/auth/session.server");
   const { getDb } = await import("~/lib/db.server");
-  const { loadGeneratorPresetLibraryEntries } = await import(
-    "~/lib/generator-presets/query.server"
-  );
-  const { loadRuntimeLibraryLists } = await import("~/lib/library/query.server");
+  const { loadGeneratorPresetLibraryEntries } =
+    await import("~/lib/generator-presets/query.server");
+  const { loadRuntimeLibraryLists } =
+    await import("~/lib/library/query.server");
   const maybeCurrentUser = await getCurrentUserFromRequest(request);
 
   if (!maybeCurrentUser) {
@@ -30,20 +32,23 @@ export async function loader({ request }: Route.LoaderArgs) {
   const content = await loadPublicContent();
   const generatorPresets = await loadGeneratorPresetLibraryEntries(
     getDb(),
-    maybeCurrentUser.id
+    maybeCurrentUser.id,
   );
-  const runtimeLists = await loadRuntimeLibraryLists(getDb(), maybeCurrentUser.id);
+  const runtimeLists = await loadRuntimeLibraryLists(
+    getDb(),
+    maybeCurrentUser.id,
+  );
   const url = new URL(request.url);
   const model = buildLibraryModel({
     content,
     generatorPresets,
     maybeSelectedListId: url.searchParams.get("list"),
-    runtimeLists
+    runtimeLists,
   });
 
   return data({
     currentUser: maybeCurrentUser,
-    model
+    model,
   });
 }
 
@@ -54,13 +59,14 @@ export function meta() {
 export default function LibraryRoute({ loaderData }: Route.ComponentProps) {
   return (
     <main className="library-page">
-      <section className="library-shell">
+      <LuminousPanel className="library-shell" tone="paper">
         <p className="eyebrow">Personal Library</p>
         <h1>Saved prints stay close</h1>
         <p>
-          Bookmarks stay primary, generator presets stay close by, and empty states send you back into discovery.
+          Bookmarks stay primary, generator presets stay close by, and empty
+          states send you back into discovery.
         </p>
-      </section>
+      </LuminousPanel>
 
       <LibraryPresetSection presets={loaderData.model.generatorPresets} />
 
@@ -79,7 +85,11 @@ export default function LibraryRoute({ loaderData }: Route.ComponentProps) {
       </div>
 
       <p>
-        <Link className="home-secondary-action" prefetch="intent" to="/catalog?type=prints">
+        <Link
+          className="home-secondary-action"
+          prefetch="intent"
+          to="/catalog?type=prints"
+        >
           Back to Catalog
         </Link>
       </p>
