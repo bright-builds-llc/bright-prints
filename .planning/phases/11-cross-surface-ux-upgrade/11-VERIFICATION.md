@@ -35,8 +35,8 @@ lifecycle_validated: true
 ## Verification Metadata
 
 **Automated checks:** `bun run lint`, `bun run typecheck`, `bun run build`, `bun run test`  
-**Runtime checks:** Production build served locally and inspected at `http://127.0.0.1:4173/generators/sign` and `http://127.0.0.1:4173/prints/modular-cable-clip`; the library route correctly redirected signed-out runtime traffic to sign-in, so library surface adoption was additionally covered by SSR component tests.  
-**Residual risk:** [account.tsx](/Users/peterryszkiewicz/Repos/bright-prints/app/routes/account.tsx) still carries the existing `react-refresh/only-export-components` lint warning from earlier work, and this phase did not include a signed-in browser pass for the library route.
+**Runtime checks:** Production build served locally and inspected at `http://127.0.0.1:4173/generators/sign` and `http://127.0.0.1:4173/prints/modular-cable-clip`; the library/account runtime path could not be browser-validated in the same preview because `SESSION_SECRET` was not configured for local production auth, so library surface adoption was validated through SSR component tests and route structure instead of a signed-in browser session.  
+**Residual risk:** [account.tsx](/Users/peterryszkiewicz/Repos/bright-prints/app/routes/account.tsx) still carries the existing `react-refresh/only-export-components` lint warning from earlier work, and this phase did not include a signed-in browser pass for the library route because local production auth requires `SESSION_SECRET`.
 
 ## Gaps Summary
 
