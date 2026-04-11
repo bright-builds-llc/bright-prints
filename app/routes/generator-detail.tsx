@@ -7,6 +7,7 @@ import generatorDetailStyles from "./generator-detail.css?url";
 import { DiscoveryBadge } from "~/components/discovery/DiscoveryBadge";
 import { DiscoveryCard } from "~/components/discovery/DiscoveryCard";
 import { GeneratedArtifactPanel } from "~/components/generator/GeneratedArtifactPanel";
+import { GeneratorPresetPanel } from "~/components/generator/GeneratorPresetPanel";
 import { GeneratorPreview } from "~/components/generator/GeneratorPreview";
 import { ShimmerButton } from "~/components/ui/shimmer-button";
 import {
@@ -27,7 +28,7 @@ export const links: Route.LinksFunction = () => [
   { rel: "stylesheet", href: generatorDetailStyles },
 ];
 
-export async function loader({ params }: Route.LoaderArgs) {
+export async function loader({ params, request }: Route.LoaderArgs) {
   const content = await loadPublicContent();
   const maybeSlug = params.slug;
 
@@ -43,9 +44,39 @@ export async function loader({ params }: Route.LoaderArgs) {
     throw new Response("Not Found", { status: 404 });
   }
 
+  const { getCurrentUserFromRequest } = await import("~/lib/auth/session.server");
+  const maybeCurrentUser = await getCurrentUserFromRequest(request);
+  let presets: Array<{
+    comparisonKey: string;
+    createdAt: string;
+    generatorSlug: string;
+    id: string;
+    name: string;
+    snapshot: {
+      kind: "sign-v1";
+      values: SignGeneratorValues;
+    };
+    summary: {
+      size: string;
+      text: string;
+    };
+    updatedAt: string;
+  }> = [];
+
+  if (maybeCurrentUser) {
+    const { getDb } = await import("~/lib/db.server");
+    const { loadGeneratorPresets } = await import(
+      "~/lib/generator-presets/query.server"
+    );
+
+    presets = await loadGeneratorPresets(getDb(), maybeCurrentUser.id, maybeSlug);
+  }
+
   return {
+    currentUser: maybeCurrentUser ? { id: maybeCurrentUser.id } : null,
     generator: maybeGenerator,
     item: maybeItem,
+    presets,
     related: buildRelatedDiscoveryItems(items, maybeItem),
   };
 }
@@ -76,6 +107,7 @@ export default function GeneratorDetail({ loaderData }: Route.ComponentProps) {
   const [isPending, startTransition] = useTransition();
   const deferredValues = useDeferredValue(values);
   const validation = validateSignValues(loaderData.generator, deferredValues);
+  const saveValidation = validateSignValues(loaderData.generator, values);
 
   useEffect(() => {
     return () => {
@@ -256,6 +288,14 @@ export default function GeneratorDetail({ loaderData }: Route.ComponentProps) {
           <GeneratedArtifactPanel
             artifact={artifact}
             statusMessage={statusMessage}
+          />
+          <GeneratorPresetPanel
+            currentUser={loaderData.currentUser}
+            generator={loaderData.generator}
+            presets={loaderData.presets}
+            returnTo={`/generators/${loaderData.generator.slug}`}
+            validation={saveValidation}
+            values={values}
           />
         </div>
       </section>

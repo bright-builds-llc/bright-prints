@@ -7,12 +7,21 @@ import {
   type SessionStorage
 } from "react-router";
 
+import type { SignGeneratorPresetSnapshot } from "~/lib/generator-presets/model";
 import { getDb } from "~/lib/db.server";
 import { getServerEnv } from "~/lib/env.server";
 
 export type PendingIntent =
   | { kind: "save-bookmark"; printSlug: string }
   | { kind: "remove-bookmark"; printSlug: string }
+  | {
+      kind: "save-generator-preset";
+      generatorSlug: string;
+      name: string;
+      snapshot: SignGeneratorPresetSnapshot;
+    }
+  | { kind: "rename-generator-preset"; name: string; presetId: string }
+  | { kind: "delete-generator-preset"; presetId: string }
   | { kind: "create-list"; name: string }
   | { kind: "rename-list"; listId: string; name: string }
   | { kind: "delete-list"; listId: string }

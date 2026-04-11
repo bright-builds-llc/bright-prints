@@ -8,6 +8,7 @@
 .generator-hero,
 .generator-form-shell,
 .generator-preview-shell,
+.generator-preset-shell,
 .generator-related {
   border: 1px solid rgba(19, 32, 43, 0.08);
   border-radius: 1.6rem;
@@ -19,6 +20,7 @@
 .generator-hero,
 .generator-form-shell,
 .generator-preview-shell,
+.generator-preset-shell,
 .generator-related {
   padding: 1.25rem;
 }
@@ -67,6 +69,11 @@
   padding: 1.25rem;
 }
 
+.generator-preset-shell {
+  display: grid;
+  gap: 1rem;
+}
+
 .generator-field {
   display: grid;
   gap: 0.4rem;
@@ -93,6 +100,9 @@
 
 .generator-field input:focus-visible,
 .generator-form-actions button:focus-visible,
+.generator-preset-save-form input:focus-visible,
+.generator-preset-rename-form input:focus-visible,
+.generator-preset-inline-actions button:focus-visible,
 .generator-preview-svg:focus-visible,
 .generator-artifact-card a:focus-visible {
   outline: 2px solid #176b5f;
@@ -107,6 +117,94 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.8rem;
+}
+
+.generator-preset-status,
+.generator-preset-helper,
+.generator-preset-empty,
+.generator-preset-summary,
+.generator-preset-meta {
+  color: #475569;
+}
+
+.generator-preset-save-form,
+.generator-preset-list,
+.generator-preset-inline-actions,
+.generator-preset-rename-form,
+.generator-preset-save-actions {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.generator-preset-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.generator-preset-save-form label,
+.generator-preset-name {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #176b5f;
+}
+
+.generator-preset-save-form input,
+.generator-preset-rename-form input {
+  min-height: 3rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(19, 32, 43, 0.12);
+  padding: 0 0.95rem;
+  font: inherit;
+  background: rgba(255, 255, 255, 0.84);
+  color: #13202b;
+}
+
+.generator-preset-save-actions,
+.generator-preset-inline-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.generator-preset-row {
+  display: grid;
+  gap: 0.75rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(19, 32, 43, 0.08);
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.generator-preset-row-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  align-items: start;
+}
+
+.generator-preset-name,
+.generator-preset-summary,
+.generator-preset-meta,
+.generator-preset-state {
+  margin: 0;
+}
+
+.generator-preset-delete-button {
+  border: 1px solid rgba(153, 27, 27, 0.18);
+  border-radius: 999px;
+  padding: 0.7rem 1rem;
+  font: inherit;
+  background: rgba(255, 255, 255, 0.9);
+  color: #991b1b;
+}
+
+.generator-preset-state {
+  font-size: 0.85rem;
+  color: #176b5f;
+  font-weight: 600;
 }
 
 .generator-preview-svg {

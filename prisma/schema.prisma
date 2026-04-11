@@ -20,6 +20,7 @@ model User {
   updatedAt       DateTime         @updatedAt
   sessions        Session[]
   commerceIntents CommerceIntent[]
+  generatorPresets GeneratorPreset[]
   savedLists      SavedPrintList[]
 }
 
@@ -75,4 +76,19 @@ model CommerceIntent {
 
   @@index([printSlug])
   @@index([userId])
+}
+
+model GeneratorPreset {
+  id            String   @id @default(cuid())
+  userId        String
+  generatorSlug String
+  name          String
+  snapshot      Json
+  comparisonKey String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, generatorSlug])
+  @@unique([userId, generatorSlug, name])
 }

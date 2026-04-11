@@ -1,23 +1,16 @@
 import { data, Form, Link, redirect } from "react-router";
+import type { PrismaClient } from "@prisma/client";
+import type {
+  PendingIntent,
+  SessionFlashMessage
+} from "~/lib/auth/session.server";
 
 import type { Route } from "./+types/account";
 import accountStyles from "./account.css?url";
 
 type AccountMode = "create-account" | "sign-in";
-type PendingIntent =
-  | { kind: "save-bookmark"; printSlug: string }
-  | { kind: "remove-bookmark"; printSlug: string }
-  | { kind: "create-list"; name: string }
-  | { kind: "rename-list"; listId: string; name: string }
-  | { kind: "delete-list"; listId: string }
-  | { kind: "add-print-to-list"; listId: string; printSlug: string }
-  | { kind: "remove-print-from-list"; listId: string; printSlug: string };
-type SessionFlashMessage = {
-  kind: "error" | "success";
-  message: string;
-};
 
-type AccountDb = Record<string, unknown>;
+type AccountDb = PrismaClient;
 type AccountSession = {
   get: (key: "pendingIntent" | "returnTo") => PendingIntent | string | undefined;
   set: (key: string, value: unknown) => void;
@@ -90,6 +83,12 @@ function describePendingIntent(pendingIntent: PendingIntent | null): string | nu
       return "Sign in to finish saving this print to Bookmarks.";
     case "remove-bookmark":
       return "Sign in to finish removing this print from Bookmarks.";
+    case "save-generator-preset":
+      return "Sign in to finish saving this generator preset.";
+    case "rename-generator-preset":
+      return "Sign in to finish renaming this generator preset.";
+    case "delete-generator-preset":
+      return "Sign in to finish deleting this generator preset.";
     case "create-list":
       return "Sign in to finish creating your list.";
     case "rename-list":
@@ -213,6 +212,21 @@ export async function action({ request }: Route.ActionArgs) {
     "~/lib/auth/user.server"
   );
   const { replayPendingLibraryIntent } = await import("~/lib/library/mutations.server");
+  const { replayPendingGeneratorPresetIntent } = await import(
+    "~/lib/generator-presets/mutations.server"
+  );
+
+  async function replayPendingIntent(db: AccountDb, pendingIntent: PendingIntent, userId: string) {
+    if (
+      pendingIntent.kind === "save-generator-preset" ||
+      pendingIntent.kind === "rename-generator-preset" ||
+      pendingIntent.kind === "delete-generator-preset"
+    ) {
+      return replayPendingGeneratorPresetIntent(db as never, userId, pendingIntent)
+    }
+
+    return replayPendingLibraryIntent(db as never, userId, pendingIntent)
+  }
 
   return handleAccountSubmission(request, {
     commitAuthSession,
@@ -231,7 +245,7 @@ export async function action({ request }: Route.ActionArgs) {
       replayPendingIntentAfterAuth({
         ...options,
         replayIntent: (pendingIntent: PendingIntent, userId: string) =>
-          replayPendingLibraryIntent(getDb(), userId, pendingIntent)
+          replayPendingIntent(getDb(), pendingIntent, userId)
       } as never),
     setAuthToken,
     setFlashMessage,
