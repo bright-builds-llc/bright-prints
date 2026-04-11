@@ -26,7 +26,7 @@
 ### UI System Upgrade
 
 - [x] **UIG-01**: The app exposes shared React/Tailwind 4 UI primitives adapted from selected Magic UI patterns rather than route-local one-off copies.
-- [x] **UIG-02**: Adapted Magic UI motion and visual effects preserve accessibility and do not obscure core generator, file, trust, or library tasks.
+- [ ] **UIG-02**: Adapted Magic UI motion and visual effects preserve accessibility and do not obscure core generator, file, trust, or library tasks.
 - [x] **UIG-03**: At least the generator, library, and one discovery or print-detail surface use the new shared primitive layer where it measurably improves UX.
 
 ## Future Requirements
@@ -66,16 +66,17 @@
 | GLIB-01     | Phase 10 | Complete |
 | GLIB-02     | Phase 10 | Complete |
 | UIG-01      | Phase 8  | Complete |
-| UIG-02      | Phase 8  | Complete |
+| UIG-02      | Phase 12 | Pending  |
 | UIG-03      | Phase 11 | Complete |
 
 **Coverage:**
 
 - v1.1 requirements: 12 total
 - Mapped to phases: 12
+- Currently satisfied: 11
 - Unmapped: 0 ✓
 
 ---
 
 _Requirements defined: 2026-04-09_
-_Last updated: 2026-04-11 after Phase 11 verification_
+_Last updated: 2026-04-11 after milestone gap planning_
