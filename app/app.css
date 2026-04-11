@@ -401,6 +401,14 @@ a {
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --animate-shiny-text: none;
+    --animate-shimmer-slide: none;
+    --animate-spin-around: none;
+  }
+}
+
 :root {
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);

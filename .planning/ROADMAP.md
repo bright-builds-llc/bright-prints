@@ -7,11 +7,11 @@
 ## Milestones
 
 - ✅ **v1.0 MVP** — [roadmap archive](./milestones/v1.0-ROADMAP.md), [requirements archive](./milestones/v1.0-REQUIREMENTS.md), and [audit](./milestones/v1.0-MILESTONE-AUDIT.md) (`tech_debt`, shipped 2026-04-09)
-- 🚧 **v1.1 Saved Generators and Magic UI Upgrade** — Phases 8-12 (gap closure in progress)
+- 🚧 **v1.1 Saved Generators and Magic UI Upgrade** — Phases 8-12 complete; milestone re-audit pending
 
 ## Summary
 
-**5 phases** | **12 v1.1 requirements mapped** | **1 reopened accessibility gap in closure**
+**5 phases** | **12 v1.1 requirements mapped** | **reduced-motion gap closed**
 
 | #   | Phase                                | Goal                                                                                                                      | Requirements                                | Success Criteria |
 | --- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------- | ---------------- |
@@ -87,7 +87,7 @@
 
 **Gap Closure:** Closes the `UIG-02` requirement and shared-primitive reduced-motion integration issue from `v1.1-MILESTONE-AUDIT.md`.
 
-**Status:** Not started
+**Status:** Complete (verified 2026-04-11)
 
 **Success criteria:**
 
@@ -116,4 +116,4 @@
 
 ---
 
-_Last updated: 2026-04-11 after milestone gap planning_
+_Last updated: 2026-04-11 after phase 12 verification_

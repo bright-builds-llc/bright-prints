@@ -8,6 +8,7 @@ import {
   motion,
   useMotionTemplate,
   useMotionValue,
+  useReducedMotion,
   useSpring,
 } from "motion/react";
 
@@ -79,6 +80,8 @@ export function MagicCard(props: MagicCardProps) {
   const glowOpacity = isOrbMode(props) ? (props.glowOpacity ?? 0.9) : 0.9;
   const glowSize = isOrbMode(props) ? (props.glowSize ?? 420) : 420;
   const glowTo = isOrbMode(props) ? (props.glowTo ?? "#176b5f") : "#176b5f";
+  const maybeReducedMotion = useReducedMotion();
+  const shouldReduceMotion = maybeReducedMotion === true;
 
   const mouseX = useMotionValue(-gradientSize);
   const mouseY = useMotionValue(-gradientSize);
@@ -103,8 +106,37 @@ export function MagicCard(props: MagicCardProps) {
     modeRef.current = mode;
   }, [mode]);
 
+  const interactiveCardBackground = useMotionTemplate`
+    linear-gradient(var(--color-background) 0 0) padding-box,
+    radial-gradient(${gradientSize}px circle at ${mouseX}px ${mouseY}px,
+      ${gradientFrom},
+      ${gradientTo},
+      var(--color-border) 100%
+    ) border-box
+  `;
+  const interactiveGradientOverlay = useMotionTemplate`
+    radial-gradient(${gradientSize}px circle at ${mouseX}px ${mouseY}px,
+      ${gradientColor},
+      transparent 100%
+    )
+  `;
+  const staticCardBackground = `linear-gradient(var(--color-background) 0 0) padding-box,
+    radial-gradient(${gradientSize}px circle at 50% 0%,
+      ${gradientFrom},
+      ${gradientTo},
+      var(--color-border) 100%
+    ) border-box`;
+  const staticGradientOverlay = `radial-gradient(${gradientSize}px circle at 50% 0%,
+    ${gradientColor},
+    transparent 100%
+  )`;
+
   const reset = useCallback(
     (reason: ResetReason = "leave") => {
+      if (shouldReduceMotion) {
+        return;
+      }
+
       if (modeRef.current === "orb") {
         orbVisible.set(reason === "enter" ? glowOpacityRef.current : 0);
         return;
@@ -114,23 +146,36 @@ export function MagicCard(props: MagicCardProps) {
       mouseX.set(offscreenOffset);
       mouseY.set(offscreenOffset);
     },
-    [mouseX, mouseY, orbVisible],
+    [mouseX, mouseY, orbVisible, shouldReduceMotion],
   );
 
   const handlePointerMove = useCallback(
     (event: ReactPointerEvent<HTMLDivElement>) => {
+      if (shouldReduceMotion) {
+        return;
+      }
+
       const rect = event.currentTarget.getBoundingClientRect();
       mouseX.set(event.clientX - rect.left);
       mouseY.set(event.clientY - rect.top);
     },
-    [mouseX, mouseY],
+    [mouseX, mouseY, shouldReduceMotion],
   );
 
   useEffect(() => {
+    if (shouldReduceMotion) {
+      orbVisible.set(0);
+      return;
+    }
+
     reset("init");
-  }, [reset]);
+  }, [orbVisible, reset, shouldReduceMotion]);
 
   useEffect(() => {
+    if (shouldReduceMotion) {
+      return;
+    }
+
     const handleGlobalPointerOut = (event: PointerEvent) => {
       if (!event.relatedTarget) {
         reset("global");
@@ -152,7 +197,7 @@ export function MagicCard(props: MagicCardProps) {
       window.removeEventListener("blur", handleBlur);
       document.removeEventListener("visibilitychange", handleVisibility);
     };
-  }, [reset]);
+  }, [reset, shouldReduceMotion]);
 
   return (
     <motion.div
@@ -160,18 +205,14 @@ export function MagicCard(props: MagicCardProps) {
         "group relative isolate overflow-hidden rounded-[inherit] border border-transparent",
         className,
       )}
-      onPointerEnter={() => reset("enter")}
-      onPointerLeave={() => reset("leave")}
-      onPointerMove={handlePointerMove}
+      data-reduced-motion={shouldReduceMotion ? "true" : undefined}
+      onPointerEnter={shouldReduceMotion ? undefined : () => reset("enter")}
+      onPointerLeave={shouldReduceMotion ? undefined : () => reset("leave")}
+      onPointerMove={shouldReduceMotion ? undefined : handlePointerMove}
       style={{
-        background: useMotionTemplate`
-          linear-gradient(var(--color-background) 0 0) padding-box,
-          radial-gradient(${gradientSize}px circle at ${mouseX}px ${mouseY}px,
-            ${gradientFrom},
-            ${gradientTo},
-            var(--color-border) 100%
-          ) border-box
-        `,
+        background: shouldReduceMotion
+          ? staticCardBackground
+          : interactiveCardBackground,
       }}
     >
       <div className="bg-background absolute inset-px z-20 rounded-[inherit]" />
@@ -179,15 +220,19 @@ export function MagicCard(props: MagicCardProps) {
       {mode === "gradient" ? (
         <motion.div
           suppressHydrationWarning
-          className="pointer-events-none absolute inset-px z-30 rounded-[inherit] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+          className={cn(
+            "pointer-events-none absolute inset-px z-30 rounded-[inherit]",
+            shouldReduceMotion
+              ? "opacity-100"
+              : "opacity-0 transition-opacity duration-300 group-hover:opacity-100",
+          )}
           style={{
-            background: useMotionTemplate`
-              radial-gradient(${gradientSize}px circle at ${mouseX}px ${mouseY}px,
-                ${gradientColor},
-                transparent 100%
-              )
-            `,
-            opacity: gradientOpacity,
+            background: shouldReduceMotion
+              ? staticGradientOverlay
+              : interactiveGradientOverlay,
+            opacity: shouldReduceMotion
+              ? Math.min(gradientOpacity, 0.35)
+              : gradientOpacity,
           }}
         />
       ) : (
@@ -201,13 +246,18 @@ export function MagicCard(props: MagicCardProps) {
             filter: `blur(${glowBlur}px)`,
             height: glowSize,
             mixBlendMode: glowBlendMode,
-            opacity: orbVisible,
-            translateX: "-50%",
-            translateY: "-50%",
+            left: shouldReduceMotion ? "50%" : undefined,
+            opacity: shouldReduceMotion
+              ? Math.min(glowOpacity, 0.35)
+              : orbVisible,
+            top: shouldReduceMotion ? "12%" : undefined,
+            transform: shouldReduceMotion ? "translate(-50%, -50%)" : undefined,
+            translateX: shouldReduceMotion ? undefined : "-50%",
+            translateY: shouldReduceMotion ? undefined : "-50%",
             width: glowSize,
             willChange: "transform, opacity",
-            x: orbX,
-            y: orbY,
+            x: shouldReduceMotion ? undefined : orbX,
+            y: shouldReduceMotion ? undefined : orbY,
           }}
         />
       )}

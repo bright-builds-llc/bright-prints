@@ -1,7 +1,21 @@
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { createMemoryRouter, RouterProvider } from "react-router";
-import { describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
+const { mockUseReducedMotion } = vi.hoisted(() => ({
+  mockUseReducedMotion: vi.fn(() => false),
+}));
+
+vi.mock("motion/react", async () => {
+  const actual =
+    await vi.importActual<typeof import("motion/react")>("motion/react");
+
+  return {
+    ...actual,
+    useReducedMotion: mockUseReducedMotion,
+  };
+});
 
 import { GeneratorPresetPanel } from "~/components/generator/GeneratorPresetPanel";
 import { generatorSchema } from "~/lib/content/schema";
@@ -78,6 +92,10 @@ const signGenerator = generatorSchema.parse({
 });
 
 describe("generator preset panel", () => {
+  beforeEach(() => {
+    mockUseReducedMotion.mockReturnValue(false);
+  });
+
   it("renders saved-state copy and preset summaries for signed-in users", () => {
     // Arrange
     const snapshot = buildSignGeneratorPresetSnapshot(signGenerator, {
@@ -140,5 +158,67 @@ describe("generator preset panel", () => {
     expect(markup).toContain("/generators/sign?preset=preset-1");
     expect(markup).toContain("Open Preset");
     expect(markup).toContain("luminous-panel");
+  });
+
+  it("keeps the preset panel readable when reduced motion is preferred", () => {
+    // Arrange
+    mockUseReducedMotion.mockReturnValue(true);
+    const snapshot = buildSignGeneratorPresetSnapshot(signGenerator, {
+      cornerRadiusMm: 6,
+      heightMm: 60,
+      text: "HELLO",
+      thicknessMm: 4,
+      widthMm: 120,
+    });
+    const router = createMemoryRouter(
+      [
+        {
+          element: createElement(GeneratorPresetPanel, {
+            currentUser: { id: "user-1" },
+            generator: signGenerator,
+            maybeTrackedPresetId: "preset-1",
+            presets: [
+              {
+                comparisonKey: buildSignGeneratorPresetComparisonKey(
+                  snapshot.values,
+                ),
+                createdAt: "2026-04-11T00:00:00.000Z",
+                generatorSlug: "sign",
+                id: "preset-1",
+                name: "Desk Sign",
+                snapshot,
+                summary: {
+                  size: "120 x 60 mm",
+                  text: "HELLO",
+                },
+                updatedAt: "2026-04-11T00:00:00.000Z",
+              },
+            ],
+            returnTo: "/generators/sign",
+            validation: {
+              issues: {},
+              sanitizedText: "HELLO",
+            },
+            values: snapshot.values,
+          }),
+          path: "/generators/sign",
+        },
+        {
+          action: async () => null,
+          path: "/actions/generator-presets",
+        },
+      ],
+      { initialEntries: ["/generators/sign"] },
+    );
+
+    // Act
+    const markup = renderToStaticMarkup(
+      createElement(RouterProvider, { router }),
+    );
+
+    // Assert
+    expect(markup).toContain('data-reduced-motion="true"');
+    expect(markup).toContain("Current values match &quot;Desk Sign&quot;.");
+    expect(markup).toContain("Open Preset");
   });
 });

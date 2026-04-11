@@ -2,35 +2,35 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Saved Generators and Magic UI Upgrade
-status: executing
-last_updated: "2026-04-11T22:04:12.839Z"
+status: complete
+last_updated: "2026-04-11T22:21:16.908Z"
 last_activity: 2026-04-11
 progress:
   total_phases: 5
-  completed_phases: 4
+  completed_phases: 5
   total_plans: 15
-  completed_plans: 12
-  percent: 80
+  completed_plans: 15
+  percent: 100
 ---
 
 # Project State
 
 **Last updated:** 2026-04-11
-**Status:** Phase 12 planned
+**Status:** Phase 12 verified; milestone ready for re-audit
 
 ## Project Reference
 
 See: `.planning/PROJECT.md` (updated 2026-04-09)
 
 **Core value:** Users can quickly discover beautiful 3D prints and generate or download the right printable files with a sleek, trustworthy, accessible experience.
-**Current focus:** Phase 12 — Motion Accessibility Closure
+**Current focus:** Milestone re-audit and closure
 
 ## Current Position
 
 - **Phase:** 12 — Motion Accessibility Closure
 - **Plan:** 3 plans across 3 waves
-- **Status:** Ready to execute
-- **Last activity:** 2026-04-11 — Phase 12 planned with 3 plans
+- **Status:** Verified
+- **Last activity:** 2026-04-11 — Phase 12 verified with reduced-motion coverage and shared-surface checks
 
 ## Artifact Status
 
@@ -44,7 +44,7 @@ See: `.planning/PROJECT.md` (updated 2026-04-09)
 - `phases/09-saved-generator-presets/`: context, research, plans, summaries, and verification created
 - `phases/10-preset-reuse-and-library-integration/`: context, research, plans, summaries, and verification created
 - `phases/11-cross-surface-ux-upgrade/`: context, research, plans, summaries, and verification created
-- `phases/12-motion-accessibility-closure/`: context, research, and plans created
+- `phases/12-motion-accessibility-closure/`: context, discussion log, research, plans, summaries, and verification created
 
 ## Roadmap Status
 
@@ -52,7 +52,7 @@ See: `.planning/PROJECT.md` (updated 2026-04-09)
 - Phase 9 — Saved Generator Presets: Complete
 - Phase 10 — Preset Reuse and Library Integration: Complete
 - Phase 11 — Cross-Surface UX Upgrade: Complete
-- Phase 12 — Motion Accessibility Closure: Not started
+- Phase 12 — Motion Accessibility Closure: Complete
 
 ## Accumulated Context
 
@@ -70,14 +70,14 @@ See: `.planning/PROJECT.md` (updated 2026-04-09)
 - Generated artifacts remain client-side in this milestone; saved presets should persist intent, not binary files.
 - Phase 8 established the shared luminous panel, shimmer text, and shimmer action layer and proved it on discovery, generator, and shell surfaces without a framework migration.
 - Phase 11 extended the shared panel layer across generator, library, and print-detail surfaces without widening the milestone into a broad site rewrite.
-- The milestone audit re-opened `UIG-02`, so reduced-motion support now needs a focused follow-up phase before milestone completion.
+- Phase 12 closed `UIG-02` by moving reduced-motion handling into the shared primitive layer and proving the generator, library, and print-detail surfaces keep their hierarchy under reduced motion.
 
 ## Notes
 
 - The selected app framework direction remains React Router 7 rather than Next.js.
 - The selected generator architecture remains browser-side `3mf` generation, not a backend worker.
-- Next recommended command: `$gsd-execute-phase 12`
+- Next recommended command: `$gsd-audit-milestone`
 
 ---
 
-_State updated: 2026-04-11 after milestone gap planning_
+_State updated: 2026-04-11 after phase 12 verification_
